@@ -1,1 +1,460 @@
-(()=>{const t=["scaleX","scaleY","scaleZ","rotationX","rotationY","rotationZ","translationX","translationY","translationZ"],e=["scaleX","scaleY","rotation","translationX","translationY"],a=["r","g","b","a"],r=function t(e){const a=e.subreader();this.magic=e.readUint32();const r=e.readUint32(),i=[];let n=0;for(;n<r;)i.push({type:e.readUint32(),length:e.readUint32(),offset:e.readUint32()}),++n;i.forEach(e=>{let r=a.subreader(e.offset,e.length);switch(e.type){case 0:this.frames=r.readUint32(),this.flags=[r.readUint16(),r.readUint16()],this.loop=0!=(1&this.flags[0]),this.blended=0!=(1&this.flags[1]),this.animationRegion={min:[r.readFloat32(),r.readFloat32(),r.readFloat32()],max:[r.readFloat32(),r.readFloat32(),r.readFloat32()]},this.hash=r.readUint32();break;case 1:this.skeletal=new t.Skeletal(r,this.frames);break;case 3:this.material=new t.Material(r,this.frames);break;case 6:this.visibility=new t.Visibility(r,this.frames);break;case 5:this.constant=new t.Constant(r,this.frames);break;case 7:this.action=new t.Action(r,this.frames)}})};r.FPS=24,r.interpolate=function(t,e,a){if(!e)return t.value;if(t.frame===e.frame)return t.value;if(t.frame===a)return t.value;if(e.frame===a)return e.value;let r=a-t.frame,i=r/(e.frame-t.frame),n=t.value+(t.value-e.value)*(2*i-3)*i*i;return n+=r*(i-1)*(t.slope*(i-1)+e.slope*i)},r.readKeyFrames=function(t,e,a){let r=[],i=0!=(4&e),n=0!=(2&e),s=0!=(1&e);if(n&&i)throw new Error("Invalid axis");if(i){let e=t.readUint32(),i=[],n=0;for(;n<e;)a>255?i.push(t.readUint16()):i.push(t.readUint8()),++n;if(t.skipPadding(4,[0,255]),s){for(n=0;n<e;)r.push({frame:i[n],value:t.readFloat32(),slope:t.readFloat32()}),++n;r.isConstant=!1}else{let a=t.readFloat32(),s=t.readFloat32(),o=t.readFloat32(),l=t.readFloat32();for(n=0;n<e;){let e=t.readUint16(),d=t.readUint16();r.push({frame:i[n],value:e/65535*a+s,slope:d/65535*o+l}),++n}r.isConstant=!1}}else n?s?(r.isConstant=!0,r.push({frame:0,value:t.readFloat32(),slope:0})):(r.isConstant=!0,r.push({frame:0,value:1,slope:0})):s&&(r.isConstant=!0,r.push({frame:0,value:0,slope:0}));return r};r.Skeletal=function(t,e){const a=t.readInt32(),i=t.readUint32(),n=t.subreader(),s=[];let o=0;for(;o<a;)s.push(t.readString(t.readUint8())),++o;let l=n.subreader(i);this.transforms=s.map(t=>new r.BoneTransform(l,t,e))};r.BoneTransform=function(e,a,i){this.bone=a;let n=e.readUint32();const s=e.readUint32();let o=e.index;this.axisAngle=0==(n>>31&1),n&=2147483647;let l=0;for(;l<9;)this[t[l]]=r.readKeyFrames(e,7&n,i),n>>=3,++l;if(e.index-o!==s)throw new Error("Incorrect data length in skeletal motion")};r.Material=function(t,e){let a=t.readInt32(),i=t.readUint32(),n=[],s=0;for(;s<a;)n.push({count:t.readUint32()}),++s;let o=t.subreader();for(s=0;s<a;)n[s].material=t.readString(t.readUint8()),++s;let l=o.subreader(i);this.transforms=[],n.forEach(t=>{let a=0;for(;a<t.count;)this.transforms.push(new r.TextureTransform(l,t.material,e)),++a})};r.TextureTransform=function(t,a,i){this.material=a,this.textureIndex=t.readUint32();let n=t.readUint32();t.readUint32();let s=0;for(;s<5;)this[e[s]]=r.readKeyFrames(t,7&n,i),n>>=3,++s};r.Visibility=function(t,e){let a=t.readInt32(),i=t.readUint32(),n=t.subreader(),s=[],o=0;for(;o<a;)s[o]=t.readString(t.readUint8()),++o;let l=n.subreader(i);this.transforms=s.map(t=>new r.MeshTransform(l,t,e))};r.MeshTransform=function(t,e,a){this.mesh=e,this.visibility=[];let r=0,i=0;for(;i<=a;){let e=7&i;0===e&&(r=t.readUint8()),this.visibility.push({frame:i,value:0!=(r&1<<e),slope:0}),++i}this.visibility.isConstant=!1,0===this.visibility.filter(t=>t.value).length&&(this.visibility.isConstant=!0),0===this.visibility.filter(t=>!t.value).length&&(this.visibility.isConstant=!0)};r.Constant=function(t,e){let a=t.readInt32(),i=t.readUint32(),n=[],s=0;for(;s<a;)n.push({count:t.readUint32()}),++s;let o=t.subreader();n.forEach(e=>{e.mesh=t.readString(t.readUint8())});let l=o.subreader(i);for(this.values=[],n.forEach(t=>{let a=0;for(;a<t.count;)this.values.push(new r.ConstantChange(l,t.mesh,e)),++a}),this.post=[];l.index<l.end;)this.post.push(l.readUint8())};r.ConstantChange=function(t,e,i){this.material=e,this.constantIndex=t.readUint32();let n=t.readUint32();const s=t.readUint32();let o=t.index;n&=2147483647;let l=0;for(;l<4;)this[a[l]]=r.readKeyFrames(t,7&n,i),n>>=3,++l;if(t.index-o!==s)throw new Error("Incorrect data length in constant changes")};r.Action=function(t){},module.exports=r})(this.$);
+((/* global, $ */) => {
+    
+    const MotionHeader = 0;
+    const MotionSkeletal = 1;
+    const MotionMaterial = 3;
+    const MotionConstant = 5;
+    const MotionVisibility = 6;
+    const MotionAction = 7;
+    
+    const BoneTransformOrders = [
+        "scaleX", "scaleY", "scaleZ", 
+        "rotationX", "rotationY", "rotationZ", 
+        "translationX", "translationY", "translationZ"
+    ];
+    
+    const TextureTransformOrders = [
+        "scaleX", "scaleY",
+        "rotation",
+        "translationX", "translationY"
+    ];
+    
+    const ConstantValueOrders = ["r", "g", "b", "a"];
+    
+    const Motion = function Motion(reader) {
+        
+        const origin = reader.subreader();
+        
+        this.magic = reader.readUint32();
+        
+        const sectionCount = reader.readUint32();
+
+        const sections = [];
+        let looper = 0;
+        while (looper < sectionCount) {
+            sections.push({
+                "type": reader.readUint32(),
+                "length": reader.readUint32(),
+                "offset": reader.readUint32()
+            });
+            ++looper;
+        }
+        
+        sections.forEach((section) => {
+ 
+            let reader = origin.subreader(section.offset, section.length);
+           
+            switch (section.type) {
+                case MotionHeader: {
+                    
+                    this.frames = reader.readUint32();
+                    this.flags = [reader.readUint16(), reader.readUint16()];
+                    this.loop = (this.flags[0] & 0x1) !== 0;
+                    this.blended = (this.flags[1] & 0x1) !== 0; // not sure
+                    this.animationRegion = {
+                        "min": [reader.readFloat32(), reader.readFloat32(), reader.readFloat32()],
+                        "max": [reader.readFloat32(), reader.readFloat32(), reader.readFloat32()],
+                    };
+                    this.hash = reader.readUint32();
+                    break;
+                }
+                case MotionSkeletal: { this.skeletal = new Motion.Skeletal(reader, this.frames); break; }
+                case MotionMaterial: { this.material = new Motion.Material(reader, this.frames); break; }
+                case MotionVisibility: { this.visibility = new Motion.Visibility(reader, this.frames); break; }
+                case MotionConstant: { this.constant = new Motion.Constant(reader, this.frames); break; }
+                case MotionAction: { this.action = new Motion.Action(reader, this.frames); break; }
+                default: { break; }
+            }
+            
+        });
+        
+    };
+    
+    Motion.FPS = 24;
+    
+    Motion.interpolate = function (left, right, time) {
+        
+        if (!right) {
+            return left.value;
+        }
+        if (left.frame === right.frame) {
+            return left.value;
+        }
+        if (left.frame === time) {
+            return left.value;
+        }
+        if (right.frame === time) {
+            return right.value;
+        }
+        
+        let frames = time - left.frame;
+        
+        let weight = frames / (right.frame - left.frame);
+        
+        let result = left.value + (left.value - right.value) * (2 * weight - 3) * weight * weight;
+        
+        result += (frames * (weight - 1)) * (left.slope * (weight - 1) + right.slope * weight);
+        
+        return result;
+        
+    };
+    
+    Motion.readKeyFrames = function (reader, flags, frames) {
+        
+        let keyFrames = [];
+        
+        let axisVariable = (flags & 0x4) !== 0;
+        let axisConstant = (flags & 0x2) !== 0;
+        let axisFloat = (flags & 0x1) !== 0;
+        
+        if (axisConstant && axisVariable) {
+            throw new Error("Invalid axis");
+        }
+        
+        if (axisVariable) {
+            
+            let keyFramesCount = reader.readUint32();
+            
+            let frameIndices = [];
+            
+            let looper2 = 0;
+            while (looper2 < keyFramesCount) {
+                if (frames > 0xff) {
+                    frameIndices.push(reader.readUint16());
+                } else {
+                    frameIndices.push(reader.readUint8());
+                }
+                ++looper2;
+            }
+            
+            reader.skipPadding(0x4, [0, 0xff]);
+            
+            if (axisFloat) {
+                looper2 = 0;
+                while (looper2 < keyFramesCount) {
+                    keyFrames.push({
+                        "frame": frameIndices[looper2],
+                        "value": reader.readFloat32(),
+                        "slope": reader.readFloat32()
+                    });
+                    ++looper2;
+                }
+                keyFrames.isConstant = false;
+            } else {
+                let valueScale = reader.readFloat32();
+                let valueOffset = reader.readFloat32();
+                let slopeScale = reader.readFloat32();
+                let slopeOffset = reader.readFloat32();
+                looper2 = 0;
+                while (looper2 < keyFramesCount) {
+                    let value = reader.readUint16();
+                    let slope = reader.readUint16();
+                    keyFrames.push({
+                        "frame": frameIndices[looper2],
+                        "value": (value / 0xffff) * valueScale + valueOffset,
+                        "slope": (slope / 0xffff) * slopeScale + slopeOffset
+                    });
+                    ++looper2;
+                }
+                keyFrames.isConstant = false;
+            }
+
+        } else {
+            
+            if (axisConstant) {
+                if (axisFloat) {
+                    keyFrames.isConstant = true;
+                    keyFrames.push({ "frame": 0, "value": reader.readFloat32(), "slope": 0 });
+                } else {
+                    // It seems always 1 for not float constants
+                    keyFrames.isConstant = true;
+                    keyFrames.push({ "frame": 0, "value": 1, "slope": 0 });
+                }
+            } else {
+                if (axisFloat) {
+                    keyFrames.isConstant = true;
+                    keyFrames.push({ "frame": 0, "value": 0, "slope": 0 });
+                }
+            }
+            
+        }
+        
+        return keyFrames;
+        
+    };
+    
+    const Skeletal = function Skeletal(reader, frames) {
+        
+        const nameCount = reader.readInt32();
+        
+        const namesLength = reader.readUint32();
+        
+        const origin = reader.subreader();
+
+        const names = [];
+        
+        let looper = 0;
+        while (looper < nameCount) {
+            names.push(reader.readString(reader.readUint8()));
+            ++looper;
+        }
+        
+        let boneReader = origin.subreader(namesLength);
+        
+        this.transforms = names.map((name) => {
+            return new Motion.BoneTransform(boneReader, name, frames);
+        });
+        
+    };
+    
+    Motion.Skeletal = Skeletal;
+    
+    const BoneTransform = function BoneTransform(reader, name, frames) {
+        
+        this.bone = name;
+
+        let flags = reader.readUint32();
+        const length = reader.readUint32();
+        
+        let offset = reader.index;
+        
+        this.axisAngle = ((flags >> 31) & 0x1) === 0;
+        flags = flags & 0x7fffffff;
+        
+        let looper = 0;
+        while (looper < 9) {
+            this[BoneTransformOrders[looper]] = Motion.readKeyFrames(reader, flags & 0x7, frames);
+            flags = flags >> 3;
+            ++looper;
+        }
+         
+        if (reader.index - offset !== length) {
+            throw new Error("Incorrect data length in skeletal motion");
+        }
+
+    };
+    
+    Motion.BoneTransform = BoneTransform;
+    
+    const Material = function Material(reader, frames) {
+        
+        let nameCount = reader.readInt32();
+        let namesLength = reader.readUint32();
+
+        let units = [];
+        let looper = 0;
+        while (looper < nameCount) {
+            units.push({
+                "count": reader.readUint32()
+            });
+            ++looper;
+        }
+        
+        let origin = reader.subreader();
+        
+        looper = 0;
+        while (looper < nameCount) {
+            units[looper].material = reader.readString(reader.readUint8());
+            ++looper;
+        }
+        
+        let newReader = origin.subreader(namesLength);
+        
+        this.transforms = [];
+        units.forEach((unit) => {
+            let looper = 0;
+            while (looper < unit.count) {
+                this.transforms.push(new Motion.TextureTransform(newReader, unit.material, frames));
+                ++looper;
+            }
+        });
+        
+    };
+    
+    Motion.Material = Material;
+    
+    const TextureTransform = function TextureTransform(reader, name, frames) {
+        
+        this.material = name;
+        
+        this.textureIndex = reader.readUint32();
+
+        let flags = reader.readUint32();
+        const length = reader.readUint32();
+        
+        let looper = 0;
+        while (looper < 5) {
+            this[TextureTransformOrders[looper]] = Motion.readKeyFrames(reader, flags & 0x7, frames);
+            flags = flags >> 3;
+            ++looper;
+        }
+        
+    };
+    
+    Motion.TextureTransform = TextureTransform;
+    
+    const Visibility = function Visibility(reader, frames) {
+        
+        let nameCount = reader.readInt32();
+        let namesLength = reader.readUint32();
+
+        let origin = reader.subreader();
+        
+        let meshes = []
+        let looper = 0;
+        while (looper < nameCount) {
+            meshes[looper] = reader.readString(reader.readUint8());
+            ++looper;
+        }
+
+        let newReader = origin.subreader(namesLength);
+        
+        this.transforms = meshes.map((mesh) => {
+            return new Motion.MeshTransform(newReader, mesh, frames);
+        });
+        
+    };
+    
+    Motion.Visibility = Visibility;
+    
+    const MeshTransform = function MeshTransform(reader, name, frames) {
+        
+        this.mesh = name;
+        
+        this.visibility = [];
+
+        let value = 0;
+        let looper = 0;
+        while (looper <= frames) {
+            
+            let bit = looper & 0x7;
+            if (bit === 0) {
+                value = reader.readUint8();
+            }
+            
+            this.visibility.push({
+                "frame": looper,
+                "value": (value & (1 << bit)) !== 0,
+                "slope": 0
+            });
+            
+            ++looper;
+        }
+        
+        this.visibility.isConstant = false;
+        if (this.visibility.filter((state) => state.value).length === 0) {
+            this.visibility.isConstant = true;
+        }
+        if (this.visibility.filter((state) => !state.value).length === 0) {
+            this.visibility.isConstant = true;
+        }
+        
+    };
+    
+    Motion.MeshTransform = MeshTransform;
+     
+    const Constant = function Constant(reader, frames) {
+        
+        let nameCount = reader.readInt32();
+        let namesLength = reader.readUint32();
+        
+        let units = [];
+        let looper = 0;
+        while (looper < nameCount) {
+            units.push({
+                "count": reader.readUint32()
+            });
+            ++looper;
+        }
+        
+        let origin = reader.subreader();
+        
+        units.forEach((unit) => {
+            unit.mesh = reader.readString(reader.readUint8());
+        });
+        
+        let newReader = origin.subreader(namesLength);
+        
+        this.values = [];
+        units.forEach((unit) => {
+            let looper = 0;
+            while (looper < unit.count) {
+                this.values.push(new Motion.ConstantChange(newReader, unit.mesh, frames));
+                ++looper;
+            } 
+        });
+        
+        this.post = [];
+        while (newReader.index < newReader.end) {
+            this.post.push(newReader.readUint8());
+        }
+        
+    };
+    
+    Motion.Constant = Constant;
+    
+    const ConstantChange = function ConstantChange(reader, material, frames) {
+         
+        this.material = material;
+        
+        this.constantIndex = reader.readUint32();
+    
+        let flags = reader.readUint32();
+        const length = reader.readUint32();
+        
+        let offset = reader.index;
+        
+        flags = flags & 0x7fffffff;
+        
+        let looper = 0;
+        while (looper < 4) {
+            this[ConstantValueOrders[looper]] = Motion.readKeyFrames(reader, flags & 0x7, frames);
+            flags = flags >> 3;
+            ++looper;
+        }
+         
+        if (reader.index - offset !== length) {
+            throw new Error("Incorrect data length in constant changes");
+        }
+        
+    };
+    
+    Motion.ConstantChange = ConstantChange;
+    
+    const Action = function Action(reader) {
+        
+        return;
+        
+        // let count = reader.readUint32();
+        
+        // let calls = [];
+        
+        // let looper = 0;
+        // while (looper < count) {
+        //     let name = reader.readString(reader.readUint8());
+        //     let count = reader.readUint32();
+        //     let frame = reader.readUint32();
+        //     let parameters = [];
+        //     let looper2 = 0;
+        //     while (looper2 < count) {
+        //         parameters.push(reader.readFloat32());
+        //         ++looper2;
+        //     }
+        //     calls.push({
+        //         "name": name,
+        //         "count": count,
+        //         "frame": frame,
+        //         "parameters": parameters
+        //     });
+        //     console.log(calls);
+        //     ++looper;
+        // }
+        // this.calls = calls;
+        
+    };
+    
+    Motion.Action = Action;
+    
+    module.exports = Motion;
+    
+})(this, this.$);

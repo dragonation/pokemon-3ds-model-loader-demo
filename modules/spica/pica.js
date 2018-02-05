@@ -1,1 +1,2982 @@
-((e,t)=>{const s=function(e,t){this.commands={buffers:[[],[]],offsets:[0,0],sizes:[0,0],states:["ready","ready"]},this.commands.current=this.commands.buffers[0],this.parse(e,t)};s.prototype.parse=function(e,t){let s;if(t){s=[];let _=0;for(;_<t/4;)s[_]=e.readUint32(),++_}else s=e;let _=[],G=0;for(;G<s.length;){let e=s[G++],t=s[G++],E=t>>0&65535,n=t>>16&15,r=t>>20&2047;if(t>>31!=0){let t=0;for(;t<=r;){let i={register:E++,parameters:[e],mask:n};_.push(i),t<r&&(e=s[G++]),++t}}else{let t=[e],i=0;for(;i<r;)t.push(s[G++]),++i;let R={register:E,parameters:t,mask:n};_.push(R)}0!=(1&G)&&G++}this.decode(_)},s.prototype.decode=function(e){let _=0;for(;_<e.length;){let G=e[_];if(this.commands.current.push(G),s.commands[G.register])s.commands[G.register].call(this,G);else{let e=Object.keys(s).filter(e=>s[e]===G.register)[0];e?s.unprocessed[e]||(s.unprocessed[e]=!0,t.warn("Unprocessed PICA command "+e)):t.warn("Unprocessed PICA command "+G.register)}++_}},s.unprocessed={},s.GPUREG_DUMMY=0,s.GPUREG_FINALIZE=16,s.GPUREG_FACECULLING_CONFIG=64,s.GPUREG_VIEWPORT_WIDTH=65,s.GPUREG_VIEWPORT_INVW=66,s.GPUREG_VIEWPORT_HEIGHT=67,s.GPUREG_VIEWPORT_INVH=68,s.GPUREG_FRAGOP_CLIP=71,s.GPUREG_FRAGOP_CLIP_DATA0=72,s.GPUREG_FRAGOP_CLIP_DATA1=73,s.GPUREG_FRAGOP_CLIP_DATA2=74,s.GPUREG_FRAGOP_CLIP_DATA3=75,s.GPUREG_DEPTHMAP_SCALE=77,s.GPUREG_DEPTHMAP_OFFSET=78,s.GPUREG_SH_OUTMAP_TOTAL=79,s.GPUREG_SH_OUTMAP_O0=80,s.GPUREG_SH_OUTMAP_O1=81,s.GPUREG_SH_OUTMAP_O2=82,s.GPUREG_SH_OUTMAP_O3=83,s.GPUREG_SH_OUTMAP_O4=84,s.GPUREG_SH_OUTMAP_O5=85,s.GPUREG_SH_OUTMAP_O6=86,s.GPUREG_EARLYDEPTH_FUNC=97,s.GPUREG_EARLYDEPTH_TEST1=98,s.GPUREG_EARLYDEPTH_CLEAR=99,s.GPUREG_SH_OUTATTR_MODE=100,s.GPUREG_SCISSORTEST_MODE=101,s.GPUREG_SCISSORTEST_POS=102,s.GPUREG_SCISSORTEST_DIM=103,s.GPUREG_VIEWPORT_XY=104,s.GPUREG_EARLYDEPTH_DATA=106,s.GPUREG_DEPTHMAP_ENABLE=109,s.GPUREG_RENDERBUF_DIM=110,s.GPUREG_SH_OUTATTR_CLOCK=111,s.GPUREG_TEXUNIT_CONFIG=128,s.GPUREG_TEXUNIT0_BORDER_COLOR=129,s.GPUREG_TEXUNIT0_DIM=130,s.GPUREG_TEXUNIT0_PARAM=131,s.GPUREG_TEXUNIT0_LOD=132,s.GPUREG_TEXUNIT0_ADDR1=133,s.GPUREG_TEXUNIT0_ADDR2=134,s.GPUREG_TEXUNIT0_ADDR3=135,s.GPUREG_TEXUNIT0_ADDR4=136,s.GPUREG_TEXUNIT0_ADDR5=137,s.GPUREG_TEXUNIT0_ADDR6=138,s.GPUREG_TEXUNIT0_SHADOW=139,s.GPUREG_TEXUNIT0_TYPE=142,s.GPUREG_LIGHTING_ENABLE0=143,s.GPUREG_TEXUNIT1_BORDER_COLOR=145,s.GPUREG_TEXUNIT1_DIM=146,s.GPUREG_TEXUNIT1_PARAM=147,s.GPUREG_TEXUNIT1_LOD=148,s.GPUREG_TEXUNIT1_ADDR=149,s.GPUREG_TEXUNIT1_TYPE=150,s.GPUREG_TEXUNIT2_BORDER_COLOR=153,s.GPUREG_TEXUNIT2_DIM=154,s.GPUREG_TEXUNIT2_PARAM=155,s.GPUREG_TEXUNIT2_LOD=156,s.GPUREG_TEXUNIT2_ADDR=157,s.GPUREG_TEXUNIT2_TYPE=158,s.GPUREG_TEXUNIT3_PROCTEX0=168,s.GPUREG_TEXUNIT3_PROCTEX1=169,s.GPUREG_TEXUNIT3_PROCTEX2=170,s.GPUREG_TEXUNIT3_PROCTEX3=171,s.GPUREG_TEXUNIT3_PROCTEX4=172,s.GPUREG_TEXUNIT3_PROCTEX5=173,s.GPUREG_PROCTEX_LUT=175,s.GPUREG_PROCTEX_LUT_DATA0=176,s.GPUREG_PROCTEX_LUT_DATA1=177,s.GPUREG_PROCTEX_LUT_DATA2=178,s.GPUREG_PROCTEX_LUT_DATA3=179,s.GPUREG_PROCTEX_LUT_DATA4=180,s.GPUREG_PROCTEX_LUT_DATA5=181,s.GPUREG_PROCTEX_LUT_DATA6=182,s.GPUREG_PROCTEX_LUT_DATA7=183,s.GPUREG_TEXENV0_SOURCE=192,s.GPUREG_TEXENV0_OPERAND=193,s.GPUREG_TEXENV0_COMBINER=194,s.GPUREG_TEXENV0_COLOR=195,s.GPUREG_TEXENV0_SCALE=196,s.GPUREG_TEXENV1_SOURCE=200,s.GPUREG_TEXENV1_OPERAND=201,s.GPUREG_TEXENV1_COMBINER=202,s.GPUREG_TEXENV1_COLOR=203,s.GPUREG_TEXENV1_SCALE=204,s.GPUREG_TEXENV2_SOURCE=208,s.GPUREG_TEXENV2_OPERAND=209,s.GPUREG_TEXENV2_COMBINER=210,s.GPUREG_TEXENV2_COLOR=211,s.GPUREG_TEXENV2_SCALE=212,s.GPUREG_TEXENV3_SOURCE=216,s.GPUREG_TEXENV3_OPERAND=217,s.GPUREG_TEXENV3_COMBINER=218,s.GPUREG_TEXENV3_COLOR=219,s.GPUREG_TEXENV3_SCALE=220,s.GPUREG_TEXENV_UPDATE_BUFFER=224,s.GPUREG_FOG_COLOR=225,s.GPUREG_GAS_ATTENUATION=228,s.GPUREG_GAS_ACCMAX=229,s.GPUREG_FOG_LUT_INDEX=230,s.GPUREG_FOG_LUT_DATA0=232,s.GPUREG_FOG_LUT_DATA1=233,s.GPUREG_FOG_LUT_DATA2=234,s.GPUREG_FOG_LUT_DATA3=235,s.GPUREG_FOG_LUT_DATA4=236,s.GPUREG_FOG_LUT_DATA5=237,s.GPUREG_FOG_LUT_DATA6=238,s.GPUREG_FOG_LUT_DATA7=239,s.GPUREG_TEXENV4_SOURCE=240,s.GPUREG_TEXENV4_OPERAND=241,s.GPUREG_TEXENV4_COMBINER=242,s.GPUREG_TEXENV4_COLOR=243,s.GPUREG_TEXENV4_SCALE=244,s.GPUREG_TEXENV5_SOURCE=248,s.GPUREG_TEXENV5_OPERAND=249,s.GPUREG_TEXENV5_COMBINER=250,s.GPUREG_TEXENV5_COLOR=251,s.GPUREG_TEXENV5_SCALE=252,s.GPUREG_TEXENV_BUFFER_COLOR=253,s.GPUREG_COLOR_OPERATION=256,s.GPUREG_BLEND_FUNC=257,s.GPUREG_LOGIC_OP=258,s.GPUREG_BLEND_COLOR=259,s.GPUREG_FRAGOP_ALPHA_TEST=260,s.GPUREG_STENCIL_TEST=261,s.GPUREG_STENCIL_OP=262,s.GPUREG_DEPTH_COLOR_MASK=263,s.GPUREG_FRAMEBUFFER_INVALIDATE=272,s.GPUREG_FRAMEBUFFER_FLUSH=273,s.GPUREG_COLORBUFFER_READ=274,s.GPUREG_COLORBUFFER_WRITE=275,s.GPUREG_DEPTHBUFFER_READ=276,s.GPUREG_DEPTHBUFFER_WRITE=277,s.GPUREG_DEPTHBUFFER_FORMAT=278,s.GPUREG_COLORBUFFER_FORMAT=279,s.GPUREG_EARLYDEPTH_TEST2=280,s.GPUREG_FRAMEBUFFER_BLOCK32=283,s.GPUREG_DEPTHBUFFER_LOC=284,s.GPUREG_COLORBUFFER_LOC=285,s.GPUREG_FRAMEBUFFER_DIM=286,s.GPUREG_GAS_LIGHT_XY=288,s.GPUREG_GAS_LIGHT_Z=289,s.GPUREG_GAS_LIGHT_Z_COLOR=290,s.GPUREG_GAS_LUT_INDEX=291,s.GPUREG_GAS_LUT_DATA=292,s.GPUREG_GAS_DELTAZ_DEPTH=294,s.GPUREG_FRAGOP_SHADOW=304,s.GPUREG_LIGHT0_SPECULAR0=320,s.GPUREG_LIGHT0_SPECULAR1=321,s.GPUREG_LIGHT0_DIFFUSE=322,s.GPUREG_LIGHT0_AMBIENT=323,s.GPUREG_LIGHT0_XY=324,s.GPUREG_LIGHT0_Z=325,s.GPUREG_LIGHT0_SPOTDIR_XY=326,s.GPUREG_LIGHT0_SPOTDIR_Z=327,s.GPUREG_LIGHT0_CONFIG=329,s.GPUREG_LIGHT0_ATTENUATION_BIAS=330,s.GPUREG_LIGHT0_ATTENUATION_SCALE=331,s.GPUREG_LIGHT1_SPECULAR0=336,s.GPUREG_LIGHT1_SPECULAR1=337,s.GPUREG_LIGHT1_DIFFUSE=338,s.GPUREG_LIGHT1_AMBIENT=339,s.GPUREG_LIGHT1_XY=340,s.GPUREG_LIGHT1_Z=341,s.GPUREG_LIGHT1_SPOTDIR_XY=342,s.GPUREG_LIGHT1_SPOTDIR_Z=343,s.GPUREG_LIGHT1_CONFIG=345,s.GPUREG_LIGHT1_ATTENUATION_BIAS=346,s.GPUREG_LIGHT1_ATTENUATION_SCALE=347,s.GPUREG_LIGHT2_SPECULAR0=352,s.GPUREG_LIGHT2_SPECULAR1=353,s.GPUREG_LIGHT2_DIFFUSE=354,s.GPUREG_LIGHT2_AMBIENT=355,s.GPUREG_LIGHT2_XY=356,s.GPUREG_LIGHT2_Z=357,s.GPUREG_LIGHT2_SPOTDIR_XY=358,s.GPUREG_LIGHT2_SPOTDIR_Z=359,s.GPUREG_LIGHT2_CONFIG=361,s.GPUREG_LIGHT2_ATTENUATION_BIAS=362,s.GPUREG_LIGHT2_ATTENUATION_SCALE=363,s.GPUREG_LIGHT3_SPECULAR0=368,s.GPUREG_LIGHT3_SPECULAR1=369,s.GPUREG_LIGHT3_DIFFUSE=370,s.GPUREG_LIGHT3_AMBIENT=371,s.GPUREG_LIGHT3_XY=372,s.GPUREG_LIGHT3_Z=373,s.GPUREG_LIGHT3_SPOTDIR_XY=374,s.GPUREG_LIGHT3_SPOTDIR_Z=375,s.GPUREG_LIGHT3_CONFIG=377,s.GPUREG_LIGHT3_ATTENUATION_BIAS=378,s.GPUREG_LIGHT3_ATTENUATION_SCALE=379,s.GPUREG_LIGHT4_SPECULAR0=384,s.GPUREG_LIGHT4_SPECULAR1=385,s.GPUREG_LIGHT4_DIFFUSE=386,s.GPUREG_LIGHT4_AMBIENT=387,s.GPUREG_LIGHT4_XY=388,s.GPUREG_LIGHT4_Z=389,s.GPUREG_LIGHT4_SPOTDIR_XY=390,s.GPUREG_LIGHT4_SPOTDIR_Z=391,s.GPUREG_LIGHT4_CONFIG=393,s.GPUREG_LIGHT4_ATTENUATION_BIAS=394,s.GPUREG_LIGHT4_ATTENUATION_SCALE=395,s.GPUREG_LIGHT5_SPECULAR0=400,s.GPUREG_LIGHT5_SPECULAR1=401,s.GPUREG_LIGHT5_DIFFUSE=402,s.GPUREG_LIGHT5_AMBIENT=403,s.GPUREG_LIGHT5_XY=404,s.GPUREG_LIGHT5_Z=405,s.GPUREG_LIGHT5_SPOTDIR_XY=406,s.GPUREG_LIGHT5_SPOTDIR_Z=407,s.GPUREG_LIGHT5_CONFIG=409,s.GPUREG_LIGHT5_ATTENUATION_BIAS=410,s.GPUREG_LIGHT5_ATTENUATION_SCALE=411,s.GPUREG_LIGHT6_SPECULAR0=416,s.GPUREG_LIGHT6_SPECULAR1=417,s.GPUREG_LIGHT6_DIFFUSE=418,s.GPUREG_LIGHT6_AMBIENT=419,s.GPUREG_LIGHT6_XY=420,s.GPUREG_LIGHT6_Z=421,s.GPUREG_LIGHT6_SPOTDIR_XY=422,s.GPUREG_LIGHT6_SPOTDIR_Z=423,s.GPUREG_LIGHT6_CONFIG=425,s.GPUREG_LIGHT6_ATTENUATION_BIAS=426,s.GPUREG_LIGHT6_ATTENUATION_SCALE=427,s.GPUREG_LIGHT7_SPECULAR0=432,s.GPUREG_LIGHT7_SPECULAR1=433,s.GPUREG_LIGHT7_DIFFUSE=434,s.GPUREG_LIGHT7_AMBIENT=435,s.GPUREG_LIGHT7_XY=436,s.GPUREG_LIGHT7_Z=437,s.GPUREG_LIGHT7_SPOTDIR_XY=438,s.GPUREG_LIGHT7_SPOTDIR_Z=439,s.GPUREG_LIGHT7_CONFIG=441,s.GPUREG_LIGHT7_ATTENUATION_BIAS=442,s.GPUREG_LIGHT7_ATTENUATION_SCALE=443,s.GPUREG_LIGHTING_AMBIENT=448,s.GPUREG_LIGHTING_NUM_LIGHTS=450,s.GPUREG_LIGHTING_CONFIG0=451,s.GPUREG_LIGHTING_CONFIG1=452,s.GPUREG_LIGHTING_LUT_INDEX=453,s.GPUREG_LIGHTING_ENABLE1=454,s.GPUREG_LIGHTING_LUT_DATA0=456,s.GPUREG_LIGHTING_LUT_DATA1=457,s.GPUREG_LIGHTING_LUT_DATA2=458,s.GPUREG_LIGHTING_LUT_DATA3=459,s.GPUREG_LIGHTING_LUT_DATA4=460,s.GPUREG_LIGHTING_LUT_DATA5=461,s.GPUREG_LIGHTING_LUT_DATA6=462,s.GPUREG_LIGHTING_LUT_DATA7=463,s.GPUREG_LIGHTING_LUTINPUT_ABS=464,s.GPUREG_LIGHTING_LUTINPUT_SELECT=465,s.GPUREG_LIGHTING_LUTINPUT_SCALE=466,s.GPUREG_LIGHTING_LIGHT_PERMUTATION=473,s.GPUREG_ATTRIBBUFFERS_LOC=512,s.GPUREG_ATTRIBBUFFERS_FORMAT_LOW=513,s.GPUREG_ATTRIBBUFFERS_FORMAT_HIGH=514,s.GPUREG_ATTRIBBUFFER0_OFFSET=515,s.GPUREG_ATTRIBBUFFER0_CONFIG1=516,s.GPUREG_ATTRIBBUFFER0_CONFIG2=517,s.GPUREG_ATTRIBBUFFER1_OFFSET=518,s.GPUREG_ATTRIBBUFFER1_CONFIG1=519,s.GPUREG_ATTRIBBUFFER1_CONFIG2=520,s.GPUREG_ATTRIBBUFFER2_OFFSET=521,s.GPUREG_ATTRIBBUFFER2_CONFIG1=522,s.GPUREG_ATTRIBBUFFER2_CONFIG2=523,s.GPUREG_ATTRIBBUFFER3_OFFSET=524,s.GPUREG_ATTRIBBUFFER3_CONFIG1=525,s.GPUREG_ATTRIBBUFFER3_CONFIG2=526,s.GPUREG_ATTRIBBUFFER4_OFFSET=527,s.GPUREG_ATTRIBBUFFER4_CONFIG1=528,s.GPUREG_ATTRIBBUFFER4_CONFIG2=529,s.GPUREG_ATTRIBBUFFER5_OFFSET=530,s.GPUREG_ATTRIBBUFFER5_CONFIG1=531,s.GPUREG_ATTRIBBUFFER5_CONFIG2=532,s.GPUREG_ATTRIBBUFFER6_OFFSET=533,s.GPUREG_ATTRIBBUFFER6_CONFIG1=534,s.GPUREG_ATTRIBBUFFER6_CONFIG2=535,s.GPUREG_ATTRIBBUFFER7_OFFSET=536,s.GPUREG_ATTRIBBUFFER7_CONFIG1=537,s.GPUREG_ATTRIBBUFFER7_CONFIG2=538,s.GPUREG_ATTRIBBUFFER8_OFFSET=539,s.GPUREG_ATTRIBBUFFER8_CONFIG1=540,s.GPUREG_ATTRIBBUFFER8_CONFIG2=541,s.GPUREG_ATTRIBBUFFER9_OFFSET=542,s.GPUREG_ATTRIBBUFFER9_CONFIG1=543,s.GPUREG_ATTRIBBUFFER9_CONFIG2=544,s.GPUREG_ATTRIBBUFFER10_OFFSET=545,s.GPUREG_ATTRIBBUFFER10_CONFIG1=546,s.GPUREG_ATTRIBBUFFER10_CONFIG2=547,s.GPUREG_ATTRIBBUFFER11_OFFSET=548,s.GPUREG_ATTRIBBUFFER11_CONFIG1=549,s.GPUREG_ATTRIBBUFFER11_CONFIG2=550,s.GPUREG_INDEXBUFFER_CONFIG=551,s.GPUREG_NUMVERTICES=552,s.GPUREG_GEOSTAGE_CONFIG=553,s.GPUREG_VERTEX_OFFSET=554,s.GPUREG_POST_VERTEX_CACHE_NUM=557,s.GPUREG_DRAWARRAYS=558,s.GPUREG_DRAWELEMENTS=559,s.GPUREG_VTX_FUNC=561,s.GPUREG_FIXEDATTRIB_INDEX=562,s.GPUREG_FIXEDATTRIB_DATA0=563,s.GPUREG_FIXEDATTRIB_DATA1=564,s.GPUREG_FIXEDATTRIB_DATA2=565,s.GPUREG_CMDBUF_SIZE0=568,s.GPUREG_CMDBUF_SIZE1=569,s.GPUREG_CMDBUF_ADDR0=570,s.GPUREG_CMDBUF_ADDR1=571,s.GPUREG_CMDBUF_JUMP0=572,s.GPUREG_CMDBUF_JUMP1=573,s.GPUREG_VSH_NUM_ATTR=578,s.GPUREG_VSH_COM_MODE=580,s.GPUREG_START_DRAW_FUNC0=581,s.GPUREG_VSH_OUTMAP_TOTAL1=586,s.GPUREG_VSH_OUTMAP_TOTAL2=593,s.GPUREG_GSH_MISC0=594,s.GPUREG_GEOSTAGE_CONFIG2=595,s.GPUREG_GSH_MISC1=596,s.GPUREG_PRIMITIVE_CONFIG=606,s.GPUREG_RESTART_PRIMITIVE=607,s.GPUREG_GSH_BOOLUNIFORM=640,s.GPUREG_GSH_INTUNIFORM_I0=641,s.GPUREG_GSH_INTUNIFORM_I1=642,s.GPUREG_GSH_INTUNIFORM_I2=643,s.GPUREG_GSH_INTUNIFORM_I3=644,s.GPUREG_GSH_INPUTBUFFER_CONFIG=649,s.GPUREG_GSH_ENTRYPOINT=650,s.GPUREG_GSH_ATTRIBUTES_PERMUTATION_LOW=651,s.GPUREG_GSH_ATTRIBUTES_PERMUTATION_HIGH=652,s.GPUREG_GSH_OUTMAP_MASK=653,s.GPUREG_GSH_CODETRANSFER_END=655,s.GPUREG_GSH_FLOATUNIFORM_INDEX=656,s.GPUREG_GSH_FLOATUNIFORM_DATA0=657,s.GPUREG_GSH_FLOATUNIFORM_DATA1=658,s.GPUREG_GSH_FLOATUNIFORM_DATA2=659,s.GPUREG_GSH_FLOATUNIFORM_DATA3=660,s.GPUREG_GSH_FLOATUNIFORM_DATA4=661,s.GPUREG_GSH_FLOATUNIFORM_DATA5=662,s.GPUREG_GSH_FLOATUNIFORM_DATA6=663,s.GPUREG_GSH_FLOATUNIFORM_DATA7=664,s.GPUREG_GSH_CODETRANSFER_INDEX=667,s.GPUREG_GSH_CODETRANSFER_DATA0=668,s.GPUREG_GSH_CODETRANSFER_DATA1=669,s.GPUREG_GSH_CODETRANSFER_DATA2=670,s.GPUREG_GSH_CODETRANSFER_DATA3=671,s.GPUREG_GSH_CODETRANSFER_DATA4=672,s.GPUREG_GSH_CODETRANSFER_DATA5=673,s.GPUREG_GSH_CODETRANSFER_DATA6=674,s.GPUREG_GSH_CODETRANSFER_DATA7=675,s.GPUREG_GSH_OPDESCS_INDEX=677,s.GPUREG_GSH_OPDESCS_DATA0=678,s.GPUREG_GSH_OPDESCS_DATA1=679,s.GPUREG_GSH_OPDESCS_DATA2=680,s.GPUREG_GSH_OPDESCS_DATA3=681,s.GPUREG_GSH_OPDESCS_DATA4=682,s.GPUREG_GSH_OPDESCS_DATA5=683,s.GPUREG_GSH_OPDESCS_DATA6=684,s.GPUREG_GSH_OPDESCS_DATA7=685,s.GPUREG_VSH_BOOLUNIFORM=688,s.GPUREG_VSH_INTUNIFORM_I0=689,s.GPUREG_VSH_INTUNIFORM_I1=690,s.GPUREG_VSH_INTUNIFORM_I2=691,s.GPUREG_VSH_INTUNIFORM_I3=692,s.GPUREG_VSH_INPUTBUFFER_CONFIG=697,s.GPUREG_VSH_ENTRYPOINT=698,s.GPUREG_VSH_ATTRIBUTES_PERMUTATION_LOW=699,s.GPUREG_VSH_ATTRIBUTES_PERMUTATION_HIGH=700,s.GPUREG_VSH_OUTMAP_MASK=701,s.GPUREG_VSH_CODETRANSFER_END=703,s.GPUREG_VSH_FLOATUNIFORM_INDEX=704,s.GPUREG_VSH_FLOATUNIFORM_DATA0=705,s.GPUREG_VSH_FLOATUNIFORM_DATA1=706,s.GPUREG_VSH_FLOATUNIFORM_DATA2=707,s.GPUREG_VSH_FLOATUNIFORM_DATA3=708,s.GPUREG_VSH_FLOATUNIFORM_DATA4=709,s.GPUREG_VSH_FLOATUNIFORM_DATA5=710,s.GPUREG_VSH_FLOATUNIFORM_DATA6=711,s.GPUREG_VSH_FLOATUNIFORM_DATA7=712,s.GPUREG_VSH_CODETRANSFER_INDEX=715,s.GPUREG_VSH_CODETRANSFER_DATA0=716,s.GPUREG_VSH_CODETRANSFER_DATA1=717,s.GPUREG_VSH_CODETRANSFER_DATA2=718,s.GPUREG_VSH_CODETRANSFER_DATA3=719,s.GPUREG_VSH_CODETRANSFER_DATA4=720,s.GPUREG_VSH_CODETRANSFER_DATA5=721,s.GPUREG_VSH_CODETRANSFER_DATA6=722,s.GPUREG_VSH_CODETRANSFER_DATA7=723,s.GPUREG_VSH_OPDESCS_INDEX=725,s.GPUREG_VSH_OPDESCS_DATA0=726,s.GPUREG_VSH_OPDESCS_DATA1=727,s.GPUREG_VSH_OPDESCS_DATA2=728,s.GPUREG_VSH_OPDESCS_DATA3=729,s.GPUREG_VSH_OPDESCS_DATA4=730,s.GPUREG_VSH_OPDESCS_DATA5=731,s.GPUREG_VSH_OPDESCS_DATA6=732,s.GPUREG_VSH_OPDESCS_DATA7=733;const _=function(e){e.viewport||(e.viewport={})},G=function(e){e.clipping||(e.clipping={enabled:!1,data:[0,0,0,0]})},E=function(e){e.depth||(e.depth={})},n=function(e){e.depth.early={}},r=function(e){e.shader||(e.shader={})},i=function(e){e.shader.outputMap||(e.shader.outputMap=[])},R=function(e,t,_){e.shader.outputMap[t]={};let G=0;for(;G<4;){let E=_>>8*G&31,n={};switch(e.shader.outputMap[t][{0:"x",1:"y",2:"z",3:"w"}[G]]=n,E){case 0:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.POSITION),n.offset="x";break;case 1:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.POSITION),n.offset="y";break;case 2:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.POSITION),n.offset="z";break;case 3:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.POSITION),n.offset="w";break;case 4:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.QUAT_NORMAL),n.offset="x";break;case 5:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.QUAT_NORMAL),n.offset="y";break;case 6:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.QUAT_NORMAL),n.offset="z";break;case 7:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.QUAT_NORMAL),n.offset="w";break;case 8:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.COLOR),n.offset="r";break;case 9:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.COLOR),n.offset="g";break;case 10:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.COLOR),n.offset="b";break;case 11:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.COLOR),n.offset="a";break;case 12:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.TEXTURE_COORDINATE_0),n.offset="u";break;case 13:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.TEXTURE_COORDINATE_0),n.offset="v";break;case 14:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.TEXTURE_COORDINATE_1),n.offset="u";break;case 15:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.TEXTURE_COORDINATE_1),n.offset="v";break;case 16:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.TEXTURE_COORDINATE_0),n.offset="w";break;case 18:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.VIEW),n.offset="x";break;case 19:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.VIEW),n.offset="y";break;case 20:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.VIEW),n.offset="z";break;case 22:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.TEXTURE_COORDINATE_2),n.offset="u";break;case 23:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.TEXTURE_COORDINATE_2),n.offset="v";break;default:n.register=new s.ShaderOutputRegister(s.ShaderOutputRegister.GENERIC)}++G}},a=function(e){e.shader.vertex||(e.shader.vertex={})},T=function(e){e.shader.vertex.outputMap||(e.shader.vertex.outputMap=[])},o=function(e){e.shader.vertex.attributes||(e.shader.vertex.attributes={})},U=function(e){e.shader.vertex.attributes.permutations||(e.shader.vertex.attributes.permutations=[])},m=function(e){e.shader.vertex.ints||(e.shader.vertex.ints=[])},A=function(e){if(!e.shader.vertex.floats){e.shader.vertex.floats=[];let _=0,G=!1;Object.defineProperty(e.shader.vertex.floats,"index",{get:function(){return _},set:function(e){_=e%256<<2,G=e>>31!=0}}),Object.defineProperty(e.shader.vertex.floats,"is32Bit",{get:function(){return G}}),Object.defineProperty(e.shader.vertex.floats,"setValues",{get:function(){return function(e){let E=()=>{let e=_>>2&95,t=this[e];return t||(t=G?new s.Float32Vector:new s.Float24Vector,this[e]=t),t};e.forEach(e=>{let G=E();G.words[_%4]=e,++_,t.is(G,s.Float24Vector)&&_%4==3&&++_})}.bind(e.shader.vertex.floats)}})}},c=function(e){e.shader.vertex.codes||(e.shader.vertex.codes={})},P=function(e){e.shader.vertex.opdescs||(e.shader.vertex.opdescs={})},h=function(e){e.shader.geometry||(e.shader.geometry={})},O=function(e){e.shader.geometry.outputMap||(e.shader.geometry.outputMap=[])},d=function(e){e.shader.geometry.attributes||(e.shader.geometry.attributes={})},I=function(e){e.shader.geometry.attributes.permutations||(e.shader.geometry.attributes.permutations=[])},F=function(e){e.shader.geometry.ints||(e.shader.geometry.ints=[])},S=function(e){if(!e.shader.geometry.floats){e.shader.geometry.floats=[];let _=0,G=!1;Object.defineProperty(e.shader.geometry.floats,"index",{get:function(){return _},set:function(e){_=e%256<<2,G=e>>31!=0}}),Object.defineProperty(e.shader.geometry.floats,"is32Bit",{get:function(){return G}}),Object.defineProperty(e.shader.geometry.floats,"setValues",{get:function(){return function(e){let E=()=>{let e=_>>2&95,t=this[e];return t||(t=G?new s.Float32Vector:new s.Float24Vector,this[e]=t),t};e.forEach(e=>{let G=E();G.words[_%4]=e,++_,t.is(G,s.Float24Vector)&&_%3==2&&++_})}.bind(e.shader.geometry.floats)}})}},u=function(e){e.shader.geometry.codes||(e.shader.geometry.codes={})},N=function(e){e.shader.geometry.opdescs||(e.shader.geometry.opdescs={})},p=function(e){e.scissor||(e.scissor={})},f=function(e){e.frameBuffer||(e.frameBuffer={})},l=function(e){e.textures||(e.textures={})},D=function(e){e.textures.units||(e.textures.units=[{},{},{},{}])},C=function(e,t,_){let G=e.textures.units[0];G.magnificationFilter=new s.TextureFilter(1&_),G.minificationFilter=new s.TextureFilter(1&_),G.etc1=_>>4&3,G.wrap=[new s.TextureWrap(_>>8&3),new s.TextureWrap(_>>12&3)],G.shadow=0!=(_>>20&1),G.mipmap=0!=(_>>24&1),G.type=new s.TextureType(_>>28&3)},L=function(e){e.lighting||(e.lighting=!0)},H=function(e){e.rendering||(e.rendering={})},g=function(e,t){e.rendering.stages||(e.rendering.stages=[]),e.rendering.stages[t]||(e.rendering.stages[t]=new s.RenderingStage)},B=function(e){e.permissions||(e.permissions={})},M=function(e){e.lightingLUTs||(e.lightingLUTs={})},b=function(e,t,s){e.lightingLUTs.data||(e.lightingLUTs.data=[]),s.forEach(t=>{e.lightingLUTs.data[e.lightingLUTs.index++]=(4095&t)/4095})},V=function(e){e.attributes||(e.attributes={})},w=function(e){e.attributes.buffer||(e.attributes.buffer={})},X=function(e){e.attributes.buffer.mapping||(e.attributes.buffer.mapping=[])},x=function(e){e.attributes.fixeds||(e.attributes.fixeds={index:0})},y=function(e){t.is.nil(e.attributes.fixeds.index)&&(e.attributes.fixeds.index=0),e.attributes.fixeds.data||(e.attributes.fixeds.data=[]),e.attributes.fixeds.data[e.attributes.fixeds.index]||(e.attributes.fixeds.data[e.attributes.fixeds.index]=new s.Float24Vector)};(s.commands={})[s.GPUREG_DUMMY]=function(){},s.commands[s.GPUREG_FINALIZE]=function(){let e=this.commands.buffers.indexOf(this.commands.current);this.commands.states[e]="finalized"},s.commands[s.GPUREG_FACECULLING_CONFIG]=function(e){this.faceCulling=new s.FaceCulling(3&e.parameters[0])},s.commands[s.GPUREG_VIEWPORT_WIDTH]=function(e){_(this),this.viewport.width=2*s.Float24Vector.getFloat(e.parameters[0]%16777216)},s.commands[s.GPUREG_VIEWPORT_INVW]=function(e){_(this),this.viewport.width=2/s.Float32Vector.asFloat32(e.parameters[0])},s.commands[s.GPUREG_VIEWPORT_HEIGHT]=function(e){_(this),this.viewport.height=2*s.Float24Vector.getFloat(e.parameters[0]%16777216)},s.commands[s.GPUREG_VIEWPORT_INVH]=function(e){_(this),this.viewport.height=2/s.Float32Vector.asFloat32(e.parameters[0])},s.commands[s.GPUREG_FRAGOP_CLIP]=function(e){G(this),this.clipping.enabled=0!=(1&e.parameters[0])},s.commands[s.GPUREG_FRAGOP_CLIP_DATA0]=function(e){G(this),this.clipping.data[0]=s.Float32Vector.asFloat32(e.parameters[0])},s.commands[s.GPUREG_FRAGOP_CLIP_DATA1]=function(e){G(this),this.clipping.data[1]=s.Float32Vector.asFloat32(e.parameters[0])},s.commands[s.GPUREG_FRAGOP_CLIP_DATA2]=function(e){G(this),this.clipping.data[2]=s.Float32Vector.asFloat32(e.parameters[0])},s.commands[s.GPUREG_FRAGOP_CLIP_DATA3]=function(e){G(this),this.clipping.data[3]=s.Float32Vector.asFloat32(e.parameters[0])},s.commands[s.GPUREG_DEPTHMAP_SCALE]=function(e){E(this),this.depth.scale=s.Float24Vector.getFloat(e.parameters[0]%16777216)},s.commands[s.GPUREG_DEPTHMAP_OFFSET]=function(e){E(this),this.depth.offset=s.Float24Vector.getFloat(e.parameters[0]%16777216)},s.commands[s.GPUREG_SH_OUTMAP_TOTAL]=function(e){r(this),i(this),this.shader.outputMap.length=7&e.parameters[0]},s.commands[s.GPUREG_SH_OUTMAP_O0]=function(e){r(this),i(this),R(this,0,e.parameters[0])},s.commands[s.GPUREG_SH_OUTMAP_O1]=function(e){r(this),i(this),R(this,1,e.parameters[0])},s.commands[s.GPUREG_SH_OUTMAP_O2]=function(e){r(this),i(this),R(this,2,e.parameters[0])},s.commands[s.GPUREG_SH_OUTMAP_O3]=function(e){r(this),i(this),R(this,3,e.parameters[0])},s.commands[s.GPUREG_SH_OUTMAP_O4]=function(e){r(this),i(this),R(this,4,e.parameters[0])},s.commands[s.GPUREG_SH_OUTMAP_O5]=function(e){r(this),i(this),R(this,5,e.parameters[0])},s.commands[s.GPUREG_SH_OUTMAP_O6]=function(e){r(this),i(this),R(this,6,e.parameters[0])},s.commands[s.GPUREG_EARLYDEPTH_FUNC]=function(e){E(this),n(this),this.depth.early.test={0:">=",1:">",2:"<=",3:"<"}[3&e.parameters[0]]},s.commands[s.GPUREG_EARLYDEPTH_TEST1]=function(e){E(this),n(this),this.depth.early.enabled=0!=(1&e.parameters[0])},s.commands[s.GPUREG_EARLYDEPTH_CLEAR]=function(e){0!=(1&e.parameters[0])&&this.depth&&this.depth.early&&delete this.depth.early},s.commands[s.GPUREG_SH_OUTATTR_MODE]=function(e){r(this),this.shader.outputTextures=0!=(1&e.parameters[0])},s.commands[s.GPUREG_SCISSORTEST_MODE]=function(e){p(this),this.scissor.enabled=0!=(1&e.parameters[0])},s.commands[s.GPUREG_SCISSORTEST_POS]=function(e){p(this),this.scissor.position={x:e.parameters[0]%512,y:(e.parameters[0]>>16)%512}},s.commands[s.GPUREG_SCISSORTEST_DIM]=function(e){p(this),this.scissor.dim={x:e.parameters[0]%512,y:(e.parameters[0]>>16)%512}},s.commands[s.GPUREG_VIEWPORT_XY]=function(e){_(this),this.viewport.position={x:e.parameters[0]%512,y:(e.parameters[0]>>16)%512}},s.commands[s.GPUREG_EARLYDEPTH_DATA]=function(e){E(this),n(this),this.depth.early.clearValue=16777215&e.parameters[0]},s.commands[s.GPUREG_DEPTHMAP_ENABLE]=function(e){E(this),this.depth.enabled=0!=(1&e.parameters[0])},s.commands[s.GPUREG_RENDERBUF_DIM]=function(e){H(this),this.rendering.width=2047&e.parameters[0],this.rendering.height=1+(e.parameters[0]>>12&1023)},s.commands[s.GPUREG_SH_OUTATTR_CLOCK]=function(e){r(this),this.shader.outputAvailables={positionZ:0!=(1&e.parameters[0]),color:0!=(2&e.parameters[0]),texCoord0:0!=(256&e.parameters[0]),texCoord1:0!=(512&e.parameters[0]),texCoord2:0!=(1024&e.parameters[0]),texCoord0W:0!=(65536&e.parameters[0]),quatNormalOrView:0!=(16777216&e.parameters[0])}},s.commands[s.GPUREG_TEXUNIT_CONFIG]=function(e){l(this),D(this);const t=e.parameters[0];!0&t&&(this.textures.units=[{},{},{},{}]),this.textures.units[0].coordinates=0,this.textures.units[0].enabled=0!=(1&t),this.textures.units[1].coordinates=1,this.textures.units[1].enabled=0!=(2&t),this.textures.units[2].coordinates=0!=(t>>13&1)?1:2,this.textures.units[2].enabled=0!=(4&t),this.textures.units[3].coordinates=t>>8&3,this.textures.units[3].enabled=0!=(1024&t)},s.commands[s.GPUREG_TEXUNIT0_BORDER_COLOR]=function(e){l(this),D(this),this.textures.units[0].border=new s.Color(e.parameters[0])},s.commands[s.GPUREG_TEXUNIT0_DIM]=function(e){l(this),D(this),this.textures.units[0].width=2047&e.parameters[0],this.textures.units[0].height=e.parameters[0]>>16&2047},s.commands[s.GPUREG_TEXUNIT0_PARAM]=function(e){l(this),D(this),C(this,0,e.parameters[0])},s.commands[s.GPUREG_TEXUNIT1_BORDER_COLOR]=function(e){l(this),D(this),this.textures.units[1].border=new s.Color(e.parameters[0])},s.commands[s.GPUREG_TEXUNIT1_DIM]=function(e){l(this),D(this),this.textures.units[1].width=2047&e.parameters[0],this.textures.units[1].height=e.parameters[0]>>16&2047},s.commands[s.GPUREG_TEXUNIT1_PARAM]=function(e){l(this),D(this),C(this,0,e.parameters[0])},s.commands[s.GPUREG_TEXUNIT2_BORDER_COLOR]=function(e){l(this),D(this),this.textures.units[2].border=new s.Color(e.parameters[0])},s.commands[s.GPUREG_TEXUNIT2_DIM]=function(e){l(this),D(this),this.textures.units[2].width=2047&e.parameters[0],this.textures.units[2].height=e.parameters[0]>>16&2047},s.commands[s.GPUREG_TEXUNIT2_PARAM]=function(e){l(this),D(this),C(this,0,e.parameters[0])},s.commands[s.GPUREG_LIGHTING_ENABLE0]=function(e){L(this),this.lighting.enabled=0!=(1&e.parameters[0])},s.commands[s.GPUREG_TEXENV0_SOURCE]=function(e){H(this),g(this,0),this.rendering.stages[0].source=new s.RenderingSource(e.parameters[0])},s.commands[s.GPUREG_TEXENV1_SOURCE]=function(e){H(this),g(this,1),this.rendering.stages[1].source=new s.RenderingSource(e.parameters[0])},s.commands[s.GPUREG_TEXENV2_SOURCE]=function(e){H(this),g(this,2),this.rendering.stages[2].source=new s.RenderingSource(e.parameters[0])},s.commands[s.GPUREG_TEXENV3_SOURCE]=function(e){H(this),g(this,3),this.rendering.stages[3].source=new s.RenderingSource(e.parameters[0])},s.commands[s.GPUREG_TEXENV4_SOURCE]=function(e){H(this),g(this,4),this.rendering.stages[4].source=new s.RenderingSource(e.parameters[0])},s.commands[s.GPUREG_TEXENV5_SOURCE]=function(e){H(this),g(this,5),this.rendering.stages[5].source=new s.RenderingSource(e.parameters[0])},s.commands[s.GPUREG_TEXENV0_OPERAND]=function(e){H(this),g(this,0),this.rendering.stages[0].operand=new s.RenderingOperand(e.parameters[0])},s.commands[s.GPUREG_TEXENV1_OPERAND]=function(e){H(this),g(this,1),this.rendering.stages[1].operand=new s.RenderingOperand(e.parameters[0])},s.commands[s.GPUREG_TEXENV2_OPERAND]=function(e){H(this),g(this,2),this.rendering.stages[2].operand=new s.RenderingOperand(e.parameters[0])},s.commands[s.GPUREG_TEXENV3_OPERAND]=function(e){H(this),g(this,3),this.rendering.stages[3].operand=new s.RenderingOperand(e.parameters[0])},s.commands[s.GPUREG_TEXENV4_OPERAND]=function(e){H(this),g(this,4),this.rendering.stages[4].operand=new s.RenderingOperand(e.parameters[0])},s.commands[s.GPUREG_TEXENV5_OPERAND]=function(e){H(this),g(this,5),this.rendering.stages[5].operand=new s.RenderingOperand(e.parameters[0])},s.commands[s.GPUREG_TEXENV0_COMBINER]=function(e){H(this),g(this,0),this.rendering.stages[0].mode=new s.RenderingMode(e.parameters[0])},s.commands[s.GPUREG_TEXENV1_COMBINER]=function(e){H(this),g(this,1),this.rendering.stages[1].mode=new s.RenderingMode(e.parameters[0])},s.commands[s.GPUREG_TEXENV2_COMBINER]=function(e){H(this),g(this,2),this.rendering.stages[2].mode=new s.RenderingMode(e.parameters[0])},s.commands[s.GPUREG_TEXENV3_COMBINER]=function(e){H(this),g(this,3),this.rendering.stages[3].mode=new s.RenderingMode(e.parameters[0])},s.commands[s.GPUREG_TEXENV4_COMBINER]=function(e){H(this),g(this,4),this.rendering.stages[4].mode=new s.RenderingMode(e.parameters[0])},s.commands[s.GPUREG_TEXENV5_COMBINER]=function(e){H(this),g(this,5),this.rendering.stages[5].mode=new s.RenderingMode(e.parameters[0])},s.commands[s.GPUREG_TEXENV0_COLOR]=function(e){H(this),g(this,0),this.rendering.stages[0].color=new s.Color(e.parameters[0])},s.commands[s.GPUREG_TEXENV1_COLOR]=function(e){H(this),g(this,1),this.rendering.stages[1].color=new s.Color(e.parameters[0])},s.commands[s.GPUREG_TEXENV2_COLOR]=function(e){H(this),g(this,2),this.rendering.stages[2].color=new s.Color(e.parameters[0])},s.commands[s.GPUREG_TEXENV3_COLOR]=function(e){H(this),g(this,3),this.rendering.stages[3].color=new s.Color(e.parameters[0])},s.commands[s.GPUREG_TEXENV4_COLOR]=function(e){H(this),g(this,4),this.rendering.stages[4].color=new s.Color(e.parameters[0])},s.commands[s.GPUREG_TEXENV5_COLOR]=function(e){H(this),g(this,5),this.rendering.stages[5].color=new s.Color(e.parameters[0])},s.commands[s.GPUREG_TEXENV0_SCALE]=function(e){H(this),g(this,0),this.rendering.stages[0].scale=new s.RenderingScale(e.parameters[0])},s.commands[s.GPUREG_TEXENV1_SCALE]=function(e){H(this),g(this,1),this.rendering.stages[1].scale=new s.RenderingScale(e.parameters[0])},s.commands[s.GPUREG_TEXENV2_SCALE]=function(e){H(this),g(this,2),this.rendering.stages[2].scale=new s.RenderingScale(e.parameters[0])},s.commands[s.GPUREG_TEXENV3_SCALE]=function(e){H(this),g(this,3),this.rendering.stages[3].scale=new s.RenderingScale(e.parameters[0])},s.commands[s.GPUREG_TEXENV4_SCALE]=function(e){H(this),g(this,4),this.rendering.stages[4].scale=new s.RenderingScale(e.parameters[0])},s.commands[s.GPUREG_TEXENV5_SCALE]=function(e){H(this),g(this,5),this.rendering.stages[5].scale=new s.RenderingScale(e.parameters[0])},s.commands[s.GPUREG_TEXENV_UPDATE_BUFFER]=function(e){H(this),this.rendering.fogMode=7&e.parameters[0],this.rendering.densitySource=e.parameters[0]>>3&1?"depth":"plain",g(this,0),this.rendering.stages[0].buffers={color:0!=(e.parameters[0]>>8&1),alpha:0!=(e.parameters[0]>>12&1)},g(this,1),this.rendering.stages[1].buffers={color:0!=(e.parameters[0]>>9&1),alpha:0!=(e.parameters[0]>>13&1)},g(this,2),this.rendering.stages[2].buffers={color:0!=(e.parameters[0]>>10&1),alpha:0!=(e.parameters[0]>>14&1)},g(this,3),this.rendering.stages[3].buffers={color:0!=(e.parameters[0]>>11&1),alpha:0!=(e.parameters[0]>>15&1)},this.rendering.zFlip=0!=(e.parameters[0]>>16&1)},s.commands[s.GPUREG_TEXENV_BUFFER_COLOR]=function(e){H(this),this.rendering.bufferColor=new s.Color(e.parameters[0])},s.commands[s.GPUREG_COLOR_OPERATION]=function(e){H(this),this.rendering.colorOperation=new s.ColorOperation(e.parameters[0])},s.commands[s.GPUREG_BLEND_FUNC]=function(e){H(this),this.rendering.blendFunction=new s.BlendFunction(e.parameters[0])},s.commands[s.GPUREG_LOGIC_OP]=function(e){H(this),this.rendering.logicalOperation=new s.LogicalOperation(15&e.parameters[0])},s.commands[s.GPUREG_BLEND_COLOR]=function(e){H(this),this.rendering.blendColor=new s.Color(e.parameters[0])},s.commands[s.GPUREG_FRAGOP_ALPHA_TEST]=function(e){H(this),this.rendering.alphaTest=new s.AlphaTest(e.parameters[0])},s.commands[s.GPUREG_STENCIL_TEST]=function(e){H(this),this.rendering.stencilTest=new s.StencilTest(e.parameters[0])},s.commands[s.GPUREG_STENCIL_OP]=function(e){H(this),this.rendering.stencilOperation=new s.StencilOperation(e.parameters[0])},s.commands[s.GPUREG_DEPTH_COLOR_MASK]=function(e){E(this),this.depth.colorMask=new s.DepthColorMask(e.parameters[0])},s.commands[s.GPUREG_FRAMEBUFFER_INVALIDATE]=function(e){H(this),this.rendering.dirty=0!=(1&e.parameters[0])},s.commands[s.GPUREG_FRAMEBUFFER_FLUSH]=function(e){H(this),this.rendering.dirty=0==(1&e.parameters[0])},s.commands[s.GPUREG_COLORBUFFER_READ]=function(e){B(this),this.permissions.colorBufferRead=15==(15&e.parameters[0])},s.commands[s.GPUREG_COLORBUFFER_WRITE]=function(e){B(this),this.permissions.colorBufferWrite=15==(15&e.parameters[0])},s.commands[s.GPUREG_DEPTHBUFFER_READ]=function(e){B(this),this.permissions.stencilBufferRead=0!=(1&e.parameters[0]),this.permissions.depthBufferRead=0!=(2&e.parameters[0])},s.commands[s.GPUREG_DEPTHBUFFER_WRITE]=function(e){B(this),this.permissions.stencilBufferWrite=0!=(1&e.parameters[0]),this.permissions.depthBufferWrite=0!=(2&e.parameters[0])},s.commands[s.GPUREG_EARLYDEPTH_TEST2]=s.commands[s.GPUREG_EARLYDEPTH_TEST1],s.commands[s.GPUREG_FRAMEBUFFER_DIM]=function(e){f(this),this.frameBuffer.width=2047&e.parameters[0],this.frameBuffer.height=1+(e.parameters[0]>>12&1023)},s.commands[s.GPUREG_LIGHTING_LUT_INDEX]=function(e){M(this),this.lightingLUTs.index=255&e.parameters[0],this.lightingLUTs.type=new s.LUTType(e.parameters[0]>>8)},s.commands[s.GPUREG_LIGHTING_LUT_DATA0]=function(e){M(this),b(this,0,e.parameters)},s.commands[s.GPUREG_LIGHTING_LUT_DATA1]=s.commands[s.GPUREG_LIGHTING_LUT_DATA0],s.commands[s.GPUREG_LIGHTING_LUT_DATA2]=s.commands[s.GPUREG_LIGHTING_LUT_DATA0],s.commands[s.GPUREG_LIGHTING_LUT_DATA3]=s.commands[s.GPUREG_LIGHTING_LUT_DATA0],s.commands[s.GPUREG_LIGHTING_LUT_DATA4]=s.commands[s.GPUREG_LIGHTING_LUT_DATA0],s.commands[s.GPUREG_LIGHTING_LUT_DATA5]=s.commands[s.GPUREG_LIGHTING_LUT_DATA0],s.commands[s.GPUREG_LIGHTING_LUT_DATA6]=s.commands[s.GPUREG_LIGHTING_LUT_DATA0],s.commands[s.GPUREG_LIGHTING_LUT_DATA7]=s.commands[s.GPUREG_LIGHTING_LUT_DATA0],s.commands[s.GPUREG_LIGHTING_LUTINPUT_ABS]=function(e){M(this),this.lightingLUTs.inputAbsolute=new s.LightingLUTInputAbsolute(e.parameters[0])},s.commands[s.GPUREG_LIGHTING_LUTINPUT_SELECT]=function(e){M(this),this.lightingLUTs.inputSelection=new s.LightingLUTInputSelection(e.parameters[0])},s.commands[s.GPUREG_LIGHTING_LUTINPUT_SCALE]=function(e){M(this),this.lightingLUTs.inputScale=new s.LightingLUTInputScale(e.parameters[0])},s.commands[s.GPUREG_ATTRIBBUFFERS_LOC]=function(e){V(this),this.attributes.location=e.parameters/2>>27},s.commands[s.GPUREG_ATTRIBBUFFERS_FORMAT_LOW]=function(e){V(this),this.attributes.formats||(this.attributes.formats=[]);let t=0;for(;t<8;){let _=e.parameters[0]/Math.pow(2,4*t)%16,G=new s.AttributeFormat(3&_),E=1+(_>>2&3);this.attributes.formats[t]||(this.attributes.formats[t]={}),this.attributes.formats[t].type=G,this.attributes.formats[t].size=E,++t}},s.commands[s.GPUREG_ATTRIBBUFFERS_FORMAT_HIGH]=function(e){V(this),this.attributes.formats||(this.attributes.formats=[]);let t=0;for(;t<4;){w(this);let _=e.parameters[0]/Math.pow(2,4*t)%16,G=new s.AttributeFormat(3&_),E=1+(_>>2&3);this.attributes.formats[t+8]||(this.attributes.formats[t+8]={}),this.attributes.formats[t+8].type=G,this.attributes.formats[t+8].size=E,++t}let _=e.parameters[0]/2>>15&8191;for(t=0;t<12;)0!=(_>>t&1)&&(this.attributes.formats[t].fixed=!0),++t;this.attributes.count=1+(e.parameters[0]/2>>27)},s.commands[s.GPUREG_ATTRIBBUFFER0_OFFSET]=function(e){V(this),w(this),this.attributes.buffer.offset=e.parameters[0]%268435456},s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG1]=function(e){V(this),w(this),X(this);let t=this.attributes.buffer,s=0;for(;s<8;)t.mapping[s]=Math.floor(e.parameters[0]/Math.pow(2,4*s))%16,++s},s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG2]=function(e){V(this),w(this),X(this);let t=this.attributes.buffer,s=0;for(;s<4;)t.mapping[s+8]=Math.floor(e.parameters[0]/Math.pow(2,4*s))%16,++s;t.unitSize=e.parameters[0]/2>>15&255,t.components=e.parameters[0]/2>>27&15},s.commands[s.GPUREG_ATTRIBBUFFER1_OFFSET]=s.commands[s.GPUREG_ATTRIBBUFFER0_OFFSET],s.commands[s.GPUREG_ATTRIBBUFFER2_OFFSET]=s.commands[s.GPUREG_ATTRIBBUFFER0_OFFSET],s.commands[s.GPUREG_ATTRIBBUFFER3_OFFSET]=s.commands[s.GPUREG_ATTRIBBUFFER0_OFFSET],s.commands[s.GPUREG_ATTRIBBUFFER4_OFFSET]=s.commands[s.GPUREG_ATTRIBBUFFER0_OFFSET],s.commands[s.GPUREG_ATTRIBBUFFER5_OFFSET]=s.commands[s.GPUREG_ATTRIBBUFFER0_OFFSET],s.commands[s.GPUREG_ATTRIBBUFFER6_OFFSET]=s.commands[s.GPUREG_ATTRIBBUFFER0_OFFSET],s.commands[s.GPUREG_ATTRIBBUFFER7_OFFSET]=s.commands[s.GPUREG_ATTRIBBUFFER0_OFFSET],s.commands[s.GPUREG_ATTRIBBUFFER8_OFFSET]=s.commands[s.GPUREG_ATTRIBBUFFER0_OFFSET],s.commands[s.GPUREG_ATTRIBBUFFER9_OFFSET]=s.commands[s.GPUREG_ATTRIBBUFFER0_OFFSET],s.commands[s.GPUREG_ATTRIBBUFFER10_OFFSET]=s.commands[s.GPUREG_ATTRIBBUFFER0_OFFSET],s.commands[s.GPUREG_ATTRIBBUFFER11_OFFSET]=s.commands[s.GPUREG_ATTRIBBUFFER0_OFFSET],s.commands[s.GPUREG_ATTRIBBUFFER1_CONFIG1]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG1],s.commands[s.GPUREG_ATTRIBBUFFER2_CONFIG1]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG1],s.commands[s.GPUREG_ATTRIBBUFFER3_CONFIG1]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG1],s.commands[s.GPUREG_ATTRIBBUFFER4_CONFIG1]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG1],s.commands[s.GPUREG_ATTRIBBUFFER5_CONFIG1]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG1],s.commands[s.GPUREG_ATTRIBBUFFER6_CONFIG1]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG1],s.commands[s.GPUREG_ATTRIBBUFFER7_CONFIG1]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG1],s.commands[s.GPUREG_ATTRIBBUFFER8_CONFIG1]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG1],s.commands[s.GPUREG_ATTRIBBUFFER9_CONFIG1]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG1],s.commands[s.GPUREG_ATTRIBBUFFER10_CONFIG1]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG1],s.commands[s.GPUREG_ATTRIBBUFFER11_CONFIG1]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG1],s.commands[s.GPUREG_ATTRIBBUFFER1_CONFIG2]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG2],s.commands[s.GPUREG_ATTRIBBUFFER2_CONFIG2]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG2],s.commands[s.GPUREG_ATTRIBBUFFER3_CONFIG2]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG2],s.commands[s.GPUREG_ATTRIBBUFFER4_CONFIG2]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG2],s.commands[s.GPUREG_ATTRIBBUFFER5_CONFIG2]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG2],s.commands[s.GPUREG_ATTRIBBUFFER6_CONFIG2]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG2],s.commands[s.GPUREG_ATTRIBBUFFER7_CONFIG2]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG2],s.commands[s.GPUREG_ATTRIBBUFFER8_CONFIG2]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG2],s.commands[s.GPUREG_ATTRIBBUFFER9_CONFIG2]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG2],s.commands[s.GPUREG_ATTRIBBUFFER10_CONFIG2]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG2],s.commands[s.GPUREG_ATTRIBBUFFER11_CONFIG2]=s.commands[s.GPUREG_ATTRIBBUFFER0_CONFIG2],s.commands[s.GPUREG_INDEXBUFFER_CONFIG]=function(e){V(this),this.attributes.indices||(this.attributes.indices={}),this.attributes.indices.offset=134217727&e.parameters[0],this.attributes.indices.is16Bit=e.parameters[0]>>31!=0},s.commands[s.GPUREG_NUMVERTICES]=function(e){V(this),this.attributes.verticesCount=e.parameters[0]},s.commands[s.GPUREG_GEOSTAGE_CONFIG]=function(e){H(this),this.rendering.usingGeometryShader=0!=(2&e.parameters[0]),this.rendering.drawingTriangleElements=0!=(16&e.parameters[0])},s.commands[s.GPUREG_VERTEX_OFFSET]=function(e){this.vertices.offset=e.parameters[0]},s.commands[s.GPUREG_POST_VERTEX_CACHE_NUM]=function(){},s.commands[s.GPUREG_DRAWARRAYS]=function(e){this.draw&&this.draw.array&&e.parameters[0]&&this.draw.array(this,e.parameters[0])},s.commands[s.GPUREG_DRAWELEMENTS]=function(e){this.draw&&this.draw.elements&&e.parameters[0]&&this.draw.elements(this,e.parameters[0])},s.commands[s.GPUREG_VTX_FUNC]=function(){},s.commands[s.GPUREG_FIXEDATTRIB_INDEX]=function(e){x(this),this.attributes.fixeds.index=15&e.parameters[0]},s.commands[s.GPUREG_FIXEDATTRIB_DATA0]=function(e){x(this),y(this),this.attributes.fixeds.data[this.attributes.fixeds.index].words[0]=e.parameters[0]},s.commands[s.GPUREG_FIXEDATTRIB_DATA1]=function(e){x(this),y(this),this.attributes.fixeds.data[this.attributes.fixeds.index].words[1]=e.parameters[0]},s.commands[s.GPUREG_FIXEDATTRIB_DATA2]=function(e){x(this),y(this),this.attributes.fixeds.data[this.attributes.fixeds.index].words[2]=e.parameters[0]},s.commands[s.GPUREG_CMDBUF_SIZE0]=function(e){this.commands.sizes[0]=4194303&e.parameters[0]},s.commands[s.GPUREG_CMDBUF_SIZE1]=function(e){this.commands.sizes[1]=4194303&e.parameters[0]},s.commands[s.GPUREG_CMDBUF_ADDR0]=function(e){this.commands.offsets[0]=1073741823&e.parameters[0]},s.commands[s.GPUREG_CMDBUF_ADDR1]=function(e){this.commands.offsets[1]=1073741823&e.parameters[0]},s.commands[s.GPUREG_CMDBUF_JUMP0]=function(e){0!==e.parameters[0]&&(this.commands.current=this.commands.buffers[0])},s.commands[s.GPUREG_CMDBUF_JUMP1]=function(e){0!==e.parameters[0]&&(this.commands.current=this.commands.buffers[1])},s.commands[s.GPUREG_VSH_NUM_ATTR]=function(e){r(this),a(this),o(this),this.shader.vertex.attributes.count=1+(15&e.parameters[0])},s.commands[s.GPUREG_VSH_COM_MODE]=function(e){r(this),a(this),this.shader.vertex.usingGeometryConfiguration=0!=(1&e.parameters[0])},s.commands[s.GPUREG_START_DRAW_FUNC0]=function(e){H(this),this.rendering.drawing=0==(1&e.parameters[0])},s.commands[s.GPUREG_VSH_OUTMAP_TOTAL1]=function(e){r(this),a(this),T(this),this.shader.vertex.outputMap.count=15&e.parameters[0]},s.commands[s.GPUREG_VSH_OUTMAP_TOTAL2]=s.commands[s.GPUREG_VSH_OUTMAP_TOTAL1],s.commands[s.GPUREG_GSH_MISC0]=function(){},s.commands[s.GPUREG_GEOSTAGE_CONFIG2]=function(e){H(this),this.rendering.drawingElements=0==(1&e.parameters[0]),this.rendering.drawingArrays=0!=(1&e.parameters[0]),this.rendering.drawingTriangleElements=0!=(16&e.parameters[0])},s.commands[s.GPUREG_PRIMITIVE_CONFIG]=function(e){H(this),this.rendering.outputRegisters=1+(15&e.parameters[0]),this.rendering.primitiveMode=new s.PrimitiveMode(e.parameters[0]>>8)},s.commands[s.GPUREG_RESTART_PRIMITIVE]=function(e){1&e.parameters[0]&&(H(this),this.rendering.outputRegisters=1,this.rendering.primitiveMode=new s.PrimitiveMode(0))},s.commands[s.GPUREG_GSH_BOOLUNIFORM]=function(e){r(this),h(this),this.shader.geometry.bools=[];let t=e.parameters[0]%256,s=0;for(;s<16;)this.shader.geometry.bools[s]=0!=(t>>s&1),++s},s.commands[s.GPUREG_GSH_INTUNIFORM_I0]=function(e){r(this),h(this),F(this),this.shader.geometry.ints[0]={x:e.parameters[0]%256,y:255&Math.floor(e.parameters[0]/256),z:255&Math.floor(e.parameters[0]/65536),w:255&Math.floor(e.parameters[0]/16777216)}},s.commands[s.GPUREG_GSH_INTUNIFORM_I1]=function(e){r(this),h(this),F(this),this.shader.geometry.ints[1]={x:e.parameters[0]%256,y:255&Math.floor(e.parameters[0]/256),z:255&Math.floor(e.parameters[0]/65536),w:255&Math.floor(e.parameters[0]/16777216)}},s.commands[s.GPUREG_GSH_INTUNIFORM_I2]=function(e){r(this),h(this),F(this),this.shader.geometry.ints[2]={x:e.parameters[0]%256,y:255&Math.floor(e.parameters[0]/256),z:255&Math.floor(e.parameters[0]/65536),w:255&Math.floor(e.parameters[0]/16777216)}},s.commands[s.GPUREG_GSH_INTUNIFORM_I3]=function(e){r(this),h(this),F(this),this.shader.geometry.ints[3]={x:e.parameters[0]%256,y:255&Math.floor(e.parameters[0]/256),z:255&Math.floor(e.parameters[0]/65536),w:255&Math.floor(e.parameters[0]/16777216)}},s.commands[s.GPUREG_GSH_INPUTBUFFER_CONFIG]=function(e){r(this),h(this),this.shader.geometry.inputs=1+(15&e.parameters[0]),this.shader.geometry.enabled=128==(e.parameters[0]>>24&255)},s.commands[s.GPUREG_GSH_ENTRYPOINT]=function(e){r(this),h(this),this.shader.geometry.entryPoint=65535&e.parameters[0]},s.commands[s.GPUREG_GSH_ATTRIBUTES_PERMUTATION_LOW]=function(e){r(this),h(this),d(this),I(this);let t=0;for(;t<8;)this.shader.geometry.attributes.permutations[t]=Math.floor(e.parameters[0]/Math.pow(2,4*t))%16,++t},s.commands[s.GPUREG_GSH_ATTRIBUTES_PERMUTATION_HIGH]=function(e){r(this),h(this),d(this),I(this);let t=0;for(;t<8;)this.shader.geometry.attributes.permutations[t+8]=Math.floor(e.parameters[0]/Math.pow(2,4*t))%16,++t},s.commands[s.GPUREG_GSH_OUTMAP_MASK]=function(e){r(this),h(this),O(this);let t=0;for(;t<16;)this.shader.geometry.outputMap[t]=0!=(e.parameters[0]>>t&1),++t},s.commands[s.GPUREG_GSH_CODETRANSFER_END]=function(e){e.parameters[0]&&(r(this),h(this),this.shader.geometry.codes.ready=!0)},s.commands[s.GPUREG_GSH_FLOATUNIFORM_INDEX]=function(e){r(this),h(this),S(this),this.shader.geometry.floats.index=e.parameters[0]},s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA0]=function(e){r(this),h(this),S(this),this.shader.geometry.floats.setValues(e.parameters)},s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA1]=s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA0],s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA2]=s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA0],s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA3]=s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA0],s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA4]=s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA0],s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA5]=s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA0],s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA6]=s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA0],s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA7]=s.commands[s.GPUREG_GSH_FLOATUNIFORM_DATA0],s.commands[s.GPUREG_GSH_CODETRANSFER_INDEX]=function(e){r(this),h(this),u(this),this.shader.geometry.codes.index=8191&e.parameters[0]},s.commands[s.GPUREG_GSH_CODETRANSFER_DATA0]=function(e){r(this),h(this),u(this),this.shader.geometry.codes.data||(this.shader.geometry.codes.data=[]),e.parameters.forEach(e=>{this.shader.geometry.codes.data[this.shader.geometry.codes.index]=e,++this.shader.geometry.codes.index})},s.commands[s.GPUREG_GSH_CODETRANSFER_DATA1]=s.commands[s.GPUREG_GSH_CODETRANSFER_DATA0],s.commands[s.GPUREG_GSH_CODETRANSFER_DATA2]=s.commands[s.GPUREG_GSH_CODETRANSFER_DATA0],s.commands[s.GPUREG_GSH_CODETRANSFER_DATA3]=s.commands[s.GPUREG_GSH_CODETRANSFER_DATA0],s.commands[s.GPUREG_GSH_CODETRANSFER_DATA4]=s.commands[s.GPUREG_GSH_CODETRANSFER_DATA0],s.commands[s.GPUREG_GSH_CODETRANSFER_DATA5]=s.commands[s.GPUREG_GSH_CODETRANSFER_DATA0],s.commands[s.GPUREG_GSH_CODETRANSFER_DATA6]=s.commands[s.GPUREG_GSH_CODETRANSFER_DATA0],s.commands[s.GPUREG_GSH_CODETRANSFER_DATA7]=s.commands[s.GPUREG_GSH_CODETRANSFER_DATA0],s.commands[s.GPUREG_GSH_OPDESCS_INDEX]=function(e){r(this),h(this),N(this),this.shader.geometry.opdescs.index=8191&e.parameters[0]},s.commands[s.GPUREG_GSH_OPDESCS_DATA0]=function(e){r(this),h(this),N(this),this.shader.geometry.opdescs.data||(this.shader.geometry.opdescs.data=[]),e.parameters.forEach(e=>{this.shader.geometry.opdescs.data[this.shader.geometry.opdescs.index]=e,++this.shader.geometry.opdescs.index})},s.commands[s.GPUREG_GSH_OPDESCS_DATA1]=s.commands[s.GPUREG_GSH_OPDESCS_DATA0],s.commands[s.GPUREG_GSH_OPDESCS_DATA2]=s.commands[s.GPUREG_GSH_OPDESCS_DATA0],s.commands[s.GPUREG_GSH_OPDESCS_DATA3]=s.commands[s.GPUREG_GSH_OPDESCS_DATA0],s.commands[s.GPUREG_GSH_OPDESCS_DATA4]=s.commands[s.GPUREG_GSH_OPDESCS_DATA0],s.commands[s.GPUREG_GSH_OPDESCS_DATA5]=s.commands[s.GPUREG_GSH_OPDESCS_DATA0],s.commands[s.GPUREG_GSH_OPDESCS_DATA6]=s.commands[s.GPUREG_GSH_OPDESCS_DATA0],s.commands[s.GPUREG_GSH_OPDESCS_DATA7]=s.commands[s.GPUREG_GSH_OPDESCS_DATA0],s.commands[s.GPUREG_VSH_BOOLUNIFORM]=function(e){r(this),a(this),this.shader.vertex.bools=[];let t=65535&e.parameters[0],s=0;for(;s<16;)this.shader.vertex.bools[s]=0!=(t>>s&1),++s},s.commands[s.GPUREG_VSH_INTUNIFORM_I0]=function(e){r(this),a(this),m(this),this.shader.vertex.ints[0]={x:e.parameters[0]%256,y:255&Math.floor(e.parameters[0]/256),z:255&Math.floor(e.parameters[0]/65536),w:255&Math.floor(e.parameters[0]/16777216)}},s.commands[s.GPUREG_VSH_INTUNIFORM_I1]=function(e){r(this),a(this),m(this),this.shader.vertex.ints[1]={x:e.parameters[0]%256,y:255&Math.floor(e.parameters[0]/256),z:255&Math.floor(e.parameters[0]/65536),w:255&Math.floor(e.parameters[0]/16777216)}},s.commands[s.GPUREG_VSH_INTUNIFORM_I2]=function(e){r(this),a(this),m(this),this.shader.vertex.ints[2]={x:e.parameters[0]%256,y:255&Math.floor(e.parameters[0]/256),z:255&Math.floor(e.parameters[0]/65536),w:255&Math.floor(e.parameters[0]/16777216)}},s.commands[s.GPUREG_VSH_INTUNIFORM_I3]=function(e){r(this),a(this),m(this),this.shader.vertex.ints[3]={x:e.parameters[0]%256,y:255&Math.floor(e.parameters[0]/256),z:255&Math.floor(e.parameters[0]/65536),w:255&Math.floor(e.parameters[0]/16777216)}},s.commands[s.GPUREG_VSH_INPUTBUFFER_CONFIG]=function(e){r(this),a(this),this.shader.vertex.inputs=1+(15&e.parameters[0])},s.commands[s.GPUREG_VSH_ENTRYPOINT]=function(e){r(this),a(this),this.shader.vertex.entryPoint=65535&e.parameters[0]},s.commands[s.GPUREG_VSH_ATTRIBUTES_PERMUTATION_LOW]=function(e){r(this),a(this),o(this),U(this);let t=0;for(;t<8;)this.shader.vertex.attributes.permutations[t]=Math.floor(e.parameters[0]/Math.pow(2,4*t))%16,++t},s.commands[s.GPUREG_VSH_ATTRIBUTES_PERMUTATION_HIGH]=function(e){r(this),a(this),o(this),U(this);let t=0;for(;t<8;)this.shader.vertex.attributes.permutations[t+8]=Math.floor(e.parameters[0]/Math.pow(2,4*t))%16,++t},s.commands[s.GPUREG_VSH_OUTMAP_MASK]=function(e){r(this),a(this),T(this);let t=0;for(;t<16;)this.shader.vertex.outputMap[t]||(this.shader.vertex.outputMap[t]={}),this.shader.vertex.outputMap[t].enabled=0!=(e.parameters[0]>>t&1),++t},s.commands[s.GPUREG_VSH_CODETRANSFER_END]=function(e){e.parameters[0]&&(r(this),a(this),this.shader.vertex.codes.ready=!0)},s.commands[s.GPUREG_VSH_FLOATUNIFORM_INDEX]=function(e){r(this),a(this),A(this),this.shader.vertex.floats.index=e.parameters[0]},s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA0]=function(e){r(this),a(this),A(this),this.shader.vertex.floats.setValues(e.parameters)},s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA1]=s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA0],s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA2]=s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA0],s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA3]=s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA0],s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA4]=s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA0],s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA5]=s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA0],s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA6]=s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA0],s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA7]=s.commands[s.GPUREG_VSH_FLOATUNIFORM_DATA0],s.commands[s.GPUREG_VSH_CODETRANSFER_INDEX]=function(e){r(this),a(this),c(this),this.shader.vertex.codes.index=8191&e.parameters[0]},s.commands[s.GPUREG_VSH_CODETRANSFER_DATA0]=function(e){r(this),a(this),c(this),this.shader.vertex.codes.data||(this.shader.vertex.codes.data=[]),e.parameters.forEach(e=>{this.shader.vertex.codes.data[this.shader.vertex.codes.index]=e,++this.shader.vertex.codes.index})},s.commands[s.GPUREG_VSH_CODETRANSFER_DATA1]=s.commands[s.GPUREG_VSH_CODETRANSFER_DATA0],s.commands[s.GPUREG_VSH_CODETRANSFER_DATA2]=s.commands[s.GPUREG_VSH_CODETRANSFER_DATA0],s.commands[s.GPUREG_VSH_CODETRANSFER_DATA3]=s.commands[s.GPUREG_VSH_CODETRANSFER_DATA0],s.commands[s.GPUREG_VSH_CODETRANSFER_DATA4]=s.commands[s.GPUREG_VSH_CODETRANSFER_DATA0],s.commands[s.GPUREG_VSH_CODETRANSFER_DATA5]=s.commands[s.GPUREG_VSH_CODETRANSFER_DATA0],s.commands[s.GPUREG_VSH_CODETRANSFER_DATA6]=s.commands[s.GPUREG_VSH_CODETRANSFER_DATA0],s.commands[s.GPUREG_VSH_CODETRANSFER_DATA7]=s.commands[s.GPUREG_VSH_CODETRANSFER_DATA0],s.commands[s.GPUREG_VSH_OPDESCS_INDEX]=function(e){r(this),a(this),P(this),this.shader.vertex.opdescs.index=8191&e.parameters[0]},s.commands[s.GPUREG_VSH_OPDESCS_DATA0]=function(e){r(this),a(this),P(this),this.shader.vertex.opdescs.data||(this.shader.vertex.opdescs.data=[]),e.parameters.forEach(e=>{this.shader.vertex.opdescs.data[this.shader.vertex.opdescs.index]=e,++this.shader.vertex.opdescs.index})},s.commands[s.GPUREG_VSH_OPDESCS_DATA1]=s.commands[s.GPUREG_VSH_OPDESCS_DATA0],s.commands[s.GPUREG_VSH_OPDESCS_DATA2]=s.commands[s.GPUREG_VSH_OPDESCS_DATA0],s.commands[s.GPUREG_VSH_OPDESCS_DATA3]=s.commands[s.GPUREG_VSH_OPDESCS_DATA0],s.commands[s.GPUREG_VSH_OPDESCS_DATA4]=s.commands[s.GPUREG_VSH_OPDESCS_DATA0],s.commands[s.GPUREG_VSH_OPDESCS_DATA5]=s.commands[s.GPUREG_VSH_OPDESCS_DATA0],s.commands[s.GPUREG_VSH_OPDESCS_DATA6]=s.commands[s.GPUREG_VSH_OPDESCS_DATA0],s.commands[s.GPUREG_VSH_OPDESCS_DATA7]=s.commands[s.GPUREG_VSH_OPDESCS_DATA0];const v=function(){Object.defineProperty(this,"words",{value:[]})};v.getFloat=function(e){let t;return 0!=(8388607&e)?(t=(65535&e)<<7,t|=64+(e>>16&127)<<23,t|=(e>>23&1)<<31):t=(8388608&e)<<8,s.Float32Vector.asFloat32(t)},Object.defineProperty(v.prototype,"x",{enumerable:!0,get:function(){let e=this.words[2];return t.is.nil(e)&&(e=0),v.getFloat(16777215&e)}}),Object.defineProperty(v.prototype,"y",{enumerable:!0,get:function(){let e=this.words[2];t.is.nil(e)&&(e=0);let s=this.words[1];t.is.nil(s)&&(s=0);let _=e>>24&255|(65535&s)<<8;return v.getFloat(_)}}),Object.defineProperty(v.prototype,"z",{enumerable:!0,get:function(){let e=this.words[1];t.is.nil(e)&&(e=0);let s=this.words[0];return t.is.nil(s)&&(s=0),v.getFloat(e>>16&65535|(255&s)<<16)}}),Object.defineProperty(v.prototype,"w",{enumerable:!0,get:function(){let e=this.words[0];return t.is.nil(e)&&(e=0),v.getFloat(e>>8&16777215)}}),Object.defineProperty(v.prototype,"0",{get:function(){return this.x}}),Object.defineProperty(v.prototype,"1",{get:function(){return this.y}}),Object.defineProperty(v.prototype,"2",{get:function(){return this.z}}),Object.defineProperty(v.prototype,"3",{get:function(){return this.w}});const W=function(){Object.defineProperty(this,"words",{value:[]})};W.asFloat32=function(e){const t=new DataView(new ArrayBuffer(4));return e>=0?t.setUint32(0,e,!0):t.setInt32(0,e,!0),t.getFloat32(0,!0)},Object.defineProperty(W.prototype,"x",{enumerable:!0,get:function(){return W.asFloat32(this.words[3])}}),Object.defineProperty(W.prototype,"y",{enumerable:!0,get:function(){return W.asFloat32(this.words[2])}}),Object.defineProperty(W.prototype,"z",{enumerable:!0,get:function(){return W.asFloat32(this.words[1])}}),Object.defineProperty(W.prototype,"w",{enumerable:!0,get:function(){return W.asFloat32(this.words[0])}}),Object.defineProperty(W.prototype,"0",{get:function(){return this.x}}),Object.defineProperty(W.prototype,"1",{get:function(){return this.y}}),Object.defineProperty(W.prototype,"2",{get:function(){return this.z}}),Object.defineProperty(W.prototype,"3",{get:function(){return this.w}});const k=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};k.ZERO=0,k.ONE=1,k.SOURCE_COLOR=2,k.ONE_MINUS_SOURCE_COLOR=3,k.DESTINATION_COLOR=4,k.ONE_MINUS_DESTINATION_COLOR=5,k.SOURCE_ALPHA=6,k.ONE_MINUS_SOURCE_ALPHA=7,k.DESTINATION_ALPHA=8,k.ONE_MINUS_DESTINATION_ALPHA=9,k.CONSTANT_COLOR=10,k.ONE_MINUS_CONSTANT_COLOR=11,k.CONSTANT_ALPHA=12,k.ONE_MINUS_CONSTANT_ALPHA=13,k.SOURCE_ALPHA_SATURATE=14;const j=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};j.KEEP=0,j.ZERO=1,j.REPLACE=2,j.INCREMENT=3,j.DECREMENT=4,j.INVERT=5,j.INCREMENT_WRAP=6,j.DECREMENT_WRAP=7;const Y=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};Y.CLEAR=0,Y.AND=1,Y.AND_REVERSE=2,Y.COPY=3,Y.SET=4,Y.COPY_INVERTED=5,Y.NOOP=6,Y.INVERT=7,Y.NAND=8,Y.OR=9,Y.NOR=10,Y.XOR=11,Y.EQUIV=12,Y.AND_INVERTED=13,Y.OR_REVERSE=14,Y.OR_INVERTED=15,Y.OR_INVERTED=15;const Z=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};Z.NEVER=0,Z.FRONT_FACE=1,Z.BACK_FACE=2;const z=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};z.DEFAULT=0,z.GAS=1,z.SHADOW=3;const K=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};K.LOGICAL_OPERATION=0,K.BLEND=1;const Q=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};Q.ADD=0,Q.SUBTRACT=1,Q.REVERSE_SUBTRACT=2,Q.MIN=3,Q.MAX=4;const q=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};q.NEVER=0,q.ALWAYS=1,q.EQUAL_TO=2,q.NOT_EQUAL_TO=3,q.LESS_THAN=4,q.LESS_THAN_OR_EQUAL_TO=5,q.GREATER_THAN=6,q.GREATER_THAN_OR_EQUAL_TO=7;const J=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};J.NORMAL_HALF=0,J.VIEW_HALF=1,J.NORMAL_VIEW=2,J.LIGHT_NORMAL=3,J.LIGHT_SPOT=4,J.PHI=5;const $=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};$.ONE=0,$.TWO=1,$.FOUR=2,$.EIGHT=3,$.QUARTER=6,$.HALF=7;const ee=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};ee.TRIANGLES=0,ee.TRIANGLES_STRIP=1,ee.TRIANGLES_FAN=2,ee.GEOMETRY=3;const te=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};te.POSITION=0,te.NORMAL=1,te.TANGENT=2,te.COLOR=3,te.TEXTURE_COORDINATE_0=4,te.TEXTURE_COORDINATE_1=5,te.TEXTURE_COORDINATE_2=6,te.BONE_INDEX=7,te.BONE_WEIGHT=8,te.USER_ATTRIBUTE_0=9,te.USER_ATTRIBUTE_1=10,te.USER_ATTRIBUTE_2=11,te.USER_ATTRIBUTE_3=12,te.USER_ATTRIBUTE_4=13,te.USER_ATTRIBUTE_5=14,te.USER_ATTRIBUTE_6=15,te.USER_ATTRIBUTE_7=16,te.USER_ATTRIBUTE_8=17,te.USER_ATTRIBUTE_9=18,te.USER_ATTRIBUTE_10=19,te.USER_ATTRIBUTE_11=20,te.INTERLEAVE=21;const se=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};se.INT_8=0,se.UINT_8=1,se.INT_16=2,se.FLOAT_32=3,se.normalizationScale=function(e){let t=e;switch(e.code&&(t=e.code),t){case se.INT_8:return 1/127;case se.UINT_8:return 1/255;case se.INT_16:return 1/32767;case se.FLOAT_32:default:return 1}};const _e=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};_e.PRIMARY_COLOR=0,_e.FRAGMENT_PRIMARY_COLOR=1,_e.FRAGMENT_SECONDARY_COLOR=2,_e.TEXTURE_0=3,_e.TEXTURE_1=4,_e.TEXTURE_2=5,_e.TEXTURE_3=6,_e.PREVIOUS_BUFFER=13,_e.CONSTANT=14,_e.PREVIOUS=15;const Ge=function(){};Object.defineProperty(Ge.prototype,"isColorPassThrough",{get:function(){return this.mode.color.code===s.TextureCombinerMode.REPLACE&&this.source.color[0].code===s.TextureCombinerSource.PREVIOUS&&this.operand.color[0].code===s.TextureCombinerColor.COLOR&&this.scale.color.code===s.TextureCombinerScale.ONE}}),Object.defineProperty(Ge.prototype,"isAlphaPassThrough",{get:function(){return this.mode.alpha.code===s.TextureCombinerMode.REPLACE&&this.source.alpha[0].code===s.TextureCombinerSource.PREVIOUS&&this.operand.alpha[0].code===s.TextureCombinerAlpha.ALPHA&&this.scale.alpha.code===s.TextureCombinerScale.ONE}});const Ee=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};Ee.ALPHA=0,Ee.ONE_MINUS_ALPHA=1,Ee.RED=2,Ee.ONE_MINUS_RED=3,Ee.GREEN=4,Ee.ONE_MINUS_GREEN=5,Ee.BLUE=6,Ee.ONE_MINUS_BLUE=7;const ne=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};ne.COLOR=0,ne.ONE_MINUS_COLOR=1,ne.ALPHA=2,ne.ONE_MINUS_ALPHA=3,ne.RED=4,ne.ONE_MINUS_RED=5,ne.GREEN=8,ne.ONE_MINUS_GREEN=9,ne.BLUE=12,ne.ONE_MINUS_BLUE=13;const re=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};re.REPLACE=0,re.MODULATE=1,re.ADD=2,re.ADD_SIGNED=3,re.INTERPOLATE=4,re.SUBTRACT=5,re.DOT_PRODUCT_3_RGB=6,re.DOT_PRODUCT_3_RGBA=7,re.MUL_ADD=8,re.ADD_MUL=9;const ie=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};ie.ONE=0,ie.TWO=1,ie.FOUR=2;const Re=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};Re.POSITION=0,Re.QUAT_NORMAL=1,Re.COLOR=2,Re.TEXTURE_COORDINATE_0=3,Re.TEXTURE_COORDINATE_0_W=4,Re.TEXTURE_COORDINATE_1=5,Re.TEXTURE_COORDINATE_2=6,Re.VIEW=8,Re.GENERIC=9;const ae=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};ae.CLAMP_TO_EDGE=0,ae.CLAMP_TO_BORDER=1,ae.REPEAT=2,ae.MIRROR=3;const Te=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};Te.NEAREST=0,Te.LINEAR=1;const oe=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};oe["2D"]=0,oe.CUBE_MAP=1,oe.SHADOW_2D=2,oe.PROJECTION=3,oe.SHADOW_CUBE=4,oe.DISABLED=5;const Ue=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};Ue.DIST_0=0,Ue.DIST_1=1,Ue.FRESNEL=3,Ue.REFLECT_R=4,Ue.REFLECT_G=5,Ue.REFLECT_B=6,Ue.SPEC_0=8,Ue.SPEC_1=9,Ue.SPEC_2=10,Ue.SPEC_3=11,Ue.SPEC_4=12,Ue.SPEC_5=13,Ue.SPEC_6=14,Ue.SPEC_7=15,Ue.DIST_ATT_0=16,Ue.DIST_ATT_1=17,Ue.DIST_ATT_2=18,Ue.DIST_ATT_3=19,Ue.DIST_ATT_4=20,Ue.DIST_ATT_5=21,Ue.DIST_ATT_6=22,Ue.DIST_ATT_7=23,s.Float24Vector=v,s.Float32Vector=W,s.Color=function(e){t.is(e,Number)?(this.r=e%256,this.g=Math.floor(e/256)%256,this.b=Math.floor(e/256/256)%256,this.a=Math.floor(e/256/256/256)%256):(this.r=e.readUint8(),this.g=e.readUint8(),this.b=e.readUint8(),this.a=e.readUint8())},s.ColorOperation=function(e){this.fragmentOperationMode=new s.FragmentOperationMode(e>>0&3),this.blendMode=new s.BlendMode(e>>8&1)},s.BlendFunction=function(e){this.colorEquation=new s.BlendEquation(e>>0&7),this.alphaEquation=new s.BlendEquation(e>>8&7),this.colorSourceFunction=new s.BlendFunctionOperation(e>>16&15),this.colorDestinationFunction=new s.BlendFunctionOperation(e>>20&15),this.alphaSourceFunction=new s.BlendFunctionOperation(e>>24&15),this.alphaDestinationFunction=new s.BlendFunctionOperation(e>>28&15)},s.BlendFunctionOperation=k,s.AlphaTest=function(e){this.enabled=0!=(1&e),this.testFunction=new s.TestFunction(e>>4&7),this.reference=e>>8},s.StencilTest=function(e){this.enabled=0!=(1&e),this.testFunction=new s.TestFunction(e>>4&7),this.bufferMask=e>>8&255,this.reference=e>>16&255,this.mask=e>>24&255},s.StencilOperation=function(e){this.failOperation=new s.StencilOperationAction(e>>0&7),this.zFailOperation=new s.StencilOperationAction(e>>4&7),this.zPassOperation=new s.StencilOperationAction(e>>8&7)},s.StencilOperationAction=j,s.DepthColorMask=function(e){this.enabled=0!=(1&e),this.depthFunction=new s.TestFunction(e>>4&7),this.redWrite=0!=(256&e),this.greenWrite=0!=(512&e),this.blueWrite=0!=(1024&e),this.alphaWrite=0!=(2048&e),this.depthWrite=0!=(4096&e)},s.LogicalOperation=Y,s.FaceCulling=Z,s.FragmentOperationMode=z,s.BlendMode=K,s.BlendEquation=Q,s.TestFunction=q,s.PrimitiveMode=ee,s.AttributeName=te,s.AttributeFormat=se,s.LightingLUTInputAbsolute=function(e){this.dist0=0==(2&e),this.dist1=0==(32&e),this.specular=0==(512&e),this.fresnel=0==(8192&e),this.reflectR=0==(131072&e),this.reflectG=0==(2097152&e),this.reflectB=0==(33554432&e)},s.LightingLUTInputSelection=function(e){this.dist0=new s.LightingLUTInputSelectionChoice(e>>0&7),this.dist1=new s.LightingLUTInputSelectionChoice(e>>4&7),this.specular=new s.LightingLUTInputSelectionChoice(e>>8&7),this.fresnel=new s.LightingLUTInputSelectionChoice(e>>12&7),this.reflectR=new s.LightingLUTInputSelectionChoice(e>>16&7),this.reflectG=new s.LightingLUTInputSelectionChoice(e>>20&7),this.reflectB=new s.LightingLUTInputSelectionChoice(e>>24&7)},s.LightingLUTInputSelectionChoice=J,s.LightingLUTInputScale=function(e){this.dist0=new s.LightingLUTInputScaleMode(e>>0&7),this.dist1=new s.LightingLUTInputScaleMode(e>>4&7),this.specular=new s.LightingLUTInputScaleMode(e>>8&7),this.fresnel=new s.LightingLUTInputScaleMode(e>>12&7),this.reflectR=new s.LightingLUTInputScaleMode(e>>16&7),this.reflectG=new s.LightingLUTInputScaleMode(e>>20&7),this.reflectB=new s.LightingLUTInputScaleMode(e>>24&7)},s.LightingLUTInputScaleMode=$,s.RenderingStage=Ge,s.RenderingSource=function(e){this.color=[new s.TextureCombinerSource(e>>0&15),new s.TextureCombinerSource(e>>4&15),new s.TextureCombinerSource(e>>8&15)],this.alpha=[new s.TextureCombinerSource(e>>16&15),new s.TextureCombinerSource(e>>20&15),new s.TextureCombinerSource(e>>24&15)]},s.RenderingOperand=function(e){this.color=[new s.TextureCombinerColor(e>>0&15),new s.TextureCombinerColor(e>>4&15),new s.TextureCombinerColor(e>>8&15)],this.alpha=[new s.TextureCombinerAlpha(e>>12&7),new s.TextureCombinerAlpha(e>>16&7),new s.TextureCombinerAlpha(e>>20&7)]},s.RenderingScale=function(e){this.color=new s.TextureCombinerScale(e>>0&3),this.alpha=new s.TextureCombinerScale(e>>16&3)},s.RenderingMode=function(e){this.color=new s.TextureCombinerMode(e>>0&15),this.alpha=new s.TextureCombinerMode(e>>16&15)},s.TextureCombinerSource=_e,s.TextureCombinerAlpha=Ee,s.TextureCombinerColor=ne,s.TextureCombinerMode=re,s.TextureCombinerScale=ie,s.ShaderOutputRegister=Re,s.TextureWrap=ae,s.TextureFilter=Te,s.TextureType=oe,s.LUTType=Ue,module.exports=s})(0,this.$);
+((global, $) => {
+    
+    // reader, length
+    // instructs 
+    const PICA = function PICA(reader, length) {
+        
+        this.commands = {
+            "buffers": [[], []],
+            "offsets": [0, 0],
+            "sizes": [0, 0],
+            "states": ["ready", "ready"],
+        };
+        this.commands.current = this.commands.buffers[0];
+        
+        this.parse(reader, length);
+       
+    };
+    
+    PICA.prototype.parse = function (reader, length) {
+         
+        let instructs;
+        if (length) {
+            instructs = [];
+            let looper = 0;
+            while (looper < length / 4) {
+                instructs[looper] = reader.readUint32();
+                ++looper;
+            }
+        } else {
+            instructs = reader;
+        }
+        
+        let commands = [];
+        
+        let looper = 0;
+        while (looper < instructs.length) {
+            
+            let parameter = instructs[looper++];
+            let command = instructs[looper++];
+            
+            let id = (command >> 0) & 0xffff;
+            let mask = (command >> 16) & 0xf;
+            let extraParameters = (command >> 20) & 0x7ff;
+            let consecutive = (command >> 31) !== 0;
+
+            if (consecutive) {
+                
+                let looper2 = 0;
+                while (looper2 <= extraParameters) {
+                    
+                    let pica = {
+                        "register": id++, // PICARegister
+                        "parameters": [parameter],
+                        "mask": mask
+                    };
+                    
+                    commands.push(pica);
+                    if (looper2 < extraParameters) {
+                        parameter = instructs[looper++];
+                    }
+                    
+                    ++looper2;
+                }
+               
+            } else {
+                
+                let parameters = [parameter];
+                let looper2 = 0;
+                while (looper2 < extraParameters) {
+                    parameters.push(instructs[looper++]);
+                    ++looper2;
+                }
+
+                let pica = {
+                    "register": id,
+                    "parameters": parameters,
+                    "mask": mask
+                };
+                    
+                commands.push(pica);
+
+            }
+            
+            if ((looper & 1) !== 0) {
+                looper++;
+            }
+            
+        }
+       
+        this.decode(commands);
+        
+    };
+    
+    PICA.prototype.decode = function (commands) {
+         
+        let looper = 0;
+        while (looper < commands.length) {
+            
+            let command = commands[looper];
+            
+            this.commands.current.push(command);
+            
+            if (PICA.commands[command.register]) {
+                PICA.commands[command.register].call(this, command);
+            } else {
+                let key = Object.keys(PICA).filter((key) => PICA[key] === command.register)[0];
+                if (key) {
+                    if (!PICA.unprocessed[key]) {
+                        PICA.unprocessed[key] = true;
+                        $.warn("Unprocessed PICA command " + key); 
+                    }
+                } else {
+                    $.warn("Unprocessed PICA command " + command.register); 
+                }
+            }
+            
+            ++looper;
+        }
+        
+    };
+    
+    PICA.unprocessed = {};
+     
+    PICA.GPUREG_DUMMY                           = 0x0000;
+    PICA.GPUREG_FINALIZE                        = 0x0010;
+    PICA.GPUREG_FACECULLING_CONFIG              = 0x0040;
+    PICA.GPUREG_VIEWPORT_WIDTH                  = 0x0041;
+    PICA.GPUREG_VIEWPORT_INVW                   = 0x0042;
+    PICA.GPUREG_VIEWPORT_HEIGHT                 = 0x0043;
+    PICA.GPUREG_VIEWPORT_INVH                   = 0x0044;
+    PICA.GPUREG_FRAGOP_CLIP                     = 0x0047;
+    PICA.GPUREG_FRAGOP_CLIP_DATA0               = 0x0048;
+    PICA.GPUREG_FRAGOP_CLIP_DATA1               = 0x0049;
+    PICA.GPUREG_FRAGOP_CLIP_DATA2               = 0x004A;
+    PICA.GPUREG_FRAGOP_CLIP_DATA3               = 0x004B;
+    PICA.GPUREG_DEPTHMAP_SCALE                  = 0x004D;
+    PICA.GPUREG_DEPTHMAP_OFFSET                 = 0x004E;
+    PICA.GPUREG_SH_OUTMAP_TOTAL                 = 0x004F;
+    PICA.GPUREG_SH_OUTMAP_O0                    = 0x0050;
+    PICA.GPUREG_SH_OUTMAP_O1                    = 0x0051;
+    PICA.GPUREG_SH_OUTMAP_O2                    = 0x0052;
+    PICA.GPUREG_SH_OUTMAP_O3                    = 0x0053;
+    PICA.GPUREG_SH_OUTMAP_O4                    = 0x0054;
+    PICA.GPUREG_SH_OUTMAP_O5                    = 0x0055;
+    PICA.GPUREG_SH_OUTMAP_O6                    = 0x0056;
+    PICA.GPUREG_EARLYDEPTH_FUNC                 = 0x0061;
+    PICA.GPUREG_EARLYDEPTH_TEST1                = 0x0062;
+    PICA.GPUREG_EARLYDEPTH_CLEAR                = 0x0063;
+    PICA.GPUREG_SH_OUTATTR_MODE                 = 0x0064;
+    PICA.GPUREG_SCISSORTEST_MODE                = 0x0065;
+    PICA.GPUREG_SCISSORTEST_POS                 = 0x0066;
+    PICA.GPUREG_SCISSORTEST_DIM                 = 0x0067;
+    PICA.GPUREG_VIEWPORT_XY                     = 0x0068;
+    PICA.GPUREG_EARLYDEPTH_DATA                 = 0x006A;
+    PICA.GPUREG_DEPTHMAP_ENABLE                 = 0x006D;
+    PICA.GPUREG_RENDERBUF_DIM                   = 0x006E;
+    PICA.GPUREG_SH_OUTATTR_CLOCK                = 0x006F;
+    PICA.GPUREG_TEXUNIT_CONFIG                  = 0x0080;
+    PICA.GPUREG_TEXUNIT0_BORDER_COLOR           = 0x0081;
+    PICA.GPUREG_TEXUNIT0_DIM                    = 0x0082;
+    PICA.GPUREG_TEXUNIT0_PARAM                  = 0x0083;
+    PICA.GPUREG_TEXUNIT0_LOD                    = 0x0084;
+    PICA.GPUREG_TEXUNIT0_ADDR1                  = 0x0085;
+    PICA.GPUREG_TEXUNIT0_ADDR2                  = 0x0086;
+    PICA.GPUREG_TEXUNIT0_ADDR3                  = 0x0087;
+    PICA.GPUREG_TEXUNIT0_ADDR4                  = 0x0088;
+    PICA.GPUREG_TEXUNIT0_ADDR5                  = 0x0089;
+    PICA.GPUREG_TEXUNIT0_ADDR6                  = 0x008A;
+    PICA.GPUREG_TEXUNIT0_SHADOW                 = 0x008B;
+    PICA.GPUREG_TEXUNIT0_TYPE                   = 0x008E;
+    PICA.GPUREG_LIGHTING_ENABLE0                = 0x008F;
+    PICA.GPUREG_TEXUNIT1_BORDER_COLOR           = 0x0091;
+    PICA.GPUREG_TEXUNIT1_DIM                    = 0x0092;
+    PICA.GPUREG_TEXUNIT1_PARAM                  = 0x0093;
+    PICA.GPUREG_TEXUNIT1_LOD                    = 0x0094;
+    PICA.GPUREG_TEXUNIT1_ADDR                   = 0x0095;
+    PICA.GPUREG_TEXUNIT1_TYPE                   = 0x0096;
+    PICA.GPUREG_TEXUNIT2_BORDER_COLOR           = 0x0099;
+    PICA.GPUREG_TEXUNIT2_DIM                    = 0x009A;
+    PICA.GPUREG_TEXUNIT2_PARAM                  = 0x009B;
+    PICA.GPUREG_TEXUNIT2_LOD                    = 0x009C;
+    PICA.GPUREG_TEXUNIT2_ADDR                   = 0x009D;
+    PICA.GPUREG_TEXUNIT2_TYPE                   = 0x009E;
+    PICA.GPUREG_TEXUNIT3_PROCTEX0               = 0x00A8;
+    PICA.GPUREG_TEXUNIT3_PROCTEX1               = 0x00A9;
+    PICA.GPUREG_TEXUNIT3_PROCTEX2               = 0x00AA;
+    PICA.GPUREG_TEXUNIT3_PROCTEX3               = 0x00AB;
+    PICA.GPUREG_TEXUNIT3_PROCTEX4               = 0x00AC;
+    PICA.GPUREG_TEXUNIT3_PROCTEX5               = 0x00AD;
+    PICA.GPUREG_PROCTEX_LUT                     = 0x00AF;
+    PICA.GPUREG_PROCTEX_LUT_DATA0               = 0x00B0;
+    PICA.GPUREG_PROCTEX_LUT_DATA1               = 0x00B1;
+    PICA.GPUREG_PROCTEX_LUT_DATA2               = 0x00B2;
+    PICA.GPUREG_PROCTEX_LUT_DATA3               = 0x00B3;
+    PICA.GPUREG_PROCTEX_LUT_DATA4               = 0x00B4;
+    PICA.GPUREG_PROCTEX_LUT_DATA5               = 0x00B5;
+    PICA.GPUREG_PROCTEX_LUT_DATA6               = 0x00B6;
+    PICA.GPUREG_PROCTEX_LUT_DATA7               = 0x00B7;
+    PICA.GPUREG_TEXENV0_SOURCE                  = 0x00C0;
+    PICA.GPUREG_TEXENV0_OPERAND                 = 0x00C1;
+    PICA.GPUREG_TEXENV0_COMBINER                = 0x00C2;
+    PICA.GPUREG_TEXENV0_COLOR                   = 0x00C3;
+    PICA.GPUREG_TEXENV0_SCALE                   = 0x00C4;
+    PICA.GPUREG_TEXENV1_SOURCE                  = 0x00C8;
+    PICA.GPUREG_TEXENV1_OPERAND                 = 0x00C9;
+    PICA.GPUREG_TEXENV1_COMBINER                = 0x00CA;
+    PICA.GPUREG_TEXENV1_COLOR                   = 0x00CB;
+    PICA.GPUREG_TEXENV1_SCALE                   = 0x00CC;
+    PICA.GPUREG_TEXENV2_SOURCE                  = 0x00D0;
+    PICA.GPUREG_TEXENV2_OPERAND                 = 0x00D1;
+    PICA.GPUREG_TEXENV2_COMBINER                = 0x00D2;
+    PICA.GPUREG_TEXENV2_COLOR                   = 0x00D3;
+    PICA.GPUREG_TEXENV2_SCALE                   = 0x00D4;
+    PICA.GPUREG_TEXENV3_SOURCE                  = 0x00D8;
+    PICA.GPUREG_TEXENV3_OPERAND                 = 0x00D9;
+    PICA.GPUREG_TEXENV3_COMBINER                = 0x00DA;
+    PICA.GPUREG_TEXENV3_COLOR                   = 0x00DB;
+    PICA.GPUREG_TEXENV3_SCALE                   = 0x00DC;
+    PICA.GPUREG_TEXENV_UPDATE_BUFFER            = 0x00E0;
+    PICA.GPUREG_FOG_COLOR                       = 0x00E1;
+    PICA.GPUREG_GAS_ATTENUATION                 = 0x00E4;
+    PICA.GPUREG_GAS_ACCMAX                      = 0x00E5;
+    PICA.GPUREG_FOG_LUT_INDEX                   = 0x00E6;
+    PICA.GPUREG_FOG_LUT_DATA0                   = 0x00E8;
+    PICA.GPUREG_FOG_LUT_DATA1                   = 0x00E9;
+    PICA.GPUREG_FOG_LUT_DATA2                   = 0x00EA;
+    PICA.GPUREG_FOG_LUT_DATA3                   = 0x00EB;
+    PICA.GPUREG_FOG_LUT_DATA4                   = 0x00EC;
+    PICA.GPUREG_FOG_LUT_DATA5                   = 0x00ED;
+    PICA.GPUREG_FOG_LUT_DATA6                   = 0x00EE;
+    PICA.GPUREG_FOG_LUT_DATA7                   = 0x00EF;
+    PICA.GPUREG_TEXENV4_SOURCE                  = 0x00F0;
+    PICA.GPUREG_TEXENV4_OPERAND                 = 0x00F1;
+    PICA.GPUREG_TEXENV4_COMBINER                = 0x00F2;
+    PICA.GPUREG_TEXENV4_COLOR                   = 0x00F3;
+    PICA.GPUREG_TEXENV4_SCALE                   = 0x00F4;
+    PICA.GPUREG_TEXENV5_SOURCE                  = 0x00F8;
+    PICA.GPUREG_TEXENV5_OPERAND                 = 0x00F9;
+    PICA.GPUREG_TEXENV5_COMBINER                = 0x00FA;
+    PICA.GPUREG_TEXENV5_COLOR                   = 0x00FB;
+    PICA.GPUREG_TEXENV5_SCALE                   = 0x00FC;
+    PICA.GPUREG_TEXENV_BUFFER_COLOR             = 0x00FD;
+    PICA.GPUREG_COLOR_OPERATION                 = 0x0100;
+    PICA.GPUREG_BLEND_FUNC                      = 0x0101;
+    PICA.GPUREG_LOGIC_OP                        = 0x0102;
+    PICA.GPUREG_BLEND_COLOR                     = 0x0103;
+    PICA.GPUREG_FRAGOP_ALPHA_TEST               = 0x0104;
+    PICA.GPUREG_STENCIL_TEST                    = 0x0105;
+    PICA.GPUREG_STENCIL_OP                      = 0x0106;
+    PICA.GPUREG_DEPTH_COLOR_MASK                = 0x0107;
+    PICA.GPUREG_FRAMEBUFFER_INVALIDATE          = 0x0110;
+    PICA.GPUREG_FRAMEBUFFER_FLUSH               = 0x0111;
+    PICA.GPUREG_COLORBUFFER_READ                = 0x0112;
+    PICA.GPUREG_COLORBUFFER_WRITE               = 0x0113;
+    PICA.GPUREG_DEPTHBUFFER_READ                = 0x0114;
+    PICA.GPUREG_DEPTHBUFFER_WRITE               = 0x0115;
+    PICA.GPUREG_DEPTHBUFFER_FORMAT              = 0x0116;
+    PICA.GPUREG_COLORBUFFER_FORMAT              = 0x0117;
+    PICA.GPUREG_EARLYDEPTH_TEST2                = 0x0118;
+    PICA.GPUREG_FRAMEBUFFER_BLOCK32             = 0x011B;
+    PICA.GPUREG_DEPTHBUFFER_LOC                 = 0x011C;
+    PICA.GPUREG_COLORBUFFER_LOC                 = 0x011D;
+    PICA.GPUREG_FRAMEBUFFER_DIM                 = 0x011E;
+    PICA.GPUREG_GAS_LIGHT_XY                    = 0x0120;
+    PICA.GPUREG_GAS_LIGHT_Z                     = 0x0121;
+    PICA.GPUREG_GAS_LIGHT_Z_COLOR               = 0x0122;
+    PICA.GPUREG_GAS_LUT_INDEX                   = 0x0123;
+    PICA.GPUREG_GAS_LUT_DATA                    = 0x0124;
+    PICA.GPUREG_GAS_DELTAZ_DEPTH                = 0x0126;
+    PICA.GPUREG_FRAGOP_SHADOW                   = 0x0130;
+    PICA.GPUREG_LIGHT0_SPECULAR0                = 0x0140;
+    PICA.GPUREG_LIGHT0_SPECULAR1                = 0x0141;
+    PICA.GPUREG_LIGHT0_DIFFUSE                  = 0x0142;
+    PICA.GPUREG_LIGHT0_AMBIENT                  = 0x0143;
+    PICA.GPUREG_LIGHT0_XY                       = 0x0144;
+    PICA.GPUREG_LIGHT0_Z                        = 0x0145;
+    PICA.GPUREG_LIGHT0_SPOTDIR_XY               = 0x0146;
+    PICA.GPUREG_LIGHT0_SPOTDIR_Z                = 0x0147;
+    PICA.GPUREG_LIGHT0_CONFIG                   = 0x0149;
+    PICA.GPUREG_LIGHT0_ATTENUATION_BIAS         = 0x014A;
+    PICA.GPUREG_LIGHT0_ATTENUATION_SCALE        = 0x014B;
+    PICA.GPUREG_LIGHT1_SPECULAR0                = 0x0150;
+    PICA.GPUREG_LIGHT1_SPECULAR1                = 0x0151;
+    PICA.GPUREG_LIGHT1_DIFFUSE                  = 0x0152;
+    PICA.GPUREG_LIGHT1_AMBIENT                  = 0x0153;
+    PICA.GPUREG_LIGHT1_XY                       = 0x0154;
+    PICA.GPUREG_LIGHT1_Z                        = 0x0155;
+    PICA.GPUREG_LIGHT1_SPOTDIR_XY               = 0x0156;
+    PICA.GPUREG_LIGHT1_SPOTDIR_Z                = 0x0157;
+    PICA.GPUREG_LIGHT1_CONFIG                   = 0x0159;
+    PICA.GPUREG_LIGHT1_ATTENUATION_BIAS         = 0x015A;
+    PICA.GPUREG_LIGHT1_ATTENUATION_SCALE        = 0x015B;
+    PICA.GPUREG_LIGHT2_SPECULAR0                = 0x0160;
+    PICA.GPUREG_LIGHT2_SPECULAR1                = 0x0161;
+    PICA.GPUREG_LIGHT2_DIFFUSE                  = 0x0162;
+    PICA.GPUREG_LIGHT2_AMBIENT                  = 0x0163;
+    PICA.GPUREG_LIGHT2_XY                       = 0x0164;
+    PICA.GPUREG_LIGHT2_Z                        = 0x0165;
+    PICA.GPUREG_LIGHT2_SPOTDIR_XY               = 0x0166;
+    PICA.GPUREG_LIGHT2_SPOTDIR_Z                = 0x0167;
+    PICA.GPUREG_LIGHT2_CONFIG                   = 0x0169;
+    PICA.GPUREG_LIGHT2_ATTENUATION_BIAS         = 0x016A;
+    PICA.GPUREG_LIGHT2_ATTENUATION_SCALE        = 0x016B;
+    PICA.GPUREG_LIGHT3_SPECULAR0                = 0x0170;
+    PICA.GPUREG_LIGHT3_SPECULAR1                = 0x0171;
+    PICA.GPUREG_LIGHT3_DIFFUSE                  = 0x0172;
+    PICA.GPUREG_LIGHT3_AMBIENT                  = 0x0173;
+    PICA.GPUREG_LIGHT3_XY                       = 0x0174;
+    PICA.GPUREG_LIGHT3_Z                        = 0x0175;
+    PICA.GPUREG_LIGHT3_SPOTDIR_XY               = 0x0176;
+    PICA.GPUREG_LIGHT3_SPOTDIR_Z                = 0x0177;
+    PICA.GPUREG_LIGHT3_CONFIG                   = 0x0179;
+    PICA.GPUREG_LIGHT3_ATTENUATION_BIAS         = 0x017A;
+    PICA.GPUREG_LIGHT3_ATTENUATION_SCALE        = 0x017B;
+    PICA.GPUREG_LIGHT4_SPECULAR0                = 0x0180;
+    PICA.GPUREG_LIGHT4_SPECULAR1                = 0x0181;
+    PICA.GPUREG_LIGHT4_DIFFUSE                  = 0x0182;
+    PICA.GPUREG_LIGHT4_AMBIENT                  = 0x0183;
+    PICA.GPUREG_LIGHT4_XY                       = 0x0184;
+    PICA.GPUREG_LIGHT4_Z                        = 0x0185;
+    PICA.GPUREG_LIGHT4_SPOTDIR_XY               = 0x0186;
+    PICA.GPUREG_LIGHT4_SPOTDIR_Z                = 0x0187;
+    PICA.GPUREG_LIGHT4_CONFIG                   = 0x0189;
+    PICA.GPUREG_LIGHT4_ATTENUATION_BIAS         = 0x018A;
+    PICA.GPUREG_LIGHT4_ATTENUATION_SCALE        = 0x018B;
+    PICA.GPUREG_LIGHT5_SPECULAR0                = 0x0190;
+    PICA.GPUREG_LIGHT5_SPECULAR1                = 0x0191;
+    PICA.GPUREG_LIGHT5_DIFFUSE                  = 0x0192;
+    PICA.GPUREG_LIGHT5_AMBIENT                  = 0x0193;
+    PICA.GPUREG_LIGHT5_XY                       = 0x0194;
+    PICA.GPUREG_LIGHT5_Z                        = 0x0195;
+    PICA.GPUREG_LIGHT5_SPOTDIR_XY               = 0x0196;
+    PICA.GPUREG_LIGHT5_SPOTDIR_Z                = 0x0197;
+    PICA.GPUREG_LIGHT5_CONFIG                   = 0x0199;
+    PICA.GPUREG_LIGHT5_ATTENUATION_BIAS         = 0x019A;
+    PICA.GPUREG_LIGHT5_ATTENUATION_SCALE        = 0x019B;
+    PICA.GPUREG_LIGHT6_SPECULAR0                = 0x01A0;
+    PICA.GPUREG_LIGHT6_SPECULAR1                = 0x01A1;
+    PICA.GPUREG_LIGHT6_DIFFUSE                  = 0x01A2;
+    PICA.GPUREG_LIGHT6_AMBIENT                  = 0x01A3;
+    PICA.GPUREG_LIGHT6_XY                       = 0x01A4;
+    PICA.GPUREG_LIGHT6_Z                        = 0x01A5;
+    PICA.GPUREG_LIGHT6_SPOTDIR_XY               = 0x01A6;
+    PICA.GPUREG_LIGHT6_SPOTDIR_Z                = 0x01A7;
+    PICA.GPUREG_LIGHT6_CONFIG                   = 0x01A9;
+    PICA.GPUREG_LIGHT6_ATTENUATION_BIAS         = 0x01AA;
+    PICA.GPUREG_LIGHT6_ATTENUATION_SCALE        = 0x01AB;
+    PICA.GPUREG_LIGHT7_SPECULAR0                = 0x01B0;
+    PICA.GPUREG_LIGHT7_SPECULAR1                = 0x01B1;
+    PICA.GPUREG_LIGHT7_DIFFUSE                  = 0x01B2;
+    PICA.GPUREG_LIGHT7_AMBIENT                  = 0x01B3;
+    PICA.GPUREG_LIGHT7_XY                       = 0x01B4;
+    PICA.GPUREG_LIGHT7_Z                        = 0x01B5;
+    PICA.GPUREG_LIGHT7_SPOTDIR_XY               = 0x01B6;
+    PICA.GPUREG_LIGHT7_SPOTDIR_Z                = 0x01B7;
+    PICA.GPUREG_LIGHT7_CONFIG                   = 0x01B9;
+    PICA.GPUREG_LIGHT7_ATTENUATION_BIAS         = 0x01BA;
+    PICA.GPUREG_LIGHT7_ATTENUATION_SCALE        = 0x01BB;
+    PICA.GPUREG_LIGHTING_AMBIENT                = 0x01C0;
+    PICA.GPUREG_LIGHTING_NUM_LIGHTS             = 0x01C2;
+    PICA.GPUREG_LIGHTING_CONFIG0                = 0x01C3;
+    PICA.GPUREG_LIGHTING_CONFIG1                = 0x01C4;
+    PICA.GPUREG_LIGHTING_LUT_INDEX              = 0x01C5;
+    PICA.GPUREG_LIGHTING_ENABLE1                = 0x01C6;
+    PICA.GPUREG_LIGHTING_LUT_DATA0              = 0x01C8;
+    PICA.GPUREG_LIGHTING_LUT_DATA1              = 0x01C9;
+    PICA.GPUREG_LIGHTING_LUT_DATA2              = 0x01CA;
+    PICA.GPUREG_LIGHTING_LUT_DATA3              = 0x01CB;
+    PICA.GPUREG_LIGHTING_LUT_DATA4              = 0x01CC;
+    PICA.GPUREG_LIGHTING_LUT_DATA5              = 0x01CD;
+    PICA.GPUREG_LIGHTING_LUT_DATA6              = 0x01CE;
+    PICA.GPUREG_LIGHTING_LUT_DATA7              = 0x01CF;
+    PICA.GPUREG_LIGHTING_LUTINPUT_ABS           = 0x01D0;
+    PICA.GPUREG_LIGHTING_LUTINPUT_SELECT        = 0x01D1;
+    PICA.GPUREG_LIGHTING_LUTINPUT_SCALE         = 0x01D2;
+    PICA.GPUREG_LIGHTING_LIGHT_PERMUTATION      = 0x01D9;
+    PICA.GPUREG_ATTRIBBUFFERS_LOC               = 0x0200;
+    PICA.GPUREG_ATTRIBBUFFERS_FORMAT_LOW        = 0x0201;
+    PICA.GPUREG_ATTRIBBUFFERS_FORMAT_HIGH       = 0x0202;
+    PICA.GPUREG_ATTRIBBUFFER0_OFFSET            = 0x0203;
+    PICA.GPUREG_ATTRIBBUFFER0_CONFIG1           = 0x0204;
+    PICA.GPUREG_ATTRIBBUFFER0_CONFIG2           = 0x0205;
+    PICA.GPUREG_ATTRIBBUFFER1_OFFSET            = 0x0206;
+    PICA.GPUREG_ATTRIBBUFFER1_CONFIG1           = 0x0207;
+    PICA.GPUREG_ATTRIBBUFFER1_CONFIG2           = 0x0208;
+    PICA.GPUREG_ATTRIBBUFFER2_OFFSET            = 0x0209;
+    PICA.GPUREG_ATTRIBBUFFER2_CONFIG1           = 0x020A;
+    PICA.GPUREG_ATTRIBBUFFER2_CONFIG2           = 0x020B;
+    PICA.GPUREG_ATTRIBBUFFER3_OFFSET            = 0x020C;
+    PICA.GPUREG_ATTRIBBUFFER3_CONFIG1           = 0x020D;
+    PICA.GPUREG_ATTRIBBUFFER3_CONFIG2           = 0x020E;
+    PICA.GPUREG_ATTRIBBUFFER4_OFFSET            = 0x020F;
+    PICA.GPUREG_ATTRIBBUFFER4_CONFIG1           = 0x0210;
+    PICA.GPUREG_ATTRIBBUFFER4_CONFIG2           = 0x0211;
+    PICA.GPUREG_ATTRIBBUFFER5_OFFSET            = 0x0212;
+    PICA.GPUREG_ATTRIBBUFFER5_CONFIG1           = 0x0213;
+    PICA.GPUREG_ATTRIBBUFFER5_CONFIG2           = 0x0214;
+    PICA.GPUREG_ATTRIBBUFFER6_OFFSET            = 0x0215;
+    PICA.GPUREG_ATTRIBBUFFER6_CONFIG1           = 0x0216;
+    PICA.GPUREG_ATTRIBBUFFER6_CONFIG2           = 0x0217;
+    PICA.GPUREG_ATTRIBBUFFER7_OFFSET            = 0x0218;
+    PICA.GPUREG_ATTRIBBUFFER7_CONFIG1           = 0x0219;
+    PICA.GPUREG_ATTRIBBUFFER7_CONFIG2           = 0x021A;
+    PICA.GPUREG_ATTRIBBUFFER8_OFFSET            = 0x021B;
+    PICA.GPUREG_ATTRIBBUFFER8_CONFIG1           = 0x021C;
+    PICA.GPUREG_ATTRIBBUFFER8_CONFIG2           = 0x021D;
+    PICA.GPUREG_ATTRIBBUFFER9_OFFSET            = 0x021E;
+    PICA.GPUREG_ATTRIBBUFFER9_CONFIG1           = 0x021F;
+    PICA.GPUREG_ATTRIBBUFFER9_CONFIG2           = 0x0220;
+    PICA.GPUREG_ATTRIBBUFFER10_OFFSET           = 0x0221;
+    PICA.GPUREG_ATTRIBBUFFER10_CONFIG1          = 0x0222;
+    PICA.GPUREG_ATTRIBBUFFER10_CONFIG2          = 0x0223;
+    PICA.GPUREG_ATTRIBBUFFER11_OFFSET           = 0x0224;
+    PICA.GPUREG_ATTRIBBUFFER11_CONFIG1          = 0x0225;
+    PICA.GPUREG_ATTRIBBUFFER11_CONFIG2          = 0x0226;
+    PICA.GPUREG_INDEXBUFFER_CONFIG              = 0x0227;
+    PICA.GPUREG_NUMVERTICES                     = 0x0228;
+    PICA.GPUREG_GEOSTAGE_CONFIG                 = 0x0229;
+    PICA.GPUREG_VERTEX_OFFSET                   = 0x022A;
+    PICA.GPUREG_POST_VERTEX_CACHE_NUM           = 0x022D;
+    PICA.GPUREG_DRAWARRAYS                      = 0x022E;
+    PICA.GPUREG_DRAWELEMENTS                    = 0x022F;
+    PICA.GPUREG_VTX_FUNC                        = 0x0231;
+    PICA.GPUREG_FIXEDATTRIB_INDEX               = 0x0232;
+    PICA.GPUREG_FIXEDATTRIB_DATA0               = 0x0233;
+    PICA.GPUREG_FIXEDATTRIB_DATA1               = 0x0234;
+    PICA.GPUREG_FIXEDATTRIB_DATA2               = 0x0235;
+    PICA.GPUREG_CMDBUF_SIZE0                    = 0x0238;
+    PICA.GPUREG_CMDBUF_SIZE1                    = 0x0239;
+    PICA.GPUREG_CMDBUF_ADDR0                    = 0x023A;
+    PICA.GPUREG_CMDBUF_ADDR1                    = 0x023B;
+    PICA.GPUREG_CMDBUF_JUMP0                    = 0x023C;
+    PICA.GPUREG_CMDBUF_JUMP1                    = 0x023D;
+    PICA.GPUREG_VSH_NUM_ATTR                    = 0x0242;
+    PICA.GPUREG_VSH_COM_MODE                    = 0x0244;
+    PICA.GPUREG_START_DRAW_FUNC0                = 0x0245;
+    PICA.GPUREG_VSH_OUTMAP_TOTAL1               = 0x024A;
+    PICA.GPUREG_VSH_OUTMAP_TOTAL2               = 0x0251;
+    PICA.GPUREG_GSH_MISC0                       = 0x0252;
+    PICA.GPUREG_GEOSTAGE_CONFIG2                = 0x0253;
+    PICA.GPUREG_GSH_MISC1                       = 0x0254;
+    PICA.GPUREG_PRIMITIVE_CONFIG                = 0x025E;
+    PICA.GPUREG_RESTART_PRIMITIVE               = 0x025F;
+    PICA.GPUREG_GSH_BOOLUNIFORM                 = 0x0280;
+    PICA.GPUREG_GSH_INTUNIFORM_I0               = 0x0281;
+    PICA.GPUREG_GSH_INTUNIFORM_I1               = 0x0282;
+    PICA.GPUREG_GSH_INTUNIFORM_I2               = 0x0283;
+    PICA.GPUREG_GSH_INTUNIFORM_I3               = 0x0284;
+    PICA.GPUREG_GSH_INPUTBUFFER_CONFIG          = 0x0289;
+    PICA.GPUREG_GSH_ENTRYPOINT                  = 0x028A;
+    PICA.GPUREG_GSH_ATTRIBUTES_PERMUTATION_LOW  = 0x028B;
+    PICA.GPUREG_GSH_ATTRIBUTES_PERMUTATION_HIGH = 0x028C;
+    PICA.GPUREG_GSH_OUTMAP_MASK                 = 0x028D;
+    PICA.GPUREG_GSH_CODETRANSFER_END            = 0x028F;
+    PICA.GPUREG_GSH_FLOATUNIFORM_INDEX          = 0x0290;
+    PICA.GPUREG_GSH_FLOATUNIFORM_DATA0          = 0x0291;
+    PICA.GPUREG_GSH_FLOATUNIFORM_DATA1          = 0x0292;
+    PICA.GPUREG_GSH_FLOATUNIFORM_DATA2          = 0x0293;
+    PICA.GPUREG_GSH_FLOATUNIFORM_DATA3          = 0x0294;
+    PICA.GPUREG_GSH_FLOATUNIFORM_DATA4          = 0x0295;
+    PICA.GPUREG_GSH_FLOATUNIFORM_DATA5          = 0x0296;
+    PICA.GPUREG_GSH_FLOATUNIFORM_DATA6          = 0x0297;
+    PICA.GPUREG_GSH_FLOATUNIFORM_DATA7          = 0x0298;
+    PICA.GPUREG_GSH_CODETRANSFER_INDEX          = 0x029B;
+    PICA.GPUREG_GSH_CODETRANSFER_DATA0          = 0x029C;
+    PICA.GPUREG_GSH_CODETRANSFER_DATA1          = 0x029D;
+    PICA.GPUREG_GSH_CODETRANSFER_DATA2          = 0x029E;
+    PICA.GPUREG_GSH_CODETRANSFER_DATA3          = 0x029F;
+    PICA.GPUREG_GSH_CODETRANSFER_DATA4          = 0x02A0;
+    PICA.GPUREG_GSH_CODETRANSFER_DATA5          = 0x02A1;
+    PICA.GPUREG_GSH_CODETRANSFER_DATA6          = 0x02A2;
+    PICA.GPUREG_GSH_CODETRANSFER_DATA7          = 0x02A3;
+    PICA.GPUREG_GSH_OPDESCS_INDEX               = 0x02A5;
+    PICA.GPUREG_GSH_OPDESCS_DATA0               = 0x02A6;
+    PICA.GPUREG_GSH_OPDESCS_DATA1               = 0x02A7;
+    PICA.GPUREG_GSH_OPDESCS_DATA2               = 0x02A8;
+    PICA.GPUREG_GSH_OPDESCS_DATA3               = 0x02A9;
+    PICA.GPUREG_GSH_OPDESCS_DATA4               = 0x02AA;
+    PICA.GPUREG_GSH_OPDESCS_DATA5               = 0x02AB;
+    PICA.GPUREG_GSH_OPDESCS_DATA6               = 0x02AC;
+    PICA.GPUREG_GSH_OPDESCS_DATA7               = 0x02AD;
+    PICA.GPUREG_VSH_BOOLUNIFORM                 = 0x02B0;
+    PICA.GPUREG_VSH_INTUNIFORM_I0               = 0x02B1;
+    PICA.GPUREG_VSH_INTUNIFORM_I1               = 0x02B2;
+    PICA.GPUREG_VSH_INTUNIFORM_I2               = 0x02B3;
+    PICA.GPUREG_VSH_INTUNIFORM_I3               = 0x02B4;
+    PICA.GPUREG_VSH_INPUTBUFFER_CONFIG          = 0x02B9;
+    PICA.GPUREG_VSH_ENTRYPOINT                  = 0x02BA;
+    PICA.GPUREG_VSH_ATTRIBUTES_PERMUTATION_LOW  = 0x02BB;
+    PICA.GPUREG_VSH_ATTRIBUTES_PERMUTATION_HIGH = 0x02BC;
+    PICA.GPUREG_VSH_OUTMAP_MASK                 = 0x02BD;
+    PICA.GPUREG_VSH_CODETRANSFER_END            = 0x02BF;
+    PICA.GPUREG_VSH_FLOATUNIFORM_INDEX          = 0x02C0;
+    PICA.GPUREG_VSH_FLOATUNIFORM_DATA0          = 0x02C1;
+    PICA.GPUREG_VSH_FLOATUNIFORM_DATA1          = 0x02C2;
+    PICA.GPUREG_VSH_FLOATUNIFORM_DATA2          = 0x02C3;
+    PICA.GPUREG_VSH_FLOATUNIFORM_DATA3          = 0x02C4;
+    PICA.GPUREG_VSH_FLOATUNIFORM_DATA4          = 0x02C5;
+    PICA.GPUREG_VSH_FLOATUNIFORM_DATA5          = 0x02C6;
+    PICA.GPUREG_VSH_FLOATUNIFORM_DATA6          = 0x02C7;
+    PICA.GPUREG_VSH_FLOATUNIFORM_DATA7          = 0x02C8;
+    PICA.GPUREG_VSH_CODETRANSFER_INDEX          = 0x02CB;
+    PICA.GPUREG_VSH_CODETRANSFER_DATA0          = 0x02CC;
+    PICA.GPUREG_VSH_CODETRANSFER_DATA1          = 0x02CD;
+    PICA.GPUREG_VSH_CODETRANSFER_DATA2          = 0x02CE;
+    PICA.GPUREG_VSH_CODETRANSFER_DATA3          = 0x02CF;
+    PICA.GPUREG_VSH_CODETRANSFER_DATA4          = 0x02D0;
+    PICA.GPUREG_VSH_CODETRANSFER_DATA5          = 0x02D1;
+    PICA.GPUREG_VSH_CODETRANSFER_DATA6          = 0x02D2;
+    PICA.GPUREG_VSH_CODETRANSFER_DATA7          = 0x02D3;
+    PICA.GPUREG_VSH_OPDESCS_INDEX               = 0x02D5;
+    PICA.GPUREG_VSH_OPDESCS_DATA0               = 0x02D6;
+    PICA.GPUREG_VSH_OPDESCS_DATA1               = 0x02D7;
+    PICA.GPUREG_VSH_OPDESCS_DATA2               = 0x02D8;
+    PICA.GPUREG_VSH_OPDESCS_DATA3               = 0x02D9;
+    PICA.GPUREG_VSH_OPDESCS_DATA4               = 0x02DA;
+    PICA.GPUREG_VSH_OPDESCS_DATA5               = 0x02DB;
+    PICA.GPUREG_VSH_OPDESCS_DATA6               = 0x02DC;
+    PICA.GPUREG_VSH_OPDESCS_DATA7               = 0x02DD;
+    
+    PICA.commands = {};
+    
+    const initialViewport = function (pica) {
+        if (!pica.viewport) {
+            pica.viewport = {};
+        }
+    };
+    
+    const initialClipping = function (pica) {
+        if (!pica.clipping) {
+            pica.clipping = {
+                "enabled": false,
+                "data": [0, 0, 0, 0]
+            };
+        }
+    };
+    
+    const initialDepth = function (pica) {
+        if (!pica.depth) {
+            pica.depth = {};
+        }
+    };
+    
+    const initialDepthEarly = function (pica) {
+        pica.depth.early = {};
+    };
+    
+    const initialShader = function (pica) {
+        if (!pica.shader) {
+            pica.shader = {};
+        }
+    };
+    
+    const initialShaderOutputMap = function (pica) {
+        if (!pica.shader.outputMap) {
+            pica.shader.outputMap = [];
+        }
+    };
+    
+    const initialShaderOutputMapIndex = function (pica, index, parameter) {
+           
+        pica.shader.outputMap[index] = {};
+        
+        let looper = 0;
+        while (looper < 4) {
+            
+            let value = (parameter >> looper * 8) & 0x1f;
+            
+            let map = {};
+            
+            pica.shader.outputMap[index][({
+                "0": "x",
+                "1": "y",
+                "2": "z",
+                "3": "w"
+            })[looper]] = map;
+            
+            switch (value) {
+                 
+                case 0x00: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.POSITION); map.offset = "x"; break; }
+                case 0x01: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.POSITION); map.offset = "y"; break; }
+                case 0x02: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.POSITION); map.offset = "z"; break; }
+                case 0x03: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.POSITION); map.offset = "w"; break; }
+                 
+                case 0x04: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.QUAT_NORMAL); map.offset = "x"; break; }
+                case 0x05: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.QUAT_NORMAL); map.offset = "y"; break; }
+                case 0x06: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.QUAT_NORMAL); map.offset = "z"; break; }
+                case 0x07: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.QUAT_NORMAL); map.offset = "w"; break; }
+                
+                case 0x08: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.COLOR); map.offset = "r"; break; }
+                case 0x09: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.COLOR); map.offset = "g"; break; }
+                case 0x0a: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.COLOR); map.offset = "b"; break; }
+                case 0x0b: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.COLOR); map.offset = "a"; break; }
+                  
+                case 0x0c: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.TEXTURE_COORDINATE_0); map.offset = "u"; break; }
+                case 0x0d: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.TEXTURE_COORDINATE_0); map.offset = "v"; break; }
+
+                case 0x0e: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.TEXTURE_COORDINATE_1); map.offset = "u"; break; }
+                case 0x0f: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.TEXTURE_COORDINATE_1); map.offset = "v"; break; }
+                
+                case 0x10: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.TEXTURE_COORDINATE_0); map.offset = "w"; break; }
+
+                case 0x12: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.VIEW); map.offset = "x"; break; }
+                case 0x13: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.VIEW); map.offset = "y"; break; }
+                case 0x14: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.VIEW); map.offset = "z"; break; }
+                
+                case 0x16: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.TEXTURE_COORDINATE_2); map.offset = "u"; break; }
+                case 0x17: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.TEXTURE_COORDINATE_2); map.offset = "v"; break; }
+
+                default: { map.register = new PICA.ShaderOutputRegister(PICA.ShaderOutputRegister.GENERIC); break; }
+
+            }
+            
+            ++looper;
+        }
+
+    };
+      
+    const initialVertexShader = function (pica) {
+        if (!pica.shader.vertex) {
+            pica.shader.vertex = {};
+        }
+    };
+    
+    const initialVertexShaderOutputMap = function (pica) {
+        if (!pica.shader.vertex.outputMap) {
+            pica.shader.vertex.outputMap = [];
+        }
+    };
+    
+    const initialVertexShaderAttributes = function (pica) {
+        if (!pica.shader.vertex.attributes) {
+            pica.shader.vertex.attributes = {};
+        }
+    };
+    
+    const initialVertexShaderAttributePermutations = function (pica) {
+        if (!pica.shader.vertex.attributes.permutations) {
+            pica.shader.vertex.attributes.permutations = [];
+        }
+    };
+    
+    const initialVertexShaderIntUnifrom = function (pica) {
+        if (!pica.shader.vertex.ints) {
+            pica.shader.vertex.ints = [];
+        }
+    };
+    
+    const initialVertexShaderFloatUnifrom = function (pica) {
+        
+        if (!pica.shader.vertex.floats) {
+            
+            pica.shader.vertex.floats = [];
+            
+            let index = 0;
+            let is32Bit = false;
+            Object.defineProperty(pica.shader.vertex.floats, "index", {
+                "get": function () {
+                    return index;
+                },
+                "set": function (value) {
+                    index = (value % 0x100) << 2;
+                    is32Bit = (value >> 31) !== 0;
+                }
+            });
+            Object.defineProperty(pica.shader.vertex.floats, "is32Bit", {
+                "get": function () {
+                    return is32Bit;
+                }
+            });
+            
+            Object.defineProperty(pica.shader.vertex.floats, "setValues", {
+                "get": function () {
+                    return (function (values) {
+                       
+                       let getValue = () => {
+                           
+                           let valueIndex = (index >> 2) & 0x5f;
+                           let value = this[valueIndex];
+                           if (!value) {
+                               if (is32Bit) {
+                                   value = new PICA.Float32Vector();
+                               } else {
+                                   value = new PICA.Float24Vector();
+                               }
+                               this[valueIndex] = value;
+                           }
+                           
+                           return value;
+                           
+                       };
+                       
+                       values.forEach((parameter) => {
+                           
+                           let value = getValue();
+                           
+                           value.words[index % 4] = parameter;
+                           ++index;
+                           if ($.is(value, PICA.Float24Vector) && (index % 4 === 3)) {
+                               ++index;
+                           }
+               
+                       });
+                       
+                    }).bind(pica.shader.vertex.floats)
+                }
+            });
+            
+        }
+    };
+    
+    const initialVertexShaderCodes = function (pica) {
+        if (!pica.shader.vertex.codes) {
+            pica.shader.vertex.codes = {};
+        }
+    };
+    
+    const initialVertexShaderOpdescs = function (pica) {
+        if (!pica.shader.vertex.opdescs) {
+            pica.shader.vertex.opdescs = {};
+        }
+    };
+    
+    const initialGeometryShader = function (pica) {
+        if (!pica.shader.geometry) {
+            pica.shader.geometry = {};
+        }
+    };
+    
+    const initialGeometryShaderOutputMap = function (pica) {
+        if (!pica.shader.geometry.outputMap) {
+            pica.shader.geometry.outputMap = [];
+        }
+    };
+    
+    const initialGeometryShaderAttributes = function (pica) {
+        if (!pica.shader.geometry.attributes) {
+            pica.shader.geometry.attributes = {};
+        }
+    };
+    
+    const initialGeometryShaderAttributePermutations = function (pica) {
+        if (!pica.shader.geometry.attributes.permutations) {
+            pica.shader.geometry.attributes.permutations = [];
+        }
+    };
+    
+    const initialGeometryShaderIntUnifrom = function (pica) {
+        if (!pica.shader.geometry.ints) {
+            pica.shader.geometry.ints = [];
+        }
+    };
+    
+    const initialGeometryShaderFloatUnifrom = function (pica) {
+        
+        if (!pica.shader.geometry.floats) {
+            
+            pica.shader.geometry.floats = [];
+            
+            let index = 0;
+            let is32Bit = false;
+            Object.defineProperty(pica.shader.geometry.floats, "index", {
+                "get": function () {
+                    return index;
+                },
+                "set": function (value) {
+                    index = (value % 0x100) << 2;
+                    is32Bit = (value >> 31) !== 0;
+                }
+            });
+            Object.defineProperty(pica.shader.geometry.floats, "is32Bit", {
+                "get": function () {
+                    return is32Bit;
+                }
+            });
+            
+            Object.defineProperty(pica.shader.geometry.floats, "setValues", {
+                "get": function () {
+                    return (function (values) {
+                       
+                       let getValue = () => {
+                           
+                           let valueIndex = (index >> 2) & 0x5f;
+                           let value = this[valueIndex];
+                           if (!value) {
+                               if (is32Bit) {
+                                   value = new PICA.Float32Vector();
+                               } else {
+                                   value = new PICA.Float24Vector();
+                               }
+                               this[valueIndex] = value;
+                           }
+                           
+                           return value;
+                           
+                       };
+                       
+                       values.forEach((parameter) => {
+                           
+                           let value = getValue();
+                           
+                           value.words[index % 4] = parameter;
+                           ++index;
+                           if ($.is(value, PICA.Float24Vector) && (index % 3 === 2)) {
+                               ++index;
+                           }
+               
+                       });
+                       
+                    }).bind(pica.shader.geometry.floats)
+                }
+            });
+            
+        }
+    };
+    
+    const initialGeometryShaderCodes = function (pica) {
+        if (!pica.shader.geometry.codes) {
+            pica.shader.geometry.codes = {};
+        }
+    };
+    
+    const initialGeometryShaderOpdescs = function (pica) {
+        if (!pica.shader.geometry.opdescs) {
+            pica.shader.geometry.opdescs = {};
+        }
+    };
+    
+    const initialScissor = function (pica) {
+        if (!pica.scissor) {
+            pica.scissor = {};
+        }
+    };
+    
+    const initialFrameBuffer = function (pica) {
+        if (!pica.frameBuffer) {
+            pica.frameBuffer = {};
+        }
+    };
+      
+    const initialTextures = function (pica) {
+        if (!pica.textures) {
+            pica.textures = {};
+        }
+    };
+    
+    const initialTextureUnits = function (pica) {
+        if (!pica.textures.units) {
+            pica.textures.units = [{}, {}, {}, {}];
+        }
+    };
+    
+    const setTextureParameter = function (pica, index, parameter) {
+        
+        let unit = pica.textures.units[0];
+        
+        unit.magnificationFilter = new PICA.TextureFilter(parameter & 0x1);
+        unit.minificationFilter = new PICA.TextureFilter(parameter & 0x1);
+        
+        unit.etc1 = (parameter >> 4) & 0x3;
+        unit.wrap = [
+            new PICA.TextureWrap((parameter >> 8) & 0x3),
+            new PICA.TextureWrap((parameter >> 12) & 0x3)
+        ];
+        unit.shadow = ((parameter >> 20) & 0x1) !== 0;
+        unit.mipmap = ((parameter >> 24) & 0x1) !== 0;
+        
+        unit.type = new PICA.TextureType((parameter >> 28) & 0x3);
+        
+    };
+    
+    const initialLighting = function (pica) {
+        if (!pica.lighting) {
+            pica.lighting = true;
+        }
+    };
+    
+    const initialRendering = function (pica) {
+        if (!pica.rendering) {
+            pica.rendering = {};
+        }
+    };
+    
+    const initialRenderingStage = function (pica, index) {
+        if (!pica.rendering.stages) {
+            pica.rendering.stages = [];
+        }
+        if (!pica.rendering.stages[index]) {
+            pica.rendering.stages[index] = new PICA.RenderingStage();
+        }
+    };
+     
+    const initialPermissions = function (pica) {
+        if (!pica.permissions) {
+            pica.permissions = {};
+        }
+    };
+    
+    const initialLightingLUTs = function (pica) {
+        if (!pica.lightingLUTs) {
+            pica.lightingLUTs = {};
+        }
+    };
+    
+    const setLightingLUT = function (pica, index, parameters) {
+        if (!pica.lightingLUTs.data) {
+            pica.lightingLUTs.data = [];
+        }
+        parameters.forEach((parameter) => {
+            pica.lightingLUTs.data[pica.lightingLUTs.index++] = (parameter & 0xfff) / 0xfff;
+        });
+    };
+   
+    const initialAttributes = function (pica) {
+        if (!pica.attributes) {
+            pica.attributes = {};
+        }
+    };
+    
+    const initialAttributeBuffer = function (pica) {
+        if (!pica.attributes.buffer) {
+            pica.attributes.buffer = {};
+        }
+    };
+    
+    const initialAttributeBufferMapping = function (pica) {
+       if (!pica.attributes.buffer.mapping) {
+           pica.attributes.buffer.mapping = [];
+       } 
+    };
+     
+    const initialAttributeFixeds = function (pica) {
+        if (!pica.attributes.fixeds) {
+            pica.attributes.fixeds = {
+                "index": 0
+            };
+        }
+    };
+    
+    const initialAttributeFixedData = function (pica) {
+        if ($.is.nil(pica.attributes.fixeds.index)) {
+            pica.attributes.fixeds.index = 0;
+        }
+        if (!pica.attributes.fixeds.data) {
+            pica.attributes.fixeds.data = [];
+        }
+        if (!pica.attributes.fixeds.data[pica.attributes.fixeds.index]) {
+            pica.attributes.fixeds.data[pica.attributes.fixeds.index] = new PICA.Float24Vector();
+        }
+    };
+    
+    PICA.commands[PICA.GPUREG_DUMMY] = function (/*command*/) {
+        // Do nothing
+    };
+    
+    PICA.commands[PICA.GPUREG_FINALIZE] = function (/*command*/) {
+        
+        let active = this.commands.buffers.indexOf(this.commands.current);
+        
+        this.commands.states[active] = "finalized";
+        
+    };
+    
+    PICA.commands[PICA.GPUREG_FACECULLING_CONFIG] = function (command) {
+        this.faceCulling = new PICA.FaceCulling(command.parameters[0] & 3);
+    };
+     
+    PICA.commands[PICA.GPUREG_VIEWPORT_WIDTH] = function (command) {
+        initialViewport(this);
+        this.viewport.width = PICA.Float24Vector.getFloat(command.parameters[0] % 0x1000000) * 2;
+    };
+    
+    PICA.commands[PICA.GPUREG_VIEWPORT_INVW] = function (command) {
+        initialViewport(this);
+        this.viewport.width = 2 / PICA.Float32Vector.asFloat32(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_VIEWPORT_HEIGHT] = function (command) {
+        initialViewport(this);
+        this.viewport.height = PICA.Float24Vector.getFloat(command.parameters[0] % 0x1000000) * 2;
+    };
+    
+    PICA.commands[PICA.GPUREG_VIEWPORT_INVH] = function (command) {
+        initialViewport(this);
+        this.viewport.height = 2 / PICA.Float32Vector.asFloat32(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_FRAGOP_CLIP] = function (command) {
+        initialClipping(this);
+        this.clipping.enabled = (command.parameters[0] & 0x1) !== 0;
+    };
+     
+    PICA.commands[PICA.GPUREG_FRAGOP_CLIP_DATA0] = function (command) {
+        initialClipping(this);
+        this.clipping.data[0] = PICA.Float32Vector.asFloat32(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_FRAGOP_CLIP_DATA1] = function (command) {
+        initialClipping(this);
+        this.clipping.data[1] = PICA.Float32Vector.asFloat32(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_FRAGOP_CLIP_DATA2] = function (command) {
+        initialClipping(this);
+        this.clipping.data[2] = PICA.Float32Vector.asFloat32(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_FRAGOP_CLIP_DATA3] = function (command) {
+        initialClipping(this);
+        this.clipping.data[3] = PICA.Float32Vector.asFloat32(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_DEPTHMAP_SCALE] = function (command) {
+        initialDepth(this);
+        this.depth.scale = PICA.Float24Vector.getFloat(command.parameters[0] % 0x1000000);
+    };
+    
+    PICA.commands[PICA.GPUREG_DEPTHMAP_OFFSET] = function (command) {
+        initialDepth(this);
+        this.depth.offset = PICA.Float24Vector.getFloat(command.parameters[0] % 0x1000000);
+    };
+     
+    PICA.commands[PICA.GPUREG_SH_OUTMAP_TOTAL] = function (command) {
+        initialShader(this);
+        initialShaderOutputMap(this);
+        this.shader.outputMap.length = command.parameters[0] & 0x7;
+    };
+     
+    PICA.commands[PICA.GPUREG_SH_OUTMAP_O0] = function (command) {
+        initialShader(this);
+        initialShaderOutputMap(this);
+        initialShaderOutputMapIndex(this, 0, command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_SH_OUTMAP_O1] = function (command) {
+        initialShader(this);
+        initialShaderOutputMap(this);
+        initialShaderOutputMapIndex(this, 1, command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_SH_OUTMAP_O2] = function (command) {
+        initialShader(this);
+        initialShaderOutputMap(this);
+        initialShaderOutputMapIndex(this, 2, command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_SH_OUTMAP_O3] = function (command) {
+        initialShader(this);
+        initialShaderOutputMap(this);
+        initialShaderOutputMapIndex(this, 3, command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_SH_OUTMAP_O4] = function (command) {
+        initialShader(this);
+        initialShaderOutputMap(this);
+        initialShaderOutputMapIndex(this, 4, command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_SH_OUTMAP_O5] = function (command) {
+        initialShader(this);
+        initialShaderOutputMap(this);
+        initialShaderOutputMapIndex(this, 5, command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_SH_OUTMAP_O6] = function (command) {
+        initialShader(this);
+        initialShaderOutputMap(this);
+        initialShaderOutputMapIndex(this, 6, command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_EARLYDEPTH_FUNC] = function (command) {
+        initialDepth(this);
+        initialDepthEarly(this);
+        this.depth.early.test = ({
+            "0": ">=",
+            "1": ">",
+            "2": "<=",
+            "3": "<"
+        })[command.parameters[0] & 0x3];
+    };
+    
+    PICA.commands[PICA.GPUREG_EARLYDEPTH_TEST1] = function (command) {
+        initialDepth(this);
+        initialDepthEarly(this);
+        this.depth.early.enabled = (command.parameters[0] & 0x1) !== 0;
+    };
+    
+    PICA.commands[PICA.GPUREG_EARLYDEPTH_CLEAR] = function (command) {
+        if ((command.parameters[0] & 0x1) !== 0) {
+            if (this.depth && this.depth.early) {
+                delete this.depth.early;
+            }
+        }
+    };
+    
+    PICA.commands[PICA.GPUREG_SH_OUTATTR_MODE] = function (command) {
+        initialShader(this);
+        this.shader.outputTextures = (command.parameters[0] & 0x1) !== 0;
+    };
+    
+    PICA.commands[PICA.GPUREG_SCISSORTEST_MODE] = function (command) {
+        initialScissor(this);
+        this.scissor.enabled = (command.parameters[0] & 0x1) !== 0;
+    };
+     
+    PICA.commands[PICA.GPUREG_SCISSORTEST_POS] = function (command) {
+        initialScissor(this);
+        this.scissor.position = {
+            "x": command.parameters[0] % 0x200,
+            "y": (command.parameters[0] >> 16) % 0x200
+        };
+    };
+    
+    PICA.commands[PICA.GPUREG_SCISSORTEST_DIM] = function (command) {
+        initialScissor(this);
+        this.scissor.dim = {
+            "x": command.parameters[0] % 0x200, 
+            "y": (command.parameters[0] >> 16) % 0x200
+        };
+    };
+    
+    PICA.commands[PICA.GPUREG_VIEWPORT_XY] = function (command) {
+        initialViewport(this);
+        this.viewport.position = {
+            "x": command.parameters[0] % 0x200, 
+            "y": (command.parameters[0] >> 16) % 0x200
+        };
+    };
+     
+    PICA.commands[PICA.GPUREG_EARLYDEPTH_DATA] = function (command) {
+        initialDepth(this);
+        initialDepthEarly(this);
+        this.depth.early.clearValue = command.parameters[0] & 0xffffff;
+    };
+  
+    PICA.commands[PICA.GPUREG_DEPTHMAP_ENABLE] = function (command) {
+        initialDepth(this);
+        this.depth.enabled = (command.parameters[0] & 0x1) !== 0;
+    };
+   
+    PICA.commands[PICA.GPUREG_RENDERBUF_DIM] = function (command) {
+        initialRendering(this);
+        this.rendering.width = command.parameters[0] & 0x7ff;
+        this.rendering.height = ((command.parameters[0] >> 12) & 0x3ff) + 1;
+    };
+    
+    PICA.commands[PICA.GPUREG_SH_OUTATTR_CLOCK] = function (command) {
+        initialShader(this);
+        this.shader.outputAvailables = {
+            "positionZ": (command.parameters[0] & 0x1) !== 0,
+            "color": (command.parameters[0] & 0x2) !== 0,
+            "texCoord0": (command.parameters[0] & 0x100) !== 0,
+            "texCoord1": (command.parameters[0] & 0x200) !== 0,
+            "texCoord2": (command.parameters[0] & 0x400) !== 0,
+            "texCoord0W": (command.parameters[0] & 0x10000) !== 0,
+            "quatNormalOrView": (command.parameters[0] & 0x1000000) !== 0
+        };
+    };
+    
+    PICA.commands[PICA.GPUREG_TEXUNIT_CONFIG] = function (command) {
+        
+        initialTextures(this);
+        initialTextureUnits(this);
+        
+        const parameter = command.parameters[0];
+        
+        if (parameter & 0x10000 !== 0) {
+            this.textures.units = [{}, {}, {}, {}];
+        }
+        
+        this.textures.units[0].coordinates = 0;
+        this.textures.units[0].enabled = (parameter & 0x1) !== 0;
+        
+        this.textures.units[1].coordinates = 1;
+        this.textures.units[1].enabled = (parameter & 0x2) !== 0;
+        
+        this.textures.units[2].coordinates = (((parameter >> 13) & 0x1) !== 0) ? 1 : 2;
+        this.textures.units[2].enabled = (parameter & 0x4) !== 0;
+        
+        this.textures.units[3].coordinates = (parameter >> 8) & 0x3;
+        this.textures.units[3].enabled = (parameter & 0x400) !== 0;
+        
+    };
+   
+    PICA.commands[PICA.GPUREG_TEXUNIT0_BORDER_COLOR] = function (command) {
+        initialTextures(this);
+        initialTextureUnits(this);
+        this.textures.units[0].border = new PICA.Color(command.parameters[0]); 
+    };
+    
+    PICA.commands[PICA.GPUREG_TEXUNIT0_DIM] = function (command) {
+        initialTextures(this);
+        initialTextureUnits(this);
+        this.textures.units[0].width = command.parameters[0] & 0x7ff;
+        this.textures.units[0].height = (command.parameters[0] >> 16) & 0x7ff;
+    };
+    
+    PICA.commands[PICA.GPUREG_TEXUNIT0_PARAM] = function (command) {
+        initialTextures(this);
+        initialTextureUnits(this);
+        setTextureParameter(this, 0, command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_TEXUNIT1_BORDER_COLOR] = function (command) {
+        initialTextures(this);
+        initialTextureUnits(this);
+        this.textures.units[1].border = new PICA.Color(command.parameters[0]); 
+    };
+    
+    PICA.commands[PICA.GPUREG_TEXUNIT1_DIM] = function (command) {
+        initialTextures(this);
+        initialTextureUnits(this);
+        this.textures.units[1].width = command.parameters[0] & 0x7ff;
+        this.textures.units[1].height = (command.parameters[0] >> 16) & 0x7ff;
+    };
+    
+    PICA.commands[PICA.GPUREG_TEXUNIT1_PARAM] = function (command) {
+        initialTextures(this);
+        initialTextureUnits(this);
+        setTextureParameter(this, 1, command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_TEXUNIT2_BORDER_COLOR] = function (command) {
+        initialTextures(this);
+        initialTextureUnits(this);
+        this.textures.units[2].border = new PICA.Color(command.parameters[0]); 
+    };
+   
+    PICA.commands[PICA.GPUREG_TEXUNIT2_DIM] = function (command) {
+        initialTextures(this);
+        initialTextureUnits(this);
+        this.textures.units[2].width = command.parameters[0] & 0x7ff;
+        this.textures.units[2].height = (command.parameters[0] >> 16) & 0x7ff;
+    };
+    
+    PICA.commands[PICA.GPUREG_TEXUNIT2_PARAM] = function (command) {
+        initialTextures(this);
+        initialTextureUnits(this);
+        setTextureParameter(this, 0, command.parameters[0]);
+    };
+    
+    // TODO: add lod, addrx, shadow, type and proctex support
+    
+    PICA.commands[PICA.GPUREG_LIGHTING_ENABLE0] = function (command) {
+        initialLighting(this);
+        this.lighting.enabled = (command.parameters[0] & 0x1) !== 0;
+    };
+    
+    PICA.commands[PICA.GPUREG_TEXENV0_SOURCE] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 0);
+        this.rendering.stages[0].source = new PICA.RenderingSource(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV1_SOURCE] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 1);
+        this.rendering.stages[1].source = new PICA.RenderingSource(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV2_SOURCE] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 2);
+        this.rendering.stages[2].source = new PICA.RenderingSource(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV3_SOURCE] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 3);
+        this.rendering.stages[3].source = new PICA.RenderingSource(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV4_SOURCE] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 4);
+        this.rendering.stages[4].source = new PICA.RenderingSource(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV5_SOURCE] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 5);
+        this.rendering.stages[5].source = new PICA.RenderingSource(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_TEXENV0_OPERAND] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 0);
+        this.rendering.stages[0].operand = new PICA.RenderingOperand(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV1_OPERAND] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 1);
+        this.rendering.stages[1].operand = new PICA.RenderingOperand(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV2_OPERAND] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 2);
+        this.rendering.stages[2].operand = new PICA.RenderingOperand(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV3_OPERAND] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 3);
+        this.rendering.stages[3].operand = new PICA.RenderingOperand(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV4_OPERAND] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 4);
+        this.rendering.stages[4].operand = new PICA.RenderingOperand(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV5_OPERAND] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 5);
+        this.rendering.stages[5].operand = new PICA.RenderingOperand(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV0_COMBINER] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 0);
+        this.rendering.stages[0].mode = new PICA.RenderingMode(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV1_COMBINER] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 1);
+        this.rendering.stages[1].mode = new PICA.RenderingMode(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV2_COMBINER] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 2);
+        this.rendering.stages[2].mode = new PICA.RenderingMode(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV3_COMBINER] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 3);
+        this.rendering.stages[3].mode = new PICA.RenderingMode(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV4_COMBINER] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 4);
+        this.rendering.stages[4].mode = new PICA.RenderingMode(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_TEXENV5_COMBINER] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 5);
+        this.rendering.stages[5].mode = new PICA.RenderingMode(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV0_COLOR] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 0);
+        this.rendering.stages[0].color = new PICA.Color(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV1_COLOR] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 1);
+        this.rendering.stages[1].color = new PICA.Color(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV2_COLOR] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 2);
+        this.rendering.stages[2].color = new PICA.Color(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV3_COLOR] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 3);
+        this.rendering.stages[3].color = new PICA.Color(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV4_COLOR] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 4);
+        this.rendering.stages[4].color = new PICA.Color(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_TEXENV5_COLOR] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 5);
+        this.rendering.stages[5].color = new PICA.Color(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV0_SCALE] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 0);
+        this.rendering.stages[0].scale = new PICA.RenderingScale(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV1_SCALE] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 1);
+        this.rendering.stages[1].scale = new PICA.RenderingScale(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV2_SCALE] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 2);
+        this.rendering.stages[2].scale = new PICA.RenderingScale(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV3_SCALE] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 3);
+        this.rendering.stages[3].scale = new PICA.RenderingScale(command.parameters[0]);
+    };
+     
+    PICA.commands[PICA.GPUREG_TEXENV4_SCALE] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 4);
+        this.rendering.stages[4].scale = new PICA.RenderingScale(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_TEXENV5_SCALE] = function (command) {
+        initialRendering(this);
+        initialRenderingStage(this, 5);
+        this.rendering.stages[5].scale = new PICA.RenderingScale(command.parameters[0]);
+    };
+    
+    // TODO: change the data structs for rendering stages
+    
+    PICA.commands[PICA.GPUREG_TEXENV_UPDATE_BUFFER] = function (command) {
+        
+        initialRendering(this);
+        
+        this.rendering.fogMode = command.parameters[0] & 0x7;
+        this.rendering.densitySource = (command.parameters[0] >> 3) & 0x1 ? "depth" : "plain";
+         
+        initialRenderingStage(this, 0);
+        this.rendering.stages[0].buffers = {
+            "color": ((command.parameters[0] >> 8) & 0x1) !== 0,
+            "alpha": ((command.parameters[0] >> 12) & 0x1) !== 0
+        };
+         
+        initialRenderingStage(this, 1);
+        this.rendering.stages[1].buffers = {
+            "color": ((command.parameters[0] >> 9) & 0x1) !== 0,
+            "alpha": ((command.parameters[0] >> 13) & 0x1) !== 0
+        };
+         
+        initialRenderingStage(this, 2);
+        this.rendering.stages[2].buffers = {
+            "color": ((command.parameters[0] >> 10) & 0x1) !== 0,
+            "alpha": ((command.parameters[0] >> 14) & 0x1) !== 0
+        };
+        
+        initialRenderingStage(this, 3);
+        this.rendering.stages[3].buffers = {
+            "color": ((command.parameters[0] >> 11) & 0x1) !== 0,
+            "alpha": ((command.parameters[0] >> 15) & 0x1) !== 0
+        };
+        
+        this.rendering.zFlip = ((command.parameters[0] >> 16) & 0x1) !== 0;
+        
+    };
+    
+    // TODO: fogs and gas support
+    
+    PICA.commands[PICA.GPUREG_TEXENV_BUFFER_COLOR] = function (command) {
+        initialRendering(this);
+        this.rendering.bufferColor = new PICA.Color(command.parameters[0]); 
+    };
+   
+    PICA.commands[PICA.GPUREG_COLOR_OPERATION] = function (command) {
+        initialRendering(this);
+        this.rendering.colorOperation = new PICA.ColorOperation(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_BLEND_FUNC] = function (command) {
+        initialRendering(this);
+        this.rendering.blendFunction = new PICA.BlendFunction(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_LOGIC_OP] = function (command) {
+        initialRendering(this);
+        this.rendering.logicalOperation = new PICA.LogicalOperation(command.parameters[0] & 0xf);
+    };
+    
+    PICA.commands[PICA.GPUREG_BLEND_COLOR] = function (command) {
+        initialRendering(this);
+        this.rendering.blendColor = new PICA.Color(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_FRAGOP_ALPHA_TEST] = function (command) {
+        initialRendering(this);
+        this.rendering.alphaTest = new PICA.AlphaTest(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_STENCIL_TEST] = function (command) {
+        initialRendering(this);
+        this.rendering.stencilTest = new PICA.StencilTest(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_STENCIL_OP] = function (command) {
+        initialRendering(this);
+        this.rendering.stencilOperation = new PICA.StencilOperation(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_DEPTH_COLOR_MASK] = function (command) {
+        initialDepth(this);
+        this.depth.colorMask = new PICA.DepthColorMask(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_FRAMEBUFFER_INVALIDATE] = function (command) {
+        initialRendering(this);
+        this.rendering.dirty = (command.parameters[0] & 0x1) !== 0;
+    };
+    
+    PICA.commands[PICA.GPUREG_FRAMEBUFFER_FLUSH] = function (command) {
+        initialRendering(this);
+        this.rendering.dirty = (command.parameters[0] & 0x1) === 0;
+    };
+    
+    PICA.commands[PICA.GPUREG_COLORBUFFER_READ] = function (command) {
+        initialPermissions(this);
+        this.permissions.colorBufferRead = (command.parameters[0] & 0xf) === 0xf;
+    };
+    
+    PICA.commands[PICA.GPUREG_COLORBUFFER_WRITE] = function (command) {
+        initialPermissions(this);
+        this.permissions.colorBufferWrite = (command.parameters[0] & 0xf) === 0xf;
+    };
+
+    PICA.commands[PICA.GPUREG_DEPTHBUFFER_READ] = function (command) {
+        initialPermissions(this);
+        this.permissions.stencilBufferRead = (command.parameters[0] & 1) !== 0;
+        this.permissions.depthBufferRead = (command.parameters[0] & 2) !== 0;
+    };
+
+    PICA.commands[PICA.GPUREG_DEPTHBUFFER_WRITE] = function (command) {
+        initialPermissions(this);
+        this.permissions.stencilBufferWrite = (command.parameters[0] & 1) !== 0;
+        this.permissions.depthBufferWrite = (command.parameters[0] & 2) !== 0;
+    };
+
+    // TODO: depth and color buffer format support
+    
+    PICA.commands[PICA.GPUREG_EARLYDEPTH_TEST2] = PICA.commands[PICA.GPUREG_EARLYDEPTH_TEST1];
+
+    // TODO: frame buffer block mode
+    // TODO: depth and color buffer location
+    
+    PICA.commands[PICA.GPUREG_FRAMEBUFFER_DIM] = function (command) {
+        // TODO: check rendering the same as frame buffer?
+        initialFrameBuffer(this);
+        this.frameBuffer.width = command.parameters[0] & 0x7ff;
+        this.frameBuffer.height = ((command.parameters[0] >> 12) & 0x3ff) + 1;
+    };
+    
+    // TODO: gas light lut
+    // TODO: frag op shadow
+    // TODO: lights
+    
+    PICA.commands[PICA.GPUREG_LIGHTING_LUT_INDEX] = function (command) {
+        initialLightingLUTs(this);
+        this.lightingLUTs.index = command.parameters[0] & 0xff;
+        this.lightingLUTs.type = new PICA.LUTType(command.parameters[0] >> 8);
+    };
+     
+    PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA0] = function (command) {
+        initialLightingLUTs(this);
+        setLightingLUT(this, 0, command.parameters);
+    };
+    
+    PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA1] = PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA0];
+    PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA2] = PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA0];
+    PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA3] = PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA0];
+    PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA4] = PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA0];
+    PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA5] = PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA0];
+    PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA6] = PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA0];
+    PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA7] = PICA.commands[PICA.GPUREG_LIGHTING_LUT_DATA0];
+     
+    PICA.commands[PICA.GPUREG_LIGHTING_LUTINPUT_ABS] = function (command) {
+        initialLightingLUTs(this);
+        this.lightingLUTs.inputAbsolute = new PICA.LightingLUTInputAbsolute(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_LIGHTING_LUTINPUT_SELECT] = function (command) {
+        initialLightingLUTs(this);
+        this.lightingLUTs.inputSelection = new PICA.LightingLUTInputSelection(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_LIGHTING_LUTINPUT_SCALE] = function (command) {
+        initialLightingLUTs(this);
+        this.lightingLUTs.inputScale = new PICA.LightingLUTInputScale(command.parameters[0]);
+    };
+    
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFERS_LOC] = function (command) {
+        initialAttributes(this);
+        this.attributes.location = (command.parameters / 2) >> 27;
+    };
+     
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFERS_FORMAT_LOW] = function (command) { 
+        
+        initialAttributes(this);
+        
+        if (!this.attributes.formats) {
+            this.attributes.formats = [];
+        }
+        
+        let looper = 0;
+        while (looper < 8) {
+            
+            let value = (command.parameters[0] / Math.pow(2, looper * 4)) % 0x10;
+            
+            let type = new PICA.AttributeFormat(value & 0x3);
+            let size = ((value >> 2) & 0x3) + 1;
+            
+            if (!this.attributes.formats[looper]) {
+                this.attributes.formats[looper] = {};
+            }
+            
+            this.attributes.formats[looper].type = type;
+            this.attributes.formats[looper].size = size;
+            
+            ++looper;
+        }
+        
+    };
+    
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFERS_FORMAT_HIGH] = function (command) { 
+        
+        initialAttributes(this);
+        
+        if (!this.attributes.formats) {
+            this.attributes.formats = [];
+        }
+        
+        let looper = 0;
+        while (looper < 4) {
+            
+            initialAttributeBuffer(this, looper + 8);
+            
+            let value = (command.parameters[0] / Math.pow(2, looper * 4)) % 0x10;
+            
+            let type = new PICA.AttributeFormat(value & 0x3);
+            let size = ((value >> 2) & 0x3) + 1;
+            
+            if (!this.attributes.formats[looper + 8]) {
+                this.attributes.formats[looper + 8] = {};
+            }
+            
+            this.attributes.formats[looper + 8].type = type;
+            this.attributes.formats[looper + 8].size = size;
+            
+            ++looper;
+        }
+        
+        let fixed = ((command.parameters[0] / 2) >> 15) & 0x1fff;
+        looper = 0;
+        while (looper < 12) {
+            if (((fixed >> looper) & 0x1) !== 0) {
+                this.attributes.formats[looper].fixed = true;
+            }
+            ++looper;
+        }
+        
+        this.attributes.count = ((command.parameters[0] / 2) >> 27) + 1;
+       
+    };
+     
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_OFFSET] = function (command) {
+        initialAttributes(this);
+        initialAttributeBuffer(this);
+        this.attributes.buffer.offset = command.parameters[0] % 0x10000000;
+    };
+    
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG1] = function (command) { 
+        initialAttributes(this);
+        initialAttributeBuffer(this);
+        initialAttributeBufferMapping(this);
+        let buffer = this.attributes.buffer;
+        let looper = 0;
+        while (looper < 8) {
+            buffer.mapping[looper] = Math.floor(command.parameters[0] / Math.pow(2, looper * 4)) % 16;
+            ++looper;
+        }
+    };
+    
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG2] = function (command) {
+        initialAttributes(this);
+        initialAttributeBuffer(this);
+        initialAttributeBufferMapping(this);
+        let buffer = this.attributes.buffer;
+        let looper = 0;
+        while (looper < 4) {
+            buffer.mapping[looper + 8] = Math.floor(command.parameters[0] / Math.pow(2, looper * 4)) % 16;
+            ++looper;
+        }
+        buffer.unitSize = ((command.parameters[0] / 2) >> 15) & 0xff;
+        buffer.components = ((command.parameters[0] / 2) >> 27) & 0xf;
+    };
+     
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER1_OFFSET] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_OFFSET];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER2_OFFSET] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_OFFSET];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER3_OFFSET] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_OFFSET];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER4_OFFSET] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_OFFSET];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER5_OFFSET] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_OFFSET];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER6_OFFSET] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_OFFSET];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER7_OFFSET] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_OFFSET];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER8_OFFSET] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_OFFSET];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER9_OFFSET] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_OFFSET];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER10_OFFSET] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_OFFSET];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER11_OFFSET] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_OFFSET];
+      
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER1_CONFIG1] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG1];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER2_CONFIG1] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG1];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER3_CONFIG1] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG1];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER4_CONFIG1] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG1];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER5_CONFIG1] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG1];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER6_CONFIG1] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG1];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER7_CONFIG1] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG1];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER8_CONFIG1] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG1];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER9_CONFIG1] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG1];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER10_CONFIG1] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG1];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER11_CONFIG1] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG1];
+  
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER1_CONFIG2] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG2];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER2_CONFIG2] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG2];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER3_CONFIG2] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG2];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER4_CONFIG2] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG2];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER5_CONFIG2] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG2];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER6_CONFIG2] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG2];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER7_CONFIG2] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG2];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER8_CONFIG2] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG2];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER9_CONFIG2] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG2];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER10_CONFIG2] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG2];
+    PICA.commands[PICA.GPUREG_ATTRIBBUFFER11_CONFIG2] = PICA.commands[PICA.GPUREG_ATTRIBBUFFER0_CONFIG2];
+  
+    PICA.commands[PICA.GPUREG_INDEXBUFFER_CONFIG] = function (command) {
+        initialAttributes(this);
+        if (!this.attributes.indices) {
+            this.attributes.indices = {};
+        }
+        this.attributes.indices.offset = command.parameters[0] & 0x7ffffff; // TODO: correct 27 bit?
+        this.attributes.indices.is16Bit = (command.parameters[0] >> 31) !== 0;
+    };
+    
+    PICA.commands[PICA.GPUREG_NUMVERTICES] = function (command) {
+        initialAttributes(this);
+        this.attributes.verticesCount = command.parameters[0];
+    };
+    
+    PICA.commands[PICA.GPUREG_GEOSTAGE_CONFIG] = function (command) {
+        initialRendering(this);
+        this.rendering.usingGeometryShader = (command.parameters[0] & 0x2) !== 0;
+        this.rendering.drawingTriangleElements = (command.parameters[0] & 0x10) !== 0;
+    };
+    
+    PICA.commands[PICA.GPUREG_VERTEX_OFFSET] = function (command) {
+        this.vertices.offset = command.parameters[0];
+    };
+    
+    PICA.commands[PICA.GPUREG_POST_VERTEX_CACHE_NUM] = function (/*command*/) {
+        // TODO: post vertex cache
+    };
+    
+    PICA.commands[PICA.GPUREG_DRAWARRAYS] = function (command) {
+        if (this.draw && this.draw.array && command.parameters[0]) {
+            this.draw.array(this, command.parameters[0]);
+        }
+    };
+    
+    PICA.commands[PICA.GPUREG_DRAWELEMENTS] = function (command) {
+        if (this.draw && this.draw.elements && command.parameters[0]) {
+            this.draw.elements(this, command.parameters[0])
+        }
+        
+    };
+    
+    PICA.commands[PICA.GPUREG_VTX_FUNC] = function (/*command*/) {
+        // TODO: clear post vertex cache
+    };
+    
+    PICA.commands[PICA.GPUREG_FIXEDATTRIB_INDEX] = function (command) { 
+        initialAttributeFixeds(this);
+        this.attributes.fixeds.index = command.parameters[0] & 0xf; 
+    };
+
+    PICA.commands[PICA.GPUREG_FIXEDATTRIB_DATA0] = function (command) { 
+        initialAttributeFixeds(this);
+        initialAttributeFixedData(this);
+        this.attributes.fixeds.data[this.attributes.fixeds.index].words[0] = command.parameters[0]; 
+    };
+ 
+    PICA.commands[PICA.GPUREG_FIXEDATTRIB_DATA1] = function (command) { 
+        initialAttributeFixeds(this);
+        initialAttributeFixedData(this);
+        this.attributes.fixeds.data[this.attributes.fixeds.index].words[1] = command.parameters[0]; 
+    };
+ 
+    PICA.commands[PICA.GPUREG_FIXEDATTRIB_DATA2] = function (command) { 
+        initialAttributeFixeds(this);
+        initialAttributeFixedData(this);
+        this.attributes.fixeds.data[this.attributes.fixeds.index].words[2] = command.parameters[0]; 
+    };
+     
+    PICA.commands[PICA.GPUREG_CMDBUF_SIZE0] = function (command) {
+        this.commands.sizes[0] = command.parameters[0] & 0x3fffff;
+    };
+    
+    PICA.commands[PICA.GPUREG_CMDBUF_SIZE1] = function (command) {
+        this.commands.sizes[1] = command.parameters[0] & 0x3fffff;
+    };
+    
+    PICA.commands[PICA.GPUREG_CMDBUF_ADDR0] = function (command) {
+        this.commands.offsets[0] = command.parameters[0] & 0x3fffffff;
+    };
+    
+    PICA.commands[PICA.GPUREG_CMDBUF_ADDR1] = function (command) {
+        this.commands.offsets[1] = command.parameters[0] & 0x3fffffff;
+    };
+     
+    PICA.commands[PICA.GPUREG_CMDBUF_JUMP0] = function (command) {
+        if (command.parameters[0] !== 0) {
+            this.commands.current = this.commands.buffers[0];
+        }
+    };
+    
+    PICA.commands[PICA.GPUREG_CMDBUF_JUMP1] = function (command) {
+        if (command.parameters[0] !== 0) {
+            this.commands.current = this.commands.buffers[1];
+        }
+    };
+    
+    PICA.commands[PICA.GPUREG_VSH_NUM_ATTR] = function (command) { 
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderAttributes(this);
+        this.shader.vertex.attributes.count = (command.parameters[0] & 0xf) + 1; 
+    };
+
+    PICA.commands[PICA.GPUREG_VSH_COM_MODE] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        this.shader.vertex.usingGeometryConfiguration = (command.parameters[0] & 0x1) !== 0;
+    };
+    
+    PICA.commands[PICA.GPUREG_START_DRAW_FUNC0] = function (command) {
+        initialRendering(this);
+        this.rendering.drawing = (command.parameters[0] & 0x1) === 0;
+    };
+    
+    PICA.commands[PICA.GPUREG_VSH_OUTMAP_TOTAL1] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderOutputMap(this);
+        this.shader.vertex.outputMap.count = command.parameters[0] & 0xf;
+    };
+    
+    PICA.commands[PICA.GPUREG_VSH_OUTMAP_TOTAL2] =  PICA.commands[PICA.GPUREG_VSH_OUTMAP_TOTAL1];
+    
+    PICA.commands[PICA.GPUREG_GSH_MISC0] = function (/*command*/) {
+        // TODO: geometry misc
+    };
+    
+    PICA.commands[PICA.GPUREG_GEOSTAGE_CONFIG2] = function (command) {
+        initialRendering(this);
+        this.rendering.drawingElements = (command.parameters[0] & 0x1) === 0;
+        this.rendering.drawingArrays = (command.parameters[0] & 0x1) !== 0;
+        this.rendering.drawingTriangleElements = (command.parameters[0] & 0x10) !== 0;
+    };
+    
+    PICA.commands[PICA.GPUREG_PRIMITIVE_CONFIG] = function (command) {
+        initialRendering(this);
+        this.rendering.outputRegisters = (command.parameters[0] & 0xf) + 1;
+        this.rendering.primitiveMode = new PICA.PrimitiveMode(command.parameters[0] >> 8);
+    };
+    
+    PICA.commands[PICA.GPUREG_RESTART_PRIMITIVE] = function (command) {
+        if (command.parameters[0] & 0x1) {
+            initialRendering(this);
+            this.rendering.outputRegisters = 1;
+            this.rendering.primitiveMode = new PICA.PrimitiveMode(0);
+        }
+    };
+    
+    PICA.commands[PICA.GPUREG_GSH_BOOLUNIFORM] = function (command) {
+        initialShader(this);
+        initialGeometryShader(this);
+        this.shader.geometry.bools = [];
+        let value = command.parameters[0] % 0x100;
+        let looper = 0;
+        while (looper < 16) {
+            this.shader.geometry.bools[looper] = ((value >> looper) & 0x1) !== 0;
+            ++looper;
+        }
+    };
+    
+    PICA.commands[PICA.GPUREG_GSH_INTUNIFORM_I0] = function (command) {
+        initialShader(this);
+        initialGeometryShader(this);
+        initialGeometryShaderIntUnifrom(this);
+        this.shader.geometry.ints[0] = {
+            "x": command.parameters[0] % 0x100,
+            "y": Math.floor(command.parameters[0] / 0x100) & 0xff,
+            "z": Math.floor(command.parameters[0] / 0x10000) & 0xff,
+            "w": Math.floor(command.parameters[0] / 0x1000000) & 0xff,
+        };
+    };
+   
+    PICA.commands[PICA.GPUREG_GSH_INTUNIFORM_I1] = function (command) {
+        initialShader(this);
+        initialGeometryShader(this);
+        initialGeometryShaderIntUnifrom(this);
+        this.shader.geometry.ints[1] = {
+            "x": command.parameters[0] % 0x100,
+            "y": Math.floor(command.parameters[0] / 0x100) & 0xff,
+            "z": Math.floor(command.parameters[0] / 0x10000) & 0xff,
+            "w": Math.floor(command.parameters[0] / 0x1000000) & 0xff,
+        };
+    };
+   
+    PICA.commands[PICA.GPUREG_GSH_INTUNIFORM_I2] = function (command) {
+        initialShader(this);
+        initialGeometryShader(this);
+        initialGeometryShaderIntUnifrom(this);
+        this.shader.geometry.ints[2] = {
+            "x": command.parameters[0] % 0x100,
+            "y": Math.floor(command.parameters[0] / 0x100) & 0xff,
+            "z": Math.floor(command.parameters[0] / 0x10000) & 0xff,
+            "w": Math.floor(command.parameters[0] / 0x1000000) & 0xff,
+        };
+    };
+   
+    PICA.commands[PICA.GPUREG_GSH_INTUNIFORM_I3] = function (command) {
+        initialShader(this);
+        initialGeometryShader(this);
+        initialGeometryShaderIntUnifrom(this);
+        this.shader.geometry.ints[3] = {
+            "x": command.parameters[0] % 0x100,
+            "y": Math.floor(command.parameters[0] / 0x100) & 0xff,
+            "z": Math.floor(command.parameters[0] / 0x10000) & 0xff,
+            "w": Math.floor(command.parameters[0] / 0x1000000) & 0xff,
+        };
+    };
+  
+    PICA.commands[PICA.GPUREG_GSH_INPUTBUFFER_CONFIG] = function (command) {
+        initialShader(this);
+        initialGeometryShader(this);
+        this.shader.geometry.inputs = (command.parameters[0] & 0xf) + 1;
+        this.shader.geometry.enabled = ((command.parameters[0] >> 24) & 0xff) === 0x80;
+    };
+  
+    PICA.commands[PICA.GPUREG_GSH_ENTRYPOINT] = function (command) {
+        initialShader(this);
+        initialGeometryShader(this);
+        this.shader.geometry.entryPoint = command.parameters[0] & 0xffff;
+    };
+   
+    PICA.commands[PICA.GPUREG_GSH_ATTRIBUTES_PERMUTATION_LOW] = function (command) { 
+        initialShader(this);
+        initialGeometryShader(this);
+        initialGeometryShaderAttributes(this);
+        initialGeometryShaderAttributePermutations(this);
+        let looper = 0;
+        while (looper < 8) {
+            this.shader.geometry.attributes.permutations[looper] = Math.floor(command.parameters[0] / Math.pow(2, looper * 4)) % 0x10;
+            ++looper;
+        }
+    };
+   
+    PICA.commands[PICA.GPUREG_GSH_ATTRIBUTES_PERMUTATION_HIGH] = function (command) { 
+        initialShader(this);
+        initialGeometryShader(this);
+        initialGeometryShaderAttributes(this);
+        initialGeometryShaderAttributePermutations(this);
+        let looper = 0;
+        while (looper < 8) {
+            this.shader.geometry.attributes.permutations[looper + 8] = Math.floor(command.parameters[0] / Math.pow(2, looper * 4)) % 0x10;
+            ++looper;
+        }
+    };
+   
+    PICA.commands[PICA.GPUREG_GSH_OUTMAP_MASK] = function (command) {
+        initialShader(this);
+        initialGeometryShader(this);
+        initialGeometryShaderOutputMap(this);
+        let looper = 0;
+        while (looper < 16) {
+            this.shader.geometry.outputMap[looper] = ((command.parameters[0] >> looper) & 0x1) !== 0;
+            ++looper;
+        }
+    };
+    
+    PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_END] = function (command) {
+        if (command.parameters[0]) {
+            initialShader(this);
+            initialGeometryShader(this);
+            this.shader.geometry.codes.ready = true;
+        }
+    };
+     
+    PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_INDEX] = function (command) {
+        initialShader(this);
+        initialGeometryShader(this);
+        initialGeometryShaderFloatUnifrom(this);
+        this.shader.geometry.floats.index = command.parameters[0];
+    };
+    
+    PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA0] = function (command) {
+        initialShader(this);
+        initialGeometryShader(this);
+        initialGeometryShaderFloatUnifrom(this);
+        this.shader.geometry.floats.setValues(command.parameters);
+    };
+    
+    PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA1] = PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA2] = PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA3] = PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA4] = PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA5] = PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA6] = PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA7] = PICA.commands[PICA.GPUREG_GSH_FLOATUNIFORM_DATA0];
+    
+    PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_INDEX] = function (command) {
+        initialShader(this);
+        initialGeometryShader(this);
+        initialGeometryShaderCodes(this);
+        this.shader.geometry.codes.index = command.parameters[0] & 0x1fff;
+    };
+    
+    PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA0] = function (command) {
+        initialShader(this);
+        initialGeometryShader(this);
+        initialGeometryShaderCodes(this);
+        if (!this.shader.geometry.codes.data) {
+            this.shader.geometry.codes.data = [];
+        }
+        command.parameters.forEach((parameter) => {
+            this.shader.geometry.codes.data[this.shader.geometry.codes.index] = parameter;
+            ++this.shader.geometry.codes.index;
+        });
+    };
+    
+    PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA1] = PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA2] = PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA3] = PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA4] = PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA5] = PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA6] = PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA7] = PICA.commands[PICA.GPUREG_GSH_CODETRANSFER_DATA0];
+    
+    PICA.commands[PICA.GPUREG_GSH_OPDESCS_INDEX] = function (command) {
+        initialShader(this);
+        initialGeometryShader(this);
+        initialGeometryShaderOpdescs(this);
+        this.shader.geometry.opdescs.index = command.parameters[0] & 0x1fff;
+    };
+    
+    PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA0] = function (command) {
+        initialShader(this);
+        initialGeometryShader(this);
+        initialGeometryShaderOpdescs(this);
+        if (!this.shader.geometry.opdescs.data) {
+            this.shader.geometry.opdescs.data = [];
+        }
+        command.parameters.forEach((parameter) => {
+            this.shader.geometry.opdescs.data[this.shader.geometry.opdescs.index] = parameter;
+            ++this.shader.geometry.opdescs.index;
+        });
+    };
+    
+    PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA1] = PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA2] = PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA3] = PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA4] = PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA5] = PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA6] = PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA0];
+    PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA7] = PICA.commands[PICA.GPUREG_GSH_OPDESCS_DATA0];
+    
+    PICA.commands[PICA.GPUREG_VSH_BOOLUNIFORM] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        this.shader.vertex.bools = [];
+        let value = command.parameters[0] & 0xffff;
+        let looper = 0;
+        while (looper < 16) {
+            this.shader.vertex.bools[looper] = ((value >> looper) & 0x1) !== 0;
+            ++looper;
+        }
+    };
+    
+    PICA.commands[PICA.GPUREG_VSH_INTUNIFORM_I0] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderIntUnifrom(this);
+        this.shader.vertex.ints[0] = {
+            "x": command.parameters[0] % 0x100,
+            "y": Math.floor(command.parameters[0] / 0x100) & 0xff,
+            "z": Math.floor(command.parameters[0] / 0x10000) & 0xff,
+            "w": Math.floor(command.parameters[0] / 0x1000000) & 0xff,
+        };
+    };
+   
+    PICA.commands[PICA.GPUREG_VSH_INTUNIFORM_I1] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderIntUnifrom(this);
+        this.shader.vertex.ints[1] = {
+            "x": command.parameters[0] % 0x100,
+            "y": Math.floor(command.parameters[0] / 0x100) & 0xff,
+            "z": Math.floor(command.parameters[0] / 0x10000) & 0xff,
+            "w": Math.floor(command.parameters[0] / 0x1000000) & 0xff,
+        };
+    };
+   
+    PICA.commands[PICA.GPUREG_VSH_INTUNIFORM_I2] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderIntUnifrom(this);
+        this.shader.vertex.ints[2] = {
+            "x": command.parameters[0] % 0x100,
+            "y": Math.floor(command.parameters[0] / 0x100) & 0xff,
+            "z": Math.floor(command.parameters[0] / 0x10000) & 0xff,
+            "w": Math.floor(command.parameters[0] / 0x1000000) & 0xff,
+        };
+    };
+   
+    PICA.commands[PICA.GPUREG_VSH_INTUNIFORM_I3] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderIntUnifrom(this);
+        this.shader.vertex.ints[3] = {
+            "x": command.parameters[0] % 0x100,
+            "y": Math.floor(command.parameters[0] / 0x100) & 0xff,
+            "z": Math.floor(command.parameters[0] / 0x10000) & 0xff,
+            "w": Math.floor(command.parameters[0] / 0x1000000) & 0xff,
+        };
+    };
+  
+    PICA.commands[PICA.GPUREG_VSH_INPUTBUFFER_CONFIG] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        this.shader.vertex.inputs = (command.parameters[0] & 0xf) + 1;
+    };
+    
+    PICA.commands[PICA.GPUREG_VSH_ENTRYPOINT] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        this.shader.vertex.entryPoint = command.parameters[0] & 0xffff;
+    };
+   
+    PICA.commands[PICA.GPUREG_VSH_ATTRIBUTES_PERMUTATION_LOW] = function (command) { 
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderAttributes(this);
+        initialVertexShaderAttributePermutations(this);
+        let looper = 0;
+        while (looper < 8) {
+            this.shader.vertex.attributes.permutations[looper] = Math.floor(command.parameters[0] / Math.pow(2, looper * 4)) % 0x10;
+            ++looper;
+        }
+    };
+   
+    PICA.commands[PICA.GPUREG_VSH_ATTRIBUTES_PERMUTATION_HIGH] = function (command) { 
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderAttributes(this);
+        initialVertexShaderAttributePermutations(this);
+        let looper = 0;
+        while (looper < 8) {
+            this.shader.vertex.attributes.permutations[looper + 8] = Math.floor(command.parameters[0] / Math.pow(2, looper * 4)) % 0x10;
+            ++looper;
+        }
+    };
+   
+    PICA.commands[PICA.GPUREG_VSH_OUTMAP_MASK] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderOutputMap(this);
+        let looper = 0;
+        while (looper < 16) {
+            if (!this.shader.vertex.outputMap[looper]) {
+                this.shader.vertex.outputMap[looper] = {};
+            }
+            this.shader.vertex.outputMap[looper].enabled = ((command.parameters[0] >> looper) & 0x1) !== 0;
+            ++looper;
+        }
+    };
+    
+    PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_END] = function (command) {
+        if (command.parameters[0]) {
+            initialShader(this);
+            initialVertexShader(this);
+            this.shader.vertex.codes.ready = true;
+        }
+    };
+     
+    PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_INDEX] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderFloatUnifrom(this);
+        this.shader.vertex.floats.index = command.parameters[0];
+    };
+    
+    PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA0] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderFloatUnifrom(this);
+        this.shader.vertex.floats.setValues(command.parameters);
+    };
+    
+    PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA1] = PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA2] = PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA3] = PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA4] = PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA5] = PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA6] = PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA7] = PICA.commands[PICA.GPUREG_VSH_FLOATUNIFORM_DATA0];
+    
+    PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_INDEX] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderCodes(this);
+        this.shader.vertex.codes.index = command.parameters[0] & 0x1fff;
+    };
+    
+    PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA0] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderCodes(this);
+        if (!this.shader.vertex.codes.data) {
+            this.shader.vertex.codes.data = [];
+        }
+        command.parameters.forEach((parameter) => {
+            this.shader.vertex.codes.data[this.shader.vertex.codes.index] = parameter;
+            ++this.shader.vertex.codes.index;
+        });
+    };
+    
+    PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA1] = PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA2] = PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA3] = PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA4] = PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA5] = PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA6] = PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA7] = PICA.commands[PICA.GPUREG_VSH_CODETRANSFER_DATA0];
+    
+    PICA.commands[PICA.GPUREG_VSH_OPDESCS_INDEX] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderOpdescs(this);
+        this.shader.vertex.opdescs.index = command.parameters[0] & 0x1fff;
+    };
+    
+    PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA0] = function (command) {
+        initialShader(this);
+        initialVertexShader(this);
+        initialVertexShaderOpdescs(this);
+        if (!this.shader.vertex.opdescs.data) {
+            this.shader.vertex.opdescs.data = [];
+        } 
+        command.parameters.forEach((parameter) => {
+            this.shader.vertex.opdescs.data[this.shader.vertex.opdescs.index] = parameter;
+            ++this.shader.vertex.opdescs.index;
+        });
+    };
+    
+    PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA1] = PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA2] = PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA3] = PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA4] = PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA5] = PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA6] = PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA0];
+    PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA7] = PICA.commands[PICA.GPUREG_VSH_OPDESCS_DATA0];
+    
+    const Float24Vector = function Float24Vector() {
+        Object.defineProperty(this, "words", {
+            "value": []
+        });
+    };
+    
+    Float24Vector.getFloat = function (value) {
+        
+        let result;
+        if ((value & 0x7fffff) !== 0) {
+            
+            let mantissa = value & 0xffff;
+            let exponent = ((value >> 16) & 0x7f) + 64;
+            let signBit = (value >> 23) & 1;
+            
+            result = mantissa << 7;
+            result |= exponent << 23;
+            result |= signBit << 31;
+            
+        } else {
+            result = (value & 0x800000) << 8;
+        }
+
+        return PICA.Float32Vector.asFloat32(result);
+    };
+     
+    Object.defineProperty(Float24Vector.prototype, "x", {
+        "enumerable": true,
+        "get": function () {
+            let word2 = this.words[2]; if ($.is.nil(word2)) word2 = 0;
+            return Float24Vector.getFloat(word2 & 0xffffff);
+        }
+    });
+    
+    Object.defineProperty(Float24Vector.prototype, "y", {
+        "enumerable": true,
+        "get": function () {
+            let word2 = this.words[2]; if ($.is.nil(word2)) word2 = 0;
+            let word1 = this.words[1]; if ($.is.nil(word1)) word1 = 0;
+            let value = ((word2 >> 24) & 0xff) | ((word1 & 0xffff) << 8);
+            return Float24Vector.getFloat(value);
+        }
+    });
+     
+    Object.defineProperty(Float24Vector.prototype, "z", {
+        "enumerable": true,
+        "get": function () {
+            let word1 = this.words[1]; if ($.is.nil(word1)) word1 = 0;
+            let word0 = this.words[0]; if ($.is.nil(word0)) word0 = 0;
+            return Float24Vector.getFloat((word1 >> 16) & 0xffff | ((word0 & 0xff) << 16));
+        }
+    });
+    
+    Object.defineProperty(Float24Vector.prototype, "w", {
+        "enumerable": true,
+        "get": function () {
+            let word0 = this.words[0]; if ($.is.nil(word0)) word0 = 0;
+            return Float24Vector.getFloat((word0 >> 8) & 0xffffff);
+        }
+    });
+      
+    Object.defineProperty(Float24Vector.prototype, "0", {
+        "get": function () {
+            return this.x;
+        }
+    });
+      
+    Object.defineProperty(Float24Vector.prototype, "1", {
+        "get": function () {
+            return this.y;
+        }
+    });
+      
+    Object.defineProperty(Float24Vector.prototype, "2", {
+        "get": function () {
+            return this.z;
+        }
+    });
+     
+    Object.defineProperty(Float24Vector.prototype, "3", {
+        "get": function () {
+            return this.w;
+        }
+    });
+     
+    const Float32Vector = function Float32Vector() {
+        Object.defineProperty(this, "words", {
+            "value": []
+        });
+    };
+     
+    Float32Vector.asFloat32 = function (value) {
+         
+        const dataView = new DataView(new ArrayBuffer(4));
+         
+        if (value >= 0) {
+            dataView.setUint32(0, value, true);
+        } else {
+            dataView.setInt32(0, value, true);
+        }
+         
+        return dataView.getFloat32(0, true);
+         
+    };
+    
+    Object.defineProperty(Float32Vector.prototype, "x", {
+        "enumerable": true,
+        "get": function () {
+            return Float32Vector.asFloat32(this.words[3]);    
+        }
+    });
+     
+    Object.defineProperty(Float32Vector.prototype, "y", {
+        "enumerable": true,
+        "get": function () {
+            return Float32Vector.asFloat32(this.words[2]);    
+        }
+    });
+     
+    Object.defineProperty(Float32Vector.prototype, "z", {
+        "enumerable": true,
+        "get": function () {
+            return Float32Vector.asFloat32(this.words[1]);    
+        }
+    });
+    
+    Object.defineProperty(Float32Vector.prototype, "w", {
+        "enumerable": true,
+        "get": function () {
+            return Float32Vector.asFloat32(this.words[0]);    
+        }
+    });
+    
+    Object.defineProperty(Float32Vector.prototype, "0", {
+        "get": function () {
+            return this.x;
+        }
+    });
+     
+    Object.defineProperty(Float32Vector.prototype, "1", {
+        "get": function () {
+            return this.y;
+        }
+    });
+     
+    Object.defineProperty(Float32Vector.prototype, "2", {
+        "get": function () {
+            return this.z;
+        }
+    });
+    
+    Object.defineProperty(Float32Vector.prototype, "3", {
+        "get": function () {
+            return this.w;
+        }
+    });
+    
+    const Color = function Color(reader) {
+        if ($.is(reader, Number)) {
+            this.r = reader % 0x100;
+            this.g = Math.floor(reader / 256) % 0x100;
+            this.b = Math.floor(reader / 256 / 256) % 0x100;
+            this.a = Math.floor(reader / 256 / 256 / 256) % 0x100;
+        } else {
+            this.r = reader.readUint8();
+            this.g = reader.readUint8();
+            this.b = reader.readUint8();
+            this.a = reader.readUint8();
+        }
+    };
+    
+    const ColorOperation = function ColorOperation(code) {
+        this.fragmentOperationMode = new PICA.FragmentOperationMode((code >> 0) & 3);
+        this.blendMode = new PICA.BlendMode((code >> 8) & 1);
+    };
+    
+    const BlendFunction = function BlendFunction(code) {
+        this.colorEquation = new PICA.BlendEquation((code >> 0) & 7);
+        this.alphaEquation = new PICA.BlendEquation((code >> 8) & 7);
+        this.colorSourceFunction = new PICA.BlendFunctionOperation((code >> 16) & 0xf);
+        this.colorDestinationFunction = new PICA.BlendFunctionOperation((code >> 20) & 0xf);
+        this.alphaSourceFunction = new PICA.BlendFunctionOperation((code >> 24) & 0xf);
+        this.alphaDestinationFunction = new PICA.BlendFunctionOperation((code >> 28) & 0xf);
+    };
+    
+    const BlendFunctionOperation = function BlendFunctionOperation(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    BlendFunctionOperation.ZERO = 0;
+    BlendFunctionOperation.ONE = 1;
+    BlendFunctionOperation.SOURCE_COLOR = 2;
+    BlendFunctionOperation.ONE_MINUS_SOURCE_COLOR = 3;
+    BlendFunctionOperation.DESTINATION_COLOR = 4;
+    BlendFunctionOperation.ONE_MINUS_DESTINATION_COLOR = 5;
+    BlendFunctionOperation.SOURCE_ALPHA = 6;
+    BlendFunctionOperation.ONE_MINUS_SOURCE_ALPHA = 7;
+    BlendFunctionOperation.DESTINATION_ALPHA = 8;
+    BlendFunctionOperation.ONE_MINUS_DESTINATION_ALPHA = 9;
+    BlendFunctionOperation.CONSTANT_COLOR = 10;
+    BlendFunctionOperation.ONE_MINUS_CONSTANT_COLOR = 11;
+    BlendFunctionOperation.CONSTANT_ALPHA = 12;
+    BlendFunctionOperation.ONE_MINUS_CONSTANT_ALPHA = 13;
+    BlendFunctionOperation.SOURCE_ALPHA_SATURATE = 14;
+    
+    const AlphaTest = function AlphaTest(code) {
+        this.enabled = (code & 1) !== 0;
+        this.testFunction = new PICA.TestFunction((code >> 4) & 7);
+        this.reference = (code >> 8);
+    };
+    
+    const StencilTest = function StencilTest(code) {
+        this.enabled = (code & 1) !== 0;
+        this.testFunction = new PICA.TestFunction((code >> 4) & 7);
+        this.bufferMask = (code >> 8) & 0xff;
+        this.reference = (code >> 16) & 0xff;
+        this.mask = (code >> 24) & 0xff;
+    };
+    
+    const StencilOperation = function StencilOperation(code) {
+        this.failOperation = new PICA.StencilOperationAction((code >> 0) & 7);
+        this.zFailOperation = new PICA.StencilOperationAction((code >> 4) & 7);
+        this.zPassOperation = new PICA.StencilOperationAction((code >> 8) & 7);
+    };
+    
+    const StencilOperationAction = function StencilOperationAction(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    StencilOperationAction.KEEP = 0;
+    StencilOperationAction.ZERO = 1;
+    StencilOperationAction.REPLACE = 2;
+    StencilOperationAction.INCREMENT = 3;
+    StencilOperationAction.DECREMENT = 4;
+    StencilOperationAction.INVERT = 5;
+    StencilOperationAction.INCREMENT_WRAP = 6;
+    StencilOperationAction.DECREMENT_WRAP = 7;
+    
+    const DepthColorMask = function DepthColorMask(code) {
+        this.enabled = (code & 1) !== 0;
+        this.depthFunction = new PICA.TestFunction((code >> 4) & 7);
+        this.redWrite = (code & 0x0100) !== 0;
+        this.greenWrite = (code & 0x0200) !== 0;
+        this.blueWrite = (code & 0x0400) !== 0;
+        this.alphaWrite = (code & 0x0800) !== 0;
+        this.depthWrite = (code & 0x1000) !== 0;
+    };
+    
+    const LogicalOperation = function LogicalOperation(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    LogicalOperation.CLEAR = 0;
+    LogicalOperation.AND = 1;
+    LogicalOperation.AND_REVERSE = 2;
+    LogicalOperation.COPY = 3;
+    LogicalOperation.SET = 4;
+    LogicalOperation.COPY_INVERTED = 5;
+    LogicalOperation.NOOP = 6;
+    LogicalOperation.INVERT = 7;
+    LogicalOperation.NAND = 8;
+    LogicalOperation.OR = 9;
+    LogicalOperation.NOR = 10;
+    LogicalOperation.XOR = 11;
+    LogicalOperation.EQUIV = 12;
+    LogicalOperation.AND_INVERTED = 13;
+    LogicalOperation.OR_REVERSE = 14;
+    LogicalOperation.OR_INVERTED = 15;
+    LogicalOperation.OR_INVERTED = 15;
+    
+    const FaceCulling = function FaceCulling(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    FaceCulling.NEVER = 0;
+    FaceCulling.FRONT_FACE = 1;
+    FaceCulling.BACK_FACE = 2;
+    
+    const FragmentOperationMode = function FragmentOperationMode(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    FragmentOperationMode.DEFAULT = 0;
+    FragmentOperationMode.GAS = 1;
+    FragmentOperationMode.SHADOW = 3;
+    
+    const BlendMode = function BlendMode(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    }
+    
+    BlendMode.LOGICAL_OPERATION = 0;
+    BlendMode.BLEND = 1;
+    
+    const BlendEquation = function BlendEquation(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    BlendEquation.ADD = 0;
+    BlendEquation.SUBTRACT = 1;
+    BlendEquation.REVERSE_SUBTRACT = 2;
+    BlendEquation.MIN = 3;
+    BlendEquation.MAX = 4;
+    
+    const TestFunction = function TestFunction(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    TestFunction.NEVER = 0;
+    TestFunction.ALWAYS = 1;
+    TestFunction.EQUAL_TO = 2;
+    TestFunction.NOT_EQUAL_TO = 3;
+    TestFunction.LESS_THAN = 4;
+    TestFunction.LESS_THAN_OR_EQUAL_TO = 5;
+    TestFunction.GREATER_THAN = 6;
+    TestFunction.GREATER_THAN_OR_EQUAL_TO = 7;
+    
+    const LightingLUTInputAbsolute = function LightingLUTInputAbsolute(code) {
+        this.dist0 = (code & 0x00000002) === 0;
+        this.dist1 = (code & 0x00000020) === 0;
+        this.specular = (code & 0x00000200) === 0;
+        this.fresnel = (code & 0x00002000) === 0;
+        this.reflectR = (code & 0x00020000) === 0;
+        this.reflectG = (code & 0x00200000) === 0;
+        this.reflectB = (code & 0x02000000) === 0;     
+    };
+    
+    const LightingLUTInputSelection = function LightingLUTInputSelection(code) {
+        this.dist0 = new PICA.LightingLUTInputSelectionChoice((code >> 0)  & 7);
+        this.dist1 = new PICA.LightingLUTInputSelectionChoice((code >> 4)  & 7);
+        this.specular = new PICA.LightingLUTInputSelectionChoice((code >> 8)  & 7);
+        this.fresnel = new PICA.LightingLUTInputSelectionChoice((code >> 12) & 7);
+        this.reflectR = new PICA.LightingLUTInputSelectionChoice((code >> 16) & 7);
+        this.reflectG = new PICA.LightingLUTInputSelectionChoice((code >> 20) & 7);
+        this.reflectB = new PICA.LightingLUTInputSelectionChoice((code >> 24) & 7);
+    };
+    
+    const LightingLUTInputSelectionChoice = function LightingLUTInputSelectionChoice(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    LightingLUTInputSelectionChoice.NORMAL_HALF = 0;
+    LightingLUTInputSelectionChoice.VIEW_HALF = 1;
+    LightingLUTInputSelectionChoice.NORMAL_VIEW = 2;
+    LightingLUTInputSelectionChoice.LIGHT_NORMAL = 3;
+    LightingLUTInputSelectionChoice.LIGHT_SPOT = 4;
+    LightingLUTInputSelectionChoice.PHI = 5;
+    
+    const LightingLUTInputScale = function LightingLUTInputScale(code) {
+        this.dist0 = new PICA.LightingLUTInputScaleMode((code >> 0)  & 7);
+        this.dist1 = new PICA.LightingLUTInputScaleMode((code >> 4)  & 7);
+        this.specular = new PICA.LightingLUTInputScaleMode((code >> 8)  & 7);
+        this.fresnel = new PICA.LightingLUTInputScaleMode((code >> 12) & 7);
+        this.reflectR = new PICA.LightingLUTInputScaleMode((code >> 16) & 7);
+        this.reflectG = new PICA.LightingLUTInputScaleMode((code >> 20) & 7);
+        this.reflectB = new PICA.LightingLUTInputScaleMode((code >> 24) & 7); 
+    };
+    
+    const LightingLUTInputScaleMode = function LightingLUTInputScaleMode(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    LightingLUTInputScaleMode.ONE = 0;
+    LightingLUTInputScaleMode.TWO = 1;
+    LightingLUTInputScaleMode.FOUR = 2;
+    LightingLUTInputScaleMode.EIGHT = 3;
+    LightingLUTInputScaleMode.QUARTER = 6;
+    LightingLUTInputScaleMode.HALF = 7;
+    
+    const PrimitiveMode = function PrimitiveMode(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    PrimitiveMode.TRIANGLES = 0;
+    PrimitiveMode.TRIANGLES_STRIP = 1;
+    PrimitiveMode.TRIANGLES_FAN = 2;
+    PrimitiveMode.GEOMETRY = 3;
+    
+    const AttributeName = function AttributeName(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    AttributeName.POSITION = 0;
+    AttributeName.NORMAL = 1;
+    AttributeName.TANGENT = 2;
+    AttributeName.COLOR = 3;
+    AttributeName.TEXTURE_COORDINATE_0 = 4;
+    AttributeName.TEXTURE_COORDINATE_1 = 5;
+    AttributeName.TEXTURE_COORDINATE_2 = 6;
+    AttributeName.BONE_INDEX = 7;
+    AttributeName.BONE_WEIGHT = 8;
+    AttributeName.USER_ATTRIBUTE_0 = 9;
+    AttributeName.USER_ATTRIBUTE_1 = 10;
+    AttributeName.USER_ATTRIBUTE_2 = 11;
+    AttributeName.USER_ATTRIBUTE_3 = 12;
+    AttributeName.USER_ATTRIBUTE_4 = 13;
+    AttributeName.USER_ATTRIBUTE_5 = 14;
+    AttributeName.USER_ATTRIBUTE_6 = 15;
+    AttributeName.USER_ATTRIBUTE_7 = 16;
+    AttributeName.USER_ATTRIBUTE_8 = 17;
+    AttributeName.USER_ATTRIBUTE_9 = 18;
+    AttributeName.USER_ATTRIBUTE_10 = 19;
+    AttributeName.USER_ATTRIBUTE_11 = 20;
+    AttributeName.INTERLEAVE = 21;
+    
+    const AttributeFormat = function AttributeFormat(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    AttributeFormat.INT_8 = 0;
+    AttributeFormat.UINT_8 = 1,
+    AttributeFormat.INT_16 = 2;
+    AttributeFormat.FLOAT_32 = 3;
+    
+    AttributeFormat.normalizationScale = function (format) {
+        
+        let code = format;
+        if (format.code) {
+            code = format.code;
+        }
+        
+        switch (code) {
+            case AttributeFormat.INT_8: return 1 / 127;
+            case AttributeFormat.UINT_8: return 1 / 255;
+            case AttributeFormat.INT_16: return 1 / 32767;
+            case AttributeFormat.FLOAT_32: return 1;
+            default: return 1;
+        }
+        
+    };
+    
+    const TextureCombinerSource = function TextureCombinerSource(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    TextureCombinerSource.PRIMARY_COLOR = 0;
+    TextureCombinerSource.FRAGMENT_PRIMARY_COLOR = 1;
+    TextureCombinerSource.FRAGMENT_SECONDARY_COLOR = 2;
+    TextureCombinerSource.TEXTURE_0 = 3;
+    TextureCombinerSource.TEXTURE_1 = 4;
+    TextureCombinerSource.TEXTURE_2 = 5;
+    TextureCombinerSource.TEXTURE_3 = 6;
+    TextureCombinerSource.PREVIOUS_BUFFER = 13;
+    TextureCombinerSource.CONSTANT = 14;
+    TextureCombinerSource.PREVIOUS = 15;
+    
+    const RenderingStage = function RenderingStage() {
+    };
+    
+    Object.defineProperty(RenderingStage.prototype, "isColorPassThrough", {
+        "get": function () {
+            return ((this.mode.color.code === PICA.TextureCombinerMode.REPLACE) &&
+                    (this.source.color[0].code === PICA.TextureCombinerSource.PREVIOUS) &&
+                    (this.operand.color[0].code === PICA.TextureCombinerColor.COLOR) &&
+                    (this.scale.color.code === PICA.TextureCombinerScale.ONE));
+        }
+    });
+
+    Object.defineProperty(RenderingStage.prototype, "isAlphaPassThrough", {
+        "get": function () {
+            return ((this.mode.alpha.code === PICA.TextureCombinerMode.REPLACE) &&
+                    (this.source.alpha[0].code === PICA.TextureCombinerSource.PREVIOUS) &&
+                    (this.operand.alpha[0].code === PICA.TextureCombinerAlpha.ALPHA) &&
+                    (this.scale.alpha.code === PICA.TextureCombinerScale.ONE));
+        }
+    });
+    
+    const RenderingSource = function RenderingSource(code) {
+         
+        this.color = [
+            new PICA.TextureCombinerSource((code >> 0) & 0xf),
+            new PICA.TextureCombinerSource((code >> 4) & 0xf),
+            new PICA.TextureCombinerSource((code >> 8) & 0xf)
+        ];
+        
+        this.alpha = [
+            new PICA.TextureCombinerSource((code >> 16) & 0xf),
+            new PICA.TextureCombinerSource((code >> 20) & 0xf),
+            new PICA.TextureCombinerSource((code >> 24) & 0xf)
+        ];
+        
+    };
+     
+    const RenderingOperand = function RenderingOperand(code) {
+         
+        this.color = [
+            new PICA.TextureCombinerColor((code >> 0) & 0xf),
+            new PICA.TextureCombinerColor((code >> 4) & 0xf),
+            new PICA.TextureCombinerColor((code >> 8) & 0xf)
+        ];
+        
+        this.alpha = [
+            new PICA.TextureCombinerAlpha((code >> 12) & 0x7),
+            new PICA.TextureCombinerAlpha((code >> 16) & 0x7),
+            new PICA.TextureCombinerAlpha((code >> 20) & 0x7)
+        ];
+        
+    };
+    
+    const RenderingScale = function RenderingScale(code) {
+        
+        this.color = new PICA.TextureCombinerScale((code >> 0) & 0x3);
+        this.alpha = new PICA.TextureCombinerScale((code >> 16) & 0x3);
+        
+    };
+    
+    const RenderingMode = function RenderingMode(code) {
+         
+        this.color = new PICA.TextureCombinerMode((code >> 0) & 0xf);
+        this.alpha = new PICA.TextureCombinerMode((code >> 16) & 0xf);
+        
+    };
+    
+    const TextureCombinerAlpha = function TextureCombinerAlpha(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    TextureCombinerAlpha.ALPHA = 0;
+    TextureCombinerAlpha.ONE_MINUS_ALPHA = 1;
+    TextureCombinerAlpha.RED = 2;
+    TextureCombinerAlpha.ONE_MINUS_RED = 3;
+    TextureCombinerAlpha.GREEN = 4;
+    TextureCombinerAlpha.ONE_MINUS_GREEN = 5;
+    TextureCombinerAlpha.BLUE = 6;
+    TextureCombinerAlpha.ONE_MINUS_BLUE = 7;
+    
+    const TextureCombinerColor = function TextureCombinerColor(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    TextureCombinerColor.COLOR = 0;
+    TextureCombinerColor.ONE_MINUS_COLOR = 1;
+    TextureCombinerColor.ALPHA = 2;
+    TextureCombinerColor.ONE_MINUS_ALPHA = 3;
+    TextureCombinerColor.RED = 4;
+    TextureCombinerColor.ONE_MINUS_RED = 5;
+    TextureCombinerColor.GREEN = 8;
+    TextureCombinerColor.ONE_MINUS_GREEN = 9;
+    TextureCombinerColor.BLUE = 12;
+    TextureCombinerColor.ONE_MINUS_BLUE = 13;
+    
+    const TextureCombinerMode = function TextureCombinerMode(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    TextureCombinerMode.REPLACE = 0;
+    TextureCombinerMode.MODULATE = 1;
+    TextureCombinerMode.ADD = 2;
+    TextureCombinerMode.ADD_SIGNED = 3;
+    TextureCombinerMode.INTERPOLATE = 4;
+    TextureCombinerMode.SUBTRACT = 5;
+    TextureCombinerMode.DOT_PRODUCT_3_RGB = 6;
+    TextureCombinerMode.DOT_PRODUCT_3_RGBA = 7;
+    TextureCombinerMode.MUL_ADD = 8;
+    TextureCombinerMode.ADD_MUL = 9;
+    
+    const TextureCombinerScale = function TextureCombinerScale(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    TextureCombinerScale.ONE = 0;
+    TextureCombinerScale.TWO = 1;
+    TextureCombinerScale.FOUR = 2;
+    
+    const ShaderOutputRegister = function ShaderOutputRegister(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    ShaderOutputRegister.POSITION = 0;
+    ShaderOutputRegister.QUAT_NORMAL = 1;
+    ShaderOutputRegister.COLOR = 2;
+    ShaderOutputRegister.TEXTURE_COORDINATE_0 = 3;
+    ShaderOutputRegister.TEXTURE_COORDINATE_0_W = 4;
+    ShaderOutputRegister.TEXTURE_COORDINATE_1 = 5;
+    ShaderOutputRegister.TEXTURE_COORDINATE_2 = 6;
+    ShaderOutputRegister.VIEW = 8;
+    ShaderOutputRegister.GENERIC= 9;
+    
+    const TextureWrap = function TextureWrap(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    TextureWrap.CLAMP_TO_EDGE = 0;
+    TextureWrap.CLAMP_TO_BORDER = 1;
+    TextureWrap.REPEAT = 2;
+    TextureWrap.MIRROR = 3;
+    
+    const TextureFilter = function TextureFilter(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    TextureFilter.NEAREST = 0;
+    TextureFilter.LINEAR = 1;
+    
+    const TextureType = function TextureType(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    TextureType["2D"] = 0;
+    TextureType.CUBE_MAP = 1;
+    TextureType.SHADOW_2D = 2;
+    TextureType.PROJECTION = 3;
+    TextureType.SHADOW_CUBE = 4;
+    TextureType.DISABLED = 5;
+    
+    const LUTType = function LUTType(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    LUTType.DIST_0 = 0;
+    LUTType.DIST_1 = 1;
+    LUTType.FRESNEL = 3;
+    LUTType.REFLECT_R = 4;
+    LUTType.REFLECT_G = 5;
+    LUTType.REFLECT_B = 6;
+    LUTType.SPEC_0 = 8;
+    LUTType.SPEC_1 = 9;
+    LUTType.SPEC_2 = 10;
+    LUTType.SPEC_3 = 11;
+    LUTType.SPEC_4 = 12;
+    LUTType.SPEC_5 = 13;
+    LUTType.SPEC_6 = 14;
+    LUTType.SPEC_7 = 15;
+    LUTType.DIST_ATT_0 = 16;
+    LUTType.DIST_ATT_1 = 17;
+    LUTType.DIST_ATT_2 = 18;
+    LUTType.DIST_ATT_3 = 19;
+    LUTType.DIST_ATT_4 = 20;
+    LUTType.DIST_ATT_5 = 21;
+    LUTType.DIST_ATT_6 = 22;
+    LUTType.DIST_ATT_7 = 23;
+    
+    PICA.Float24Vector = Float24Vector;
+    PICA.Float32Vector = Float32Vector;
+    
+    PICA.Color = Color;
+    PICA.ColorOperation = ColorOperation;
+    PICA.BlendFunction = BlendFunction;
+    PICA.BlendFunctionOperation = BlendFunctionOperation;
+    PICA.AlphaTest = AlphaTest;
+    PICA.StencilTest = StencilTest;
+    PICA.StencilOperation = StencilOperation;
+    PICA.StencilOperationAction = StencilOperationAction;
+    PICA.DepthColorMask = DepthColorMask;
+    
+    PICA.LogicalOperation = LogicalOperation;
+    PICA.FaceCulling = FaceCulling;
+    PICA.FragmentOperationMode = FragmentOperationMode;
+    PICA.BlendMode = BlendMode;
+    PICA.BlendEquation = BlendEquation;
+    PICA.TestFunction = TestFunction;
+    PICA.PrimitiveMode = PrimitiveMode;
+    PICA.AttributeName = AttributeName;
+    PICA.AttributeFormat = AttributeFormat;
+    
+    PICA.LightingLUTInputAbsolute = LightingLUTInputAbsolute;
+    PICA.LightingLUTInputSelection = LightingLUTInputSelection;
+    PICA.LightingLUTInputSelectionChoice = LightingLUTInputSelectionChoice;
+    PICA.LightingLUTInputScale = LightingLUTInputScale;
+    PICA.LightingLUTInputScaleMode = LightingLUTInputScaleMode;
+    
+    PICA.RenderingStage = RenderingStage;
+    PICA.RenderingSource = RenderingSource;
+    PICA.RenderingOperand = RenderingOperand;
+    PICA.RenderingScale = RenderingScale;
+    PICA.RenderingMode = RenderingMode;
+    
+    PICA.TextureCombinerSource = TextureCombinerSource;
+    PICA.TextureCombinerAlpha = TextureCombinerAlpha;
+    PICA.TextureCombinerColor = TextureCombinerColor;
+    PICA.TextureCombinerMode = TextureCombinerMode;
+    PICA.TextureCombinerScale = TextureCombinerScale;
+    
+    PICA.ShaderOutputRegister = ShaderOutputRegister;
+
+    PICA.TextureWrap = TextureWrap;
+    PICA.TextureFilter = TextureFilter;
+    PICA.TextureType = TextureType;
+    
+    PICA.LUTType = LUTType;
+    
+    module.exports = PICA;
+    
+})(this, this.$);

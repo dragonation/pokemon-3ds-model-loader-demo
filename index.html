@@ -1,4 +1,94 @@
-<!DOCTYPE html> <html xmlns="http://www.w3.org/1999/xhtml"> <head> <meta charset="utf-8"/> <meta http-equiv="X-UA-Compatible" content="IE=edge"/> <meta name="description" content="Pokemon Models"/> <meta name="author" content="Minun"/> <meta name="robots" content="noindex, nofollow"/> <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/> <meta name="query" space="query" debug="yes" accelerate="yes" starter="./scripts/ready.js"/>  <meta name="query.ready" script="./scripts/debug.js"/> <meta name="query.ready" script="./scripts/app.js"/> <meta name="query.ready" script="./scripts/test.js"/> <meta name="query.ready" script="./scripts/start.js"/>  <meta name="app" app-id="pokemon_world" app-name="Pokemon World"/> <title>Pokemon World</title> <link rel="stylesheet" href="./styles/base.css"/> <link rel="stylesheet" href="./styles/selection.css"/> <link rel="stylesheet" href="./styles/touch.css"/> <link rel="stylesheet" href="./styles/template.css"/> <link rel="stylesheet" href="./styles/font.css"/> <link rel="stylesheet" href="./styles/app.css"/> <link rel="stylesheet" href="./styles/sprite.css"/> <script src="./library/node.module/es5.js"></script><script src="./library/node.module/dom3.js"></script><script src="./library/node.module/index.js"></script><script src="./library/query.base/foundation.js"></script><script src="./library/query.base/ready.js"></script><script src="./library/query.base/module.js"></script><script src="./library/query.base/resource.js"></script><script src="./library/query.base/serialization.js"></script><script src="./library/query.lazy/index.js"></script><style>body{background-color:#fff;overflow:hidden}body>#loading{z-index:9999;position:absolute;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,.6);font-size:20px;font-weight:700;color:#ddd;text-align:center;vertical-align:middle;text-transform:uppercase;line-height:500px;opacity:0}body.loading>#loading{opacity:1;transform:none}shader{display:none}</style><shader id="PokeFire">
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+    <head>
+
+        <meta charset="utf-8"/>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+        <meta name="description" content="Pokemon Models"/>
+        <meta name="author" content="Minun"/>
+
+        <meta name="robots" content="noindex, nofollow"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0"/>
+
+        <meta name="query" space="query"
+              debug="yes" accelerate="yes"
+              starter="./scripts/ready.js"/>
+
+        <!--<meta name="query.resource" package="/lab.package/modules.json"/>-->
+
+        <meta name="query.ready" script="./scripts/debug.js"/>
+        <meta name="query.ready" script="./scripts/app.js"/>
+        <meta name="query.ready" script="./scripts/test.js"/>
+        <meta name="query.ready" script="./scripts/start.js"/>
+
+        <!--<meta name="kitty.default" url="/lab.ui"/>-->
+
+        <meta name="app" app-id="pokemon_world" app-name="Pokemon World"/>
+
+        <title>Pokemon World</title>
+
+        <link rel="stylesheet" href="./styles/base.css"/>
+        <link rel="stylesheet" href="./styles/selection.css"/>
+        <link rel="stylesheet" href="./styles/touch.css"/>
+        <link rel="stylesheet" href="./styles/template.css"/>
+        <link rel="stylesheet" href="./styles/font.css"/>
+        <link rel="stylesheet" href="./styles/app.css"/>
+        <link rel="stylesheet" href="./styles/sprite.css"/>
+
+
+        <script src="./library/node.module/es5.js"></script>
+        <script src="./library/node.module/dom3.js"></script>
+        <script src="./library/node.module/index.js"></script>
+
+        <script src="./library/query.base/foundation.js"></script>
+        <script src="./library/query.base/ready.js"></script>
+        <script src="./library/query.base/module.js"></script>
+        <script src="./library/query.base/resource.js"></script>
+        <script src="./library/query.base/serialization.js"></script>
+
+        <script src="./library/query.lazy/index.js"></script>
+
+        <style>
+
+body {
+    background-color: white;
+    overflow: hidden;
+}
+
+body > #loading {
+    z-index: 9999;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    font-size: 20px;
+    font-weight: bold;
+    color: #ddd;
+    text-align: center;
+    vertical-align: middle;
+    text-transform: uppercase;
+    line-height: 500px;
+    opacity: 0;
+}
+
+body.loading > #loading {
+    opacity: 1;
+    transform: none;
+}
+
+shader {
+    display: none;
+}
+            
+        </style>
+        
+        <shader id="PokeFire">
 // File: FireGeom_ghosGRE.gffsh
 // Type: Vertex Shader
 // Shader Name: PokeFire
@@ -221,4 +311,13 @@ void main() {
 }
 
                                                                                 // 0x07f: nop;
-</shader> </head> <body class="no-context-menu loading"> <div id="loading">Loading<div> </div></div></body> </html>
+
+        </shader>
+       
+    </head>
+
+    <body class="no-context-menu loading">
+        <div id="loading">Loading<div>
+    </body>
+
+</html>

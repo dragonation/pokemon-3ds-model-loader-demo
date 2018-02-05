@@ -1,1 +1,18 @@
-this.$,module.exports=function(i,t){if(this.magic=i.readString(8),this.magic!==t)throw new Error("Invalid magic "+this.magic+", expected: "+t);if(this.length=i.readUint32(),-1!==i.readInt32())throw new Error("Invalid section padding, expected -1")};
+((/* global, $ */) => {
+    
+    const Section = function Section(reader, expected) {
+        
+        this.magic = reader.readString(8);
+        if (this.magic !== expected) {
+            throw new Error("Invalid magic " + this.magic + ", expected: " + expected);
+        }
+        this.length = reader.readUint32();
+        if (reader.readInt32() !== -1) {
+            throw new Error("Invalid section padding, expected -1");
+        }
+        
+    };
+    
+    module.exports = Section;
+    
+})(this, this.$);

@@ -1,1 +1,870 @@
-(()=>{const t=require("./section.js"),e=[0,1,8,9,2,3,10,11,16,17,24,25,18,19,26,27,4,5,12,13,6,7,14,15,20,21,28,29,22,23,30,31,32,33,40,41,34,35,42,43,48,49,56,57,50,51,58,59,36,37,44,45,38,39,46,47,52,53,60,61,54,55,62,63],r=function(e){if(this.magic=e.readUint32(),1!==e.readUint32())throw new Error("Invalid texture version, expected 1");const r=new t(e,"texture");let n=e.index;const o=e.readUint32();e.skip(12,0),this.name=e.readString(64),this.width=e.readUint16(),this.height=e.readUint16(),this.format=e.readUint16(),this.mipmapSize=e.readUint16(),e.skip(16,255);const i=e.index;for(this.data=[];e.index<i+o;)this.data.push(e.readUint8());for(;e.index<n+r.length;)if(0!==e.readUint8())throw new Error("Invalid padding, expected 0")};r.readers={},r.RGB565=2,r.readers[r.RGB565]=function(t,r,n,o,i){let a=0,l=0;for(;l<o/8;){let r=0;for(;r<n/8;){let o=0;for(;o<64;){let f=e[o]%8,h=4*(8*r+f+(8*l+(e[o]-f)/8)*n),s=t[a]|t[a+1]<<8,d=(s>>11&31)<<3,u=(s>>5&63)<<2,c=(31&s)<<3;i[h]=255,i[h+1]=d|d>>5,i[h+2]=u|u>>6,i[h+3]=c|c>>5,a+=2,++o}++r}++l}},r.RGB8=3,r.readers[r.RGB8]=function(t,r,n,o,i){let a=0,l=0;for(;l<o/8;){let r=0;for(;r<n/8;){let o=0;for(;o<64;){let f=e[o]%8,h=4*(8*r+f+(8*l+(e[o]-f)/8)*n);i[h]=255,i[h+1]=t[a+2],i[h+2]=t[a+1],i[h+3]=t[a],a+=3,++o}++r}++l}},r.RGBA8=4,r.readers[r.RGBA8]=function(t,r,n,o,i){let a=0,l=0;for(;l<o/8;){let r=0;for(;r<n/8;){let o=0;for(;o<64;){let f=e[o]%8,h=4*(8*r+f+(8*l+(e[o]-f)/8)*n);i[h]=t[a],i[h+1]=t[a+3],i[h+2]=t[a+2],i[h+3]=t[a+1],a+=4,++o}++r}++l}},r.RGBA4=22,r.readers[r.RGBA4]=function(t,r,n,o,i){let a=0,l=0;for(;l<o/8;){let r=0;for(;r<n/8;){let o=0;for(;o<64;){let f=e[o]%8,h=4*(8*r+f+(8*l+(e[o]-f)/8)*n),s=65535&(t[a]|t[a+1]<<8),d=s>>12&15,u=s>>8&15,c=s>>4&15,m=15&s;i[h]=m|m<<4,i[h+1]=d|d<<4,i[h+2]=u|u<<4,i[h+3]=c|c<<4,a+=2,++o}++r}++l}},r.RGBA5551=23,r.LA8=35,r.readers[r.LA8]=function(t,r,n,o,i){let a=0,l=0;for(;l<o/8;){let r=0;for(;r<n/8;){let o=0;for(;o<64;){let f=e[o]%8,h=4*(8*r+f+(8*l+(e[o]-f)/8)*n);i[h]=t[a],i[h+1]=t[a+1],i[h+2]=t[a+1],i[h+3]=t[a+1],a+=2,++o}++r}++l}},r.HILO8=36,r.readers[r.HILO8]=r.readers[r.L8],r.L8=37,r.readers[r.L8]=function(t,r,n,o,i){let a=0,l=0;for(;l<o/8;){let r=0;for(;r<n/8;){let o=0;for(;o<64;){let f=e[o]%8,h=4*(8*r+f+(8*l+(e[o]-f)/8)*n);i[h]=255,i[h+1]=t[a],i[h+2]=t[a],i[h+3]=t[a],++a,++o}++r}++l}},r.A8=38,r.LA4=39,r.readers[r.LA4]=function(t,r,n,o,i){let a=0,l=0;for(;l<o/8;){let r=0;for(;r<n/8;){let o=0;for(;o<64;){let f=e[o]%8,h=4*(8*r+f+(8*l+(e[o]-f)/8)*n),s=15&t[a],d=t[a]>>4;i[h]=s<<4|s,i[h+1]=d<<4|d,i[h+2]=d<<4|d,i[h+3]=d<<4|d,++a,++o}++r}++l}},r.L4=40,r.readers[r.L4]=function(t,r,n,o,i){let a=0,l=!1,f=0;for(;f<o/8;){let r=0;for(;r<n/8;){let o=0;for(;o<64;){let h=e[o]%8,s=4*(8*r+h+(8*f+(e[o]-h)/8)*n),d=l?(240&t[a++])>>4:15&t[a];l=!l,d|=d<<4,i[s]=255,i[s+1]=d,i[s+2]=d,i[s+3]=d,++o}++r}++f}},r.A4=41,r.ETC1=42,r.readers[r.ETC1]=function(t,e,r,n,o){const i=[[-8,-2,2,8],[-17,-5,5,17],[-29,-9,9,29],[-42,-13,13,42],[-60,-18,18,60],[-80,-24,24,80],[-106,-33,33,106],[-183,-47,47,183]],a=function(t,e,r,n,o,a,l){let f=i[l][a[n]>>2*o&3];return[Math.min(Math.max(r+f,0),255),Math.min(Math.max(e+f,0),255),Math.min(Math.max(t+f,0),255)]},l=function(t){return t>127?t-256:t},f=[0,4,0,4],h=[0,0,4,4];let s=0,d=0;for(;d<n;){let e=0;for(;e<r;){let n=0;for(;n<4;){let i=function(e){let r,n,o,i,f,h,s=e,d=e+2,u=e+4,c=e+5,m=e+6,g=e+7,p=0!=(1&t[u]),x=0!=(2&t[u]),M=t[u]>>4&7,w=t[u]>>2&7,A=[t[s+1],t[s],t[d+1],t[d]],L=t[g],U=t[m],R=t[c];x?(o=248&R,o|=o>>5,n=248&U,n|=n>>5,r=248&L,r|=r>>5,h=(h=(R>>3)+(l((7&R)<<5)>>5))<<3|h>>2,f=(f=(U>>3)+(l((7&U)<<5)>>5))<<3|f>>2,i=(i=(L>>3)+(l((7&L)<<5)>>5))<<3|i>>2):(o=240&R,o|=o>>4,n=240&U,n|=n>>4,r=240&L,r|=r>>4,h=(15&R)<<4,h|=h>>4,f=(15&U)<<4,f|=f>>4,i=(15&L)<<4,i|=i>>4);let I=[];if(p){let t=0;for(;t<2;){let e=0;for(;e<4;){let l=a(r,n,o,e,t+0,A,M),s=4*(4*t+e);I[s+0]=l[2],I[s+1]=l[1],I[s+2]=l[0],I[s+3]=Math.round((l[2]+l[1]+l[0])/3),I[s+3]<68&&(I[s+3]=0);let d=a(i,f,h,e,t+2,A,w),u=4*(4*(t+2)+e);I[u+0]=d[2],I[u+1]=d[1],I[u+2]=d[0],I[u+3]=Math.round((d[2]+d[1]+d[0])/3),I[u+3]<68&&(I[u+3]=0),++e}++t}}else{let t=0;for(;t<4;){let e=0;for(;e<2;){let l=a(r,n,o,e+0,t,A,M),s=4*(4*t+e);I[s+0]=l[2],I[s+1]=l[1],I[s+2]=l[0],I[s+3]=Math.round((l[2]+l[1]+l[0])/3),I[s+3]<68&&(I[s+3]=0);let d=a(i,f,h,e+2,t,A,w),u=4*(4*t+e+2);I[u+0]=d[2],I[u+1]=d[1],I[u+2]=d[0],I[u+3]=Math.round((d[2]+d[1]+d[0])/3),I[u+3]<68&&(I[u+3]=0),++e}++t}}return I}(s);s+=8;let u=0,c=h[n];for(;c<4+h[n];){let t=f[n];for(;t<4+f[n];){let n=4*((d+c)*r+e+t);o[n+0]=i[u+3],o[n+1]=i[u+0],o[n+2]=i[u+1],o[n+3]=i[u+2],u+=4,++t}++c}++n}e+=8}d+=8}},r.ETC1A4=43,r.readers[r.ETC1A4]=function(t,e,r,n,o){const i=[[-8,-2,2,8],[-17,-5,5,17],[-29,-9,9,29],[-42,-13,13,42],[-60,-18,18,60],[-80,-24,24,80],[-106,-33,33,106],[-183,-47,47,183]],a=function(t,e,r,n,o,a,l){let f=i[l][a[n]>>2*o&3];return[Math.min(Math.max(r+f,0),255),Math.min(Math.max(e+f,0),255),Math.min(Math.max(t+f,0),255)]},l=function(e,r,n){let o=t[e+(r<<1)+(n>>1)]>>4*(1&n)&15;return o|o<<4},f=function(t){return t>127?t-256:t},h=[0,4,0,4],s=[0,0,4,4];let d=0,u=0;for(;u<n;){let e=0;for(;e<r;){let n=0;for(;n<4;){let i=function(e){let r,n,o,i,h,s,d=e+8,u=e+10,c=e+12,m=e+13,g=e+14,p=e+15,x=0!=(1&t[c]),M=0!=(2&t[c]),w=t[c]>>4&7,A=t[c]>>2&7,L=[t[d],t[d+1],t[u],t[u+1]],U=t[p],R=t[g],I=t[m];M?(o=248&I,o|=o>>5,n=248&R,n|=n>>5,r=248&U,r|=r>>5,s=(s=(I>>3)+(f((7&I)<<5)>>5))<<3|s>>2,h=(h=(R>>3)+(f((7&R)<<5)>>5))<<3|h>>2,i=(i=(U>>3)+(f((7&U)<<5)>>5))<<3|i>>2):(o=240&I,o|=o>>4,n=240&R,n|=n>>4,r=240&U,r|=r>>4,s=(15&I)<<4,s|=s>>4,h=(15&R)<<4,h|=h>>4,i=(15&U)<<4,i|=i>>4);let B=[];if(x){let t=0;for(;t<2;){let f=0;for(;f<4;){let d=a(r,n,o,f,t+0,L,w),u=4*(4*t+f);B[u+0]=d[2],B[u+1]=d[1],B[u+2]=d[0],B[u+3]=l(e,f,t+0);let c=a(i,h,s,f,t+2,L,A),m=4*(4*(t+2)+f);B[m+0]=c[2],B[m+1]=c[1],B[m+2]=c[0],B[m+3]=l(e,f,t+2),++f}++t}}else{let t=0;for(;t<4;){let f=0;for(;f<2;){let d=a(r,n,o,f+0,t,L,w),u=4*(4*t+f);B[u+0]=d[2],B[u+1]=d[1],B[u+2]=d[0],B[u+3]=l(e,f+0,t);let c=a(i,h,s,f+2,t,L,A),m=4*(4*t+f+2);B[m+0]=c[2],B[m+1]=c[1],B[m+2]=c[0],B[m+3]=l(e,f+2,t),++f}++t}}return B}(d);d+=16;let c=0,m=s[n];for(;m<4+s[n];){let t=h[n];for(;t<4+h[n];){let n=4*((u+m)*r+e+t);o[n+0]=i[c+3],o[n+1]=i[c+0],o[n+2]=i[c+1],o[n+3]=i[c+2],c+=4,++t}++m}++n}e+=8}u+=8}},r.prototype.getPixels=function(){if(r.readers[this.format]){let t=new Uint8Array(this.width*this.height*4);return r.readers[this.format](this.data,this.format,this.width,this.height,t),t}throw new Error("Unsupported texture file format "+this.format)},r.prototype.toImage=function(){const t=new Image;return t.title=this.name,t.src=this.toImageURL(),t},r.prototype.toImageURL=function(){return this.toCanvas().toDataURL()},r.prototype.toCanvas=function(){var t=document.createElement("canvas");t.width=this.width,t.height=this.height,t.name=this.name;var e=t.getContext("2d"),r=e.createImageData(this.width,this.height);let n=this.getPixels(),o=0;for(;o<n.length;)r.data[o]=n[o+1],r.data[o+1]=n[o+2],r.data[o+2]=n[o+3],r.data[o+3]=n[o],o+=4;return e.putImageData(r,0,0),t},module.exports=r})(this.$);
+((/* global, $ */) => {
+    
+    const Section = require("./section.js");
+    
+    const TILE_ORDER = [ 
+         0,  1,  8,  9,  2,  3, 10, 11, 
+        16, 17, 24, 25, 18, 19, 26, 27, 
+         4,  5, 12, 13,  6,  7, 14, 15, 
+        20, 21, 28, 29, 22, 23, 30, 31, 
+        32, 33, 40, 41, 34, 35, 42, 43, 
+        48, 49, 56, 57, 50, 51, 58, 59, 
+        36, 37, 44, 45, 38, 39, 46, 47, 
+        52, 53, 60, 61, 54, 55, 62, 63 
+    ];
+    
+    const Texture = function Texture(reader) {
+        
+        this.magic = reader.readUint32();
+        
+        if (reader.readUint32() !== 1) {
+            throw new Error("Invalid texture version, expected 1");
+        }
+        
+        const section = new Section(reader, "texture");
+        
+        let index = reader.index;
+
+        const textureLength = reader.readUint32();
+        
+        reader.skip(0xc, 0);
+        
+        this.name = reader.readString(0x40);
+
+        this.width = reader.readUint16();
+        this.height = reader.readUint16();
+        
+        this.format = reader.readUint16();
+        this.mipmapSize = reader.readUint16();
+        
+        reader.skip(0x10, 0xff);
+        
+        const from = reader.index;
+        this.data = [];
+        while (reader.index < from + textureLength) {
+            this.data.push(reader.readUint8());
+        }
+        
+        while (reader.index < index + section.length) {
+            if (reader.readUint8() !== 0) {
+                throw new Error("Invalid padding, expected 0");
+            }
+        }
+        
+    };
+    
+    Texture.readers = {};
+    
+    Texture.RGB565 = 0x2;
+    Texture.readers[Texture.RGB565] = function (data, format, width, height, image) {
+        
+        let dataOffset = 0;
+        
+        let ty = 0;
+        while (ty < height / 8) {
+            let tx = 0;
+            while (tx < width / 8) {
+                
+                let p = 0;
+                while (p < 64) {
+                    
+                    let x = TILE_ORDER[p] % 8;
+                    let y = (TILE_ORDER[p] - x) / 8;
+                    
+                    let offset = ((tx * 8) + x + (ty * 8 + y) * width) * 4;
+                    
+                    let d = data[dataOffset] | (data[dataOffset + 1] << 8);
+
+                    let r = ((d >> 11) & 0x1f) << 3;
+                    let g = ((d >> 5) & 0x3f) << 2;
+                    let b = (d & 0x1f) << 3;
+
+                    image[offset] = 0xff;
+                    image[offset + 1] = r | (r >> 5);
+                    image[offset + 2] = g | (g >> 6);
+                    image[offset + 3] = b | (b >> 5);
+                    
+                    dataOffset += 2;
+                    
+                    ++p;
+                }
+               
+                ++tx;
+            }
+            
+            ++ty;
+        }
+        
+    };
+    
+    Texture.RGB8 = 0x3;
+    Texture.readers[Texture.RGB8] = function (data, format, width, height, image) {
+        
+        let dataOffset = 0;
+
+        let ty = 0;
+        while (ty < height / 8) {
+            let tx = 0;
+            while (tx < width / 8) {
+                
+                let p = 0;
+                while (p < 64) {
+                    
+                    let x = TILE_ORDER[p] % 8;
+                    let y = (TILE_ORDER[p] - x) / 8;
+                    
+                    let offset = ((tx * 8) + x + (ty * 8 + y) * width) * 4;
+                    
+                    image[offset] = 0xff;
+                    image[offset + 1] = data[dataOffset + 2];
+                    image[offset + 2] = data[dataOffset + 1];
+                    image[offset + 3] = data[dataOffset];
+                    
+                    dataOffset += 3;
+                    
+                    ++p;
+                }
+               
+                ++tx;
+            }
+            
+            ++ty;
+        }
+        
+    };
+    
+    Texture.RGBA8 = 0x4;
+    Texture.readers[Texture.RGBA8] = function (data, format, width, height, image) {
+        
+        let dataOffset = 0;
+        
+        let ty = 0;
+        while (ty < height / 8) {
+            let tx = 0;
+            while (tx < width / 8) {
+                
+                let p = 0;
+                while (p < 64) {
+                    
+                    let x = TILE_ORDER[p] % 8;
+                    let y = (TILE_ORDER[p] - x) / 8;
+                    
+                    let offset = ((tx * 8) + x + (ty * 8 + y) * width) * 4;
+                    
+                    image[offset] = data[dataOffset];
+                    image[offset + 1] = data[dataOffset + 3];
+                    image[offset + 2] = data[dataOffset + 2];
+                    image[offset + 3] = data[dataOffset + 1];
+                    
+                    dataOffset += 4;
+                    
+                    ++p;
+                }
+               
+                ++tx;
+            }
+            
+            ++ty;
+        }
+        
+    };
+    
+    Texture.RGBA4 = 0x16;
+    Texture.readers[Texture.RGBA4] = function (data, format, width, height, image) {
+        
+        let dataOffset = 0;
+        
+        let ty = 0;
+        while (ty < height / 8) {
+            let tx = 0;
+            while (tx < width / 8) {
+                
+                let p = 0;
+                while (p < 64) {
+                    
+                    let x = TILE_ORDER[p] % 8;
+                    let y = (TILE_ORDER[p] - x) / 8;
+                    
+                    let offset = ((tx * 8) + x + (ty * 8 + y) * width) * 4;
+                    
+                    let d = (data[dataOffset] | (data[dataOffset + 1] << 8)) & 0xffff;
+
+                    let r = (d >> 12) & 0xf;
+                    let g = (d >> 8) & 0xf;
+                    let b = (d >> 4) & 0xf;
+                    let a = d & 0xf;
+                    
+                    image[offset] = a | (a << 4);
+                    image[offset + 1] = r | (r << 4);
+                    image[offset + 2] = g | (g << 4);
+                    image[offset + 3] = b | (b << 4);
+                    
+                    dataOffset += 2;
+                    
+                    ++p;
+                }
+               
+                ++tx;
+            }
+            
+            ++ty;
+        }
+        
+    };
+    
+    Texture.RGBA5551 = 0x17;
+    
+    Texture.LA8 = 0x23;
+    Texture.readers[Texture.LA8] = function (data, format, width, height, image) {
+        
+        let dataOffset = 0;
+        
+        let ty = 0;
+        while (ty < height / 8) {
+            let tx = 0;
+            while (tx < width / 8) {
+                
+                let p = 0;
+                while (p < 64) {
+                    
+                    let x = TILE_ORDER[p] % 8;
+                    let y = (TILE_ORDER[p] - x) / 8;
+                    
+                    let offset = ((tx * 8) + x + (ty * 8 + y) * width) * 4;
+                    
+                    image[offset] = data[dataOffset];
+                    image[offset + 1] = data[dataOffset + 1];
+                    image[offset + 2] = data[dataOffset + 1];
+                    image[offset + 3] = data[dataOffset + 1];
+                    
+                    dataOffset += 2;
+                    
+                    ++p;
+                }
+               
+                ++tx;
+            }
+            
+            ++ty;
+        }
+        
+    };
+    
+    Texture.HILO8 = 0x24;
+    Texture.readers[Texture.HILO8] = Texture.readers[Texture.L8];
+    
+    Texture.L8 = 0x25;
+    Texture.readers[Texture.L8] = function (data, format, width, height, image) {
+        
+        let dataOffset = 0;
+        
+        let ty = 0;
+        while (ty < height / 8) {
+            let tx = 0;
+            while (tx < width / 8) {
+                
+                let p = 0;
+                while (p < 64) {
+                    
+                    let x = TILE_ORDER[p] % 8;
+                    let y = (TILE_ORDER[p] - x) / 8;
+                    
+                    let offset = ((tx * 8) + x + (ty * 8 + y) * width) * 4;
+                     
+                    image[offset] = 0xff;
+                    image[offset + 1] = data[dataOffset];
+                    image[offset + 2] = data[dataOffset];
+                    image[offset + 3] = data[dataOffset];
+                     
+                    ++dataOffset;
+                    
+                    ++p;
+                }
+                
+                ++tx;
+            }
+             
+            ++ty;
+        }
+         
+    };
+    
+    Texture.A8 = 0x26;
+    
+    Texture.LA4 = 0x27;
+    Texture.readers[Texture.LA4] = function (data, format, width, height, image) {
+        
+        let dataOffset = 0;
+        
+        let ty = 0;
+        while (ty < height / 8) {
+            let tx = 0;
+            while (tx < width / 8) {
+                
+                let p = 0;
+                while (p < 64) {
+                    
+                    let x = TILE_ORDER[p] % 8;
+                    let y = (TILE_ORDER[p] - x) / 8;
+                    
+                    let offset = ((tx * 8) + x + (ty * 8 + y) * width) * 4;
+                    
+                    let a = data[dataOffset] & 0xf;
+                    let c = data[dataOffset] >> 4;
+                    
+                    image[offset] = (a << 4) | a;
+                    image[offset + 1] = (c << 4) | c;
+                    image[offset + 2] = (c << 4) | c;
+                    image[offset + 3] = (c << 4) | c;
+                    
+                    ++dataOffset;
+                    
+                    ++p;
+                }
+               
+                ++tx;
+            }
+            
+            ++ty;
+        }
+        
+    };
+    
+    Texture.L4 = 0x28;
+    Texture.readers[Texture.L4] = function (data, format, width, height, image) {
+        
+        let dataOffset = 0;
+        
+        let toggle = false;
+        let ty = 0;
+        while (ty < height / 8) {
+            let tx = 0;
+            while (tx < width / 8) {
+                
+                let p = 0;
+                while (p < 64) {
+                    
+                    let x = TILE_ORDER[p] % 8;
+                    let y = (TILE_ORDER[p] - x) / 8;
+                    
+                    let offset = ((tx * 8) + x + (ty * 8 + y) * width) * 4;
+                    
+                    let c = toggle ? ((data[dataOffset++] & 0xf0) >> 4) : (data[dataOffset] & 0xf);
+                    
+                    toggle = !toggle;
+                    
+                    c = ((c << 4) | c);
+                    
+                    image[offset] = 0xff;
+                    image[offset + 1] = c;
+                    image[offset + 2] = c;
+                    image[offset + 3] = c;
+                    
+                    ++p;
+                }
+               
+                ++tx;
+            }
+            
+            ++ty;
+        }
+        
+    };
+    
+    Texture.A4 = 0x29;
+    
+    Texture.ETC1 = 0x2a;
+    Texture.readers[Texture.ETC1] = function (data, format, width, height, image) {
+         
+        // the paper of the etc1 alogrithm
+        // http://www.jacobstrom.com/publications/StromAkenineGH05.pdf
+        
+        const lut = [
+            [   -8,   -2,    2,    8],
+            [  -17,   -5,    5,   17],
+            [  -29,   -9,    9,   29],
+            [  -42,  -13,   13,   42],
+            [  -60,  -18,   18,   60],
+            [  -80,  -24,   24,   80],
+            [ -106,  -33,   33,  106],
+            [ -183,  -47,   47,  183]
+        ];
+        
+        const decodeAlpha = function (offset, x, y) {
+            
+            let alpha = (data[offset + (x << 1) + (y >> 1)] >> (4 * (y & 0x1))) & 0xf;
+            
+            return alpha | (alpha << 4);
+            
+        };
+        
+        const decodePixel = function (r, g, b, x, y, colors, table) {
+            
+            let pixel = lut[table][(colors[x] >> (y * 2)) & 0x3];
+            
+            return [
+                Math.min(Math.max(b + pixel, 0), 255), 
+                Math.min(Math.max(g + pixel, 0), 255), 
+                Math.min(Math.max(r + pixel, 0), 255)];
+             
+        };
+        
+        const signed = function (value) {
+            
+            if (value > 127) {
+                // 255 => -1
+                // 254 => -2
+                // 128 => -128
+                return value - 256;
+            } else {
+                return value;
+            }
+            
+        };
+        
+        const decodeTile = function (offset) {
+             
+            // 63 -> 56: data[offset + 7]                       => r
+            // 55 -> 48: data[offset + 6]                       => g
+            // 47 -> 40: data[offset + 5]                       => b
+            // 39 -> 37: data[offset + 4] >> 4                  => table 1
+            // 36 -> 34: (data[offset + 4] >> 2) & 0x3          => table 2
+            // 33:       data[offset + 4] & 0x2                 => diff
+            // 32:       data[offset + 4] & 0x1                 => flip
+            // 31 -> 16: data[offset + 2]                       => color 1
+            // 15 -> 0:  data[offset]                           => color 2
+            
+            let color1Bit = offset;
+            let color2Bit = offset + 2;
+            let configBit = offset + 4;
+            let bBit = offset + 5;
+            let gBit = offset + 6;
+            let rBit = offset + 7;
+            
+            let flip = (data[configBit] & 0x1) !== 0;
+            let diff = (data[configBit] & 0x2) !== 0;
+ 
+            let table1 = (data[configBit] >> 4) & 0x7;
+            let table2 = (data[configBit] >> 2) & 0x7;
+            
+            let colors = [data[color1Bit + 1], data[color1Bit], data[color2Bit + 1], data[color2Bit]];
+
+            let r = data[rBit];
+            let g = data[gBit];
+            let b = data[bBit];
+
+            let r1, g1, b1; // color1
+            let r2, g2, b2; // color2
+           
+            if (diff) {
+                // abc de fgh => abc de
+                // abc de fgh => abc de + signed(fgh)
+                // abc de => abc de abc
+                b1 = b & 0xf8; b1 |= b1 >> 5;
+                g1 = g & 0xf8; g1 |= g1 >> 5;
+                r1 = r & 0xf8; r1 |= r1 >> 5;
+                b2 = (b >> 3) + (signed((b & 0x07) << 5) >> 5); b2 = (b2 << 3) | (b2 >> 2);
+                g2 = (g >> 3) + (signed((g & 0x07) << 5) >> 5); g2 = (g2 << 3) | (g2 >> 2);
+                r2 = (r >> 3) + (signed((r & 0x07) << 5) >> 5); r2 = (r2 << 3) | (r2 >> 2);
+            } else {
+                // abcd efgh => abcd
+                // abcd efgh => efgh
+                // abcd => abcd abcd
+                b1 = b & 0xf0; b1 |= b1 >> 4;
+                g1 = g & 0xf0; g1 |= g1 >> 4;
+                r1 = r & 0xf0; r1 |= r1 >> 4;
+                b2 = (b & 0x0f) << 4; b2 |= b2 >> 4;
+                g2 = (g & 0x0f) << 4; g2 |= g2 >> 4;
+                r2 = (r & 0x0f) << 4; r2 |= r2 >> 4;
+            }
+
+            let output = [];
+
+            if (!flip) {
+                let y = 0;
+                while (y < 4) {
+                    let x = 0;
+                    while (x < 2) {
+                        
+                        let color1 = decodePixel(r1, g1, b1, x + 0, y, colors, table1);
+                        let offset1 = (y * 4 + x) * 4;
+                        output[offset1 + 0] = color1[2];
+                        output[offset1 + 1] = color1[1];
+                        output[offset1 + 2] = color1[0];
+                        output[offset1 + 3] = Math.round((color1[2] + color1[1] + color1[0]) / 3);
+                        if (output[offset1 + 3] < 0x44) {
+                            output[offset1 + 3] = 0;
+                        }
+                        // output[offset1 + 3] = decodeAlpha(offset, x + 0, y);
+
+                        let color2 = decodePixel(r2, g2, b2, x + 2, y, colors, table2);
+                        let offset2 = (y * 4 + x + 2) * 4;
+                        output[offset2 + 0] = color2[2];
+                        output[offset2 + 1] = color2[1];
+                        output[offset2 + 2] = color2[0];
+                        output[offset2 + 3] = Math.round((color2[2] + color2[1] + color2[0]) / 3);
+                        if (output[offset2 + 3] < 0x44) {
+                            output[offset2 + 3] = 0;
+                        }
+                        // output[offset2 + 3] = decodeAlpha(offset, x + 2, y);
+                        // output[offset2 + 3] = 0xff;
+                        
+                        ++x;
+                    }
+                    ++y;
+                }
+            } else {
+                let y = 0;
+                while (y < 2) {
+                    let x = 0;
+                    while (x < 4) {
+                        
+                        let color1 = decodePixel(r1, g1, b1, x, y + 0, colors, table1);
+                        let offset1 = (y * 4 + x) * 4;
+                        output[offset1 + 0] = color1[2];
+                        output[offset1 + 1] = color1[1];
+                        output[offset1 + 2] = color1[0];
+                        output[offset1 + 3] = Math.round((color1[2] + color1[1] + color1[0]) / 3);
+                        if (output[offset1 + 3] < 0x44) {
+                            output[offset1 + 3] = 0;
+                        }
+
+                        let color2 = decodePixel(r2, g2, b2, x, y + 2, colors, table2);
+                        let offset2 = ((y + 2) * 4 + x) * 4;
+                        output[offset2 + 0] = color2[2];
+                        output[offset2 + 1] = color2[1];
+                        output[offset2 + 2] = color2[0];
+                        output[offset2 + 3] = Math.round((color2[2] + color2[1] + color2[0]) / 3);
+                        if (output[offset2 + 3] < 0x44) {
+                            output[offset2 + 3] = 0;
+                        }
+                        
+                        ++x;
+                    }
+                    ++y;
+                }
+            }
+            
+            return output;
+
+        };
+        
+        const xt = [0, 4, 0, 4];
+        const yt = [0, 0, 4, 4];
+       
+        let offset = 0;
+        
+        let ty = 0;
+        while (ty < height) {
+            let tx = 0;
+            while (tx < width) {
+                
+                let t = 0;
+                while (t < 4) {
+                    
+                    let tile = decodeTile(offset);
+                    offset += 8;
+                    
+                    let tileOffset = 0;
+                    let py = yt[t];
+                    while (py < 4 + yt[t]) {
+                        let px = xt[t];
+                        while (px < 4 + xt[t]) {
+                            
+                            let pixel = ((ty + py) * width + tx + px) * 4;
+
+                            image[pixel + 0] = tile[tileOffset + 3];
+                            image[pixel + 1] = tile[tileOffset + 0];
+                            image[pixel + 2] = tile[tileOffset + 1];
+                            image[pixel + 3] = tile[tileOffset + 2];
+
+                            tileOffset += 4;
+                            
+                            ++px;
+                        }
+                        ++py;
+                    }
+                    
+                    ++t;
+                }
+                
+                tx += 8;
+            }
+            ty += 8;
+        }
+       
+    };
+    
+    Texture.ETC1A4 = 0x2b;
+    Texture.readers[Texture.ETC1A4] = function (data, format, width, height, image) {
+         
+        // the paper of the etc1 alogrithm
+        // http://www.jacobstrom.com/publications/StromAkenineGH05.pdf
+        
+        const lut = [
+            [   -8,   -2,    2,    8],
+            [  -17,   -5,    5,   17],
+            [  -29,   -9,    9,   29],
+            [  -42,  -13,   13,   42],
+            [  -60,  -18,   18,   60],
+            [  -80,  -24,   24,   80],
+            [ -106,  -33,   33,  106],
+            [ -183,  -47,   47,  183]
+        ];
+        
+        const decodePixel = function (r, g, b, x, y, colors, table) {
+            
+            let pixel = lut[table][(colors[x] >> (y * 2)) & 0x3];
+            
+            return [
+                Math.min(Math.max(b + pixel, 0), 255), 
+                Math.min(Math.max(g + pixel, 0), 255), 
+                Math.min(Math.max(r + pixel, 0), 255)];
+            
+        };
+        
+        const decodeAlpha = function (offset, x, y) {
+            
+            let alpha = (data[offset + (x << 1) + (y >> 1)] >> (4 * (y & 0x1))) & 0xf;
+            
+            return alpha | (alpha << 4);
+            
+        };
+        
+        const signed = function (value) {
+            
+            if (value > 127) {
+                // 255 => -1
+                // 254 => -2
+                // 128 => -128
+                return value - 256;
+            } else {
+                return value;
+            }
+            
+        };
+        
+        const decodeTile = function (offset) {
+             
+            // 63 -> 56: data[offset + 7]                       => r
+            // 55 -> 48: data[offset + 6]                       => g
+            // 47 -> 40: data[offset + 5]                       => b
+            // 39 -> 37: data[offset + 4] >> 4                  => table 1
+            // 36 -> 34: (data[offset + 4] >> 2) & 0x3          => table 2
+            // 33:       data[offset + 4] & 0x2                 => diff
+            // 32:       data[offset + 4] & 0x1                 => flip
+            // 31 -> 16: data[offset + 2]                       => color 1
+            // 15 -> 0:  data[offset]                           => color 2
+           
+            let color1Bit = offset + 8;
+            let color2Bit = offset + 10;
+            let configBit = offset + 12;
+            let bBit = offset + 13;
+            let gBit = offset + 14;
+            let rBit = offset + 15;
+            
+            let flip = (data[configBit] & 0x1) !== 0;
+            let diff = (data[configBit] & 0x2) !== 0;
+    
+            let table1 = (data[configBit] >> 4) & 0x7;
+            let table2 = (data[configBit] >> 2) & 0x7;
+            
+            let colors = [data[color1Bit], data[color1Bit + 1], data[color2Bit], data[color2Bit + 1]];
+    
+            let r = data[rBit];
+            let g = data[gBit];
+            let b = data[bBit];
+    
+            let r1, g1, b1; // color1
+            let r2, g2, b2; // color2
+           
+            if (diff) {
+                // abc de fgh => abc de
+                // abc de fgh => abc de + signed(fgh)
+                // abc de => abc de abc
+                b1 = b & 0xf8; b1 |= b1 >> 5;
+                g1 = g & 0xf8; g1 |= g1 >> 5;
+                r1 = r & 0xf8; r1 |= r1 >> 5;
+                b2 = (b >> 3) + (signed((b & 0x07) << 5) >> 5); b2 = (b2 << 3) | (b2 >> 2);
+                g2 = (g >> 3) + (signed((g & 0x07) << 5) >> 5); g2 = (g2 << 3) | (g2 >> 2);
+                r2 = (r >> 3) + (signed((r & 0x07) << 5) >> 5); r2 = (r2 << 3) | (r2 >> 2);
+            } else {
+                // abcd efgh => abcd
+                // abcd efgh => efgh
+                // abcd => abcd abcd
+                b1 = b & 0xf0; b1 |= b1 >> 4;
+                g1 = g & 0xf0; g1 |= g1 >> 4;
+                r1 = r & 0xf0; r1 |= r1 >> 4;
+                b2 = (b & 0x0f) << 4; b2 |= b2 >> 4;
+                g2 = (g & 0x0f) << 4; g2 |= g2 >> 4;
+                r2 = (r & 0x0f) << 4; r2 |= r2 >> 4;
+            }
+            
+            let output = [];
+    
+            if (!flip) {
+                let y = 0;
+                while (y < 4) {
+                    let x = 0;
+                    while (x < 2) {
+                        
+                        let color1 = decodePixel(r1, g1, b1, x + 0, y, colors, table1);
+                        let offset1 = (y * 4 + x) * 4;
+                        output[offset1 + 0] = color1[2];
+                        output[offset1 + 1] = color1[1];
+                        output[offset1 + 2] = color1[0];
+                        output[offset1 + 3] = decodeAlpha(offset, x + 0, y);
+    
+                        let color2 = decodePixel(r2, g2, b2, x + 2, y, colors, table2);
+                        let offset2 = (y * 4 + x + 2) * 4;
+                        output[offset2 + 0] = color2[2];
+                        output[offset2 + 1] = color2[1];
+                        output[offset2 + 2] = color2[0];
+                        output[offset2 + 3] = decodeAlpha(offset, x + 2, y);
+                        
+                        ++x;
+                    }
+                    ++y;
+                }
+            } else {
+                let y = 0;
+                while (y < 2) {
+                    let x = 0;
+                    while (x < 4) {
+                        
+                        let color1 = decodePixel(r1, g1, b1, x, y + 0, colors, table1);
+                        let offset1 = (y * 4 + x) * 4;
+                        output[offset1 + 0] = color1[2];
+                        output[offset1 + 1] = color1[1];
+                        output[offset1 + 2] = color1[0];
+                        output[offset1 + 3] = decodeAlpha(offset, x, y + 0);
+    
+                        let color2 = decodePixel(r2, g2, b2, x, y + 2, colors, table2);
+                        let offset2 = ((y + 2) * 4 + x) * 4;
+                        output[offset2 + 0] = color2[2];
+                        output[offset2 + 1] = color2[1];
+                        output[offset2 + 2] = color2[0];
+                        output[offset2 + 3] = decodeAlpha(offset, x, y + 2);
+                        
+                        ++x;
+                    }
+                    ++y;
+                }
+            }
+            
+            return output;
+    
+        };
+        
+        const xt = [0, 4, 0, 4];
+        const yt = [0, 0, 4, 4];
+       
+        let offset = 0;
+        
+        let ty = 0;
+        while (ty < height) {
+            let tx = 0;
+            while (tx < width) {
+                
+                let t = 0;
+                while (t < 4) {
+                    
+                    let tile = decodeTile(offset);
+                    offset += 16;
+                    
+                    let tileOffset = 0;
+                    let py = yt[t];
+                    while (py < 4 + yt[t]) {
+                        let px = xt[t];
+                        while (px < 4 + xt[t]) {
+                            
+                            let pixel = ((ty + py) * width + tx + px) * 4;
+    
+                            image[pixel + 0] = tile[tileOffset + 3];
+                            image[pixel + 1] = tile[tileOffset + 0];
+                            image[pixel + 2] = tile[tileOffset + 1];
+                            image[pixel + 3] = tile[tileOffset + 2];
+                            
+                            tileOffset += 4;
+                            
+                            ++px;
+                        }
+                        ++py;
+                    }
+                    
+                    ++t;
+                }
+                
+                tx += 8;
+            }
+            ty += 8;
+        }
+       
+    };
+
+    Texture.prototype.getPixels = function () {
+        
+        if (Texture.readers[this.format]) {
+            
+            let image = new Uint8Array(this.width * this.height * 4);
+            
+            Texture.readers[this.format](this.data, this.format, this.width, this.height, image);
+            
+            return image;
+        
+        } else {
+            throw new Error("Unsupported texture file format " + this.format);
+        }
+        
+    };
+    
+    Texture.prototype.toImage = function () {
+        
+        const dom = new Image();
+        
+        dom.title = this.name;
+        
+        dom.src = this.toImageURL();
+        
+        return dom;
+        
+    };
+    
+    Texture.prototype.toImageURL = function () {
+        
+        return this.toCanvas().toDataURL();
+        
+    };
+    
+    Texture.prototype.toCanvas = function () {
+        
+        var canvas = document.createElement("canvas");
+        
+        canvas.width = this.width;
+        canvas.height = this.height;
+        canvas.name = this.name;
+    
+        var context = canvas.getContext("2d");
+        
+        var imageData = context.createImageData(this.width, this.height);
+        
+        let pixels = this.getPixels();
+        
+        let looper = 0;
+        while (looper < pixels.length) {
+            imageData.data[looper] = pixels[looper + 1];
+            imageData.data[looper + 1] = pixels[looper + 2];
+            imageData.data[looper + 2] = pixels[looper + 3];
+            imageData.data[looper + 3] = pixels[looper];
+            looper += 4;
+        }
+        
+        context.putImageData(imageData, 0, 0);
+        
+        return canvas;
+        
+    };
+    
+    module.exports = Texture;
+    
+})(this, this.$);

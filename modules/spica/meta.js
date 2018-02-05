@@ -1,1 +1,35 @@
-this.$,module.exports=function(e){let t=!1;for(;e.index+32<e.end;){let d=e.readString(32);if(d=d.trim()){let t=[e.readFloat32(),e.readFloat32(),e.readFloat32()],i=e.readUint32();i&&(this[d]={position:t,flags:i})}else t=!0}for(;e.index<e.end;)if(0!==e.readUint8())throw new Error("Invalid padding, expected 0")};
+((/* global, $ */) => {
+    
+    const Meta = function Meta(reader) {
+        
+        let ended = false;
+        while (reader.index + 0x20 < reader.end) {
+            let name = reader.readString(0x20);
+            name = name.trim();
+            if (name) {
+                let position = [reader.readFloat32(), reader.readFloat32(), reader.readFloat32()];
+                let flags = reader.readUint32();
+                if (flags) {
+                    this[name] = {
+                        "position": position,
+                        "flags": flags
+                    };
+                } else {
+                    // Strange data
+                }
+            } else {
+                ended = true;
+            }
+        }
+        
+        while (reader.index < reader.end) {
+            if (reader.readUint8() !== 0) {
+                throw new Error("Invalid padding, expected 0");
+            }
+        }
+        
+    };
+    
+    module.exports = Meta;
+    
+})(this, this.$);

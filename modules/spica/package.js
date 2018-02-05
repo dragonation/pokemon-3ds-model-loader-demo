@@ -1,1 +1,155 @@
-(()=>{require("./motion.js");module.exports=function(e){this.offset=e.index,this.length=e.end-e.index;let t=e.subreader();this.magic=e.readUint32();let r=e.readUint32(),a=[],d=0;for(;d<r;)a.push({type:e.readUint32(),length:e.readUint32(),offset:e.readUint32()}),++d;this.sections=a.map(e=>{let r={header:e},a=t.subreader(e.offset,e.length);if(1===e.type){r.part={};let e=a.readUint32(),t=0;for(;t<e;){let e=a.readString(64);r.part[e]={flags:a.readUint32(),data:[a.readFloat32(),a.readFloat32(),a.readFloat32(),a.readFloat32(),a.readFloat32()]},++t}for(;a.index<a.end;)if(0!==a.readUint8())throw new Error("Invalid padding, expected 0")}else if(2===e.type){r.part={};let e=a.readUint32(),t=0;for(;t<e;){let e=a.readString(64);r.part[e]={data:[a.readFloat32(),a.readFloat32(),a.readFloat32(),a.readFloat32()]},++t}for(;a.index<a.end;)if(0!==a.readUint8())throw new Error("Invalid padding, expected 0")}else if(4===e.type){r.part={};let e=a.readUint32(),t=0;for(;t<e;){let e=a.readString(64),d=a.readString(64);r.part[e]={data:[a.readFloat32()]},r.part[d]=r.part[e],++t}for(;a.index<a.end;)if(0!==a.readUint8())throw new Error("Invalid padding, expected 0")}else if(5===e.type){let e=a.readUint32(),t=a.readUint32();r.xs=[];let d=0;for(;d<e;)r.xs.push([a.readUint8(),a.readUint8(),a.readUint8(),a.readUint8()]),++d;for(r.ys=[],d=0;d<t;)r.ys.push([a.readUint8(),a.readUint8(),a.readUint8(),a.readUint8()]),++d;for(r.xys=[],d=0;d<e*t;)r.xys.push(a.readUint8()),++d;for(;a.index<a.end;)if(255!==a.readUint8())throw new Error("Invalid padding, expected 0xff")}return r});let n=t.subreader(a[a.length-1].offset+a[a.length-1].length);for(;n.index<n.end;)if(0!==n.readUint8())throw new Error("Invalid padding, expected 0")}})(this.$);
+((/* global, $ */) => {
+    
+    const Motion = require("./motion.js");
+    
+    const Package = function Package(reader) {
+        
+        this.offset = reader.index;
+        
+        this.length = reader.end - reader.index;
+        
+        let origin = reader.subreader();
+        
+        this.magic = reader.readUint32();
+        
+        let headerSections = reader.readUint32();
+        
+        let headers = [];
+        let looper = 0;
+        while (looper < headerSections) {
+            headers.push({
+                "type": reader.readUint32(),
+                "length": reader.readUint32(),
+                "offset": reader.readUint32(),
+            });
+            ++looper;
+        }
+        
+        this.sections = headers.map((header) => {
+            
+            let data = {
+                "header": header
+            };
+            
+            let reader = origin.subreader(header.offset, header.length);
+            
+            if (header.type === 1) {
+                
+                data.part = {};
+                
+                let count = reader.readUint32();
+                let looper = 0;
+                while (looper < count) {
+                    let name = reader.readString(0x40);
+                    data.part[name] = {
+                        "flags": reader.readUint32(),
+                        "data": [
+                            reader.readFloat32(), reader.readFloat32(),
+                            reader.readFloat32(), reader.readFloat32(),
+                            reader.readFloat32()]
+                    };
+                    
+                    ++looper;
+                }
+                
+                while (reader.index < reader.end) {
+                    if (reader.readUint8() !== 0) {
+                        throw new Error("Invalid padding, expected 0");
+                    }
+                }
+                
+            } else if (header.type === 2) {
+                
+                data.part = {};
+                
+                let count = reader.readUint32();
+                let looper = 0;
+                while (looper < count) {
+                    let name = reader.readString(0x40);
+                    data.part[name] = {
+                        "data": [
+                            reader.readFloat32(), reader.readFloat32(),
+                            reader.readFloat32(), reader.readFloat32()]
+                    };
+                    
+                    ++looper;
+                }
+                
+                while (reader.index < reader.end) {
+                    if (reader.readUint8() !== 0) {
+                        throw new Error("Invalid padding, expected 0");
+                    }
+                }
+               
+            } else if (header.type === 4) {
+                
+                data.part = {};
+                
+                let count = reader.readUint32();
+                let looper = 0;
+                while (looper < count) {
+                    let name = reader.readString(0x40);
+                    let name2 = reader.readString(0x40);
+                    data.part[name] = {
+                        "data": [reader.readFloat32()]
+                    };
+                    data.part[name2] = data.part[name];
+                    
+                    ++looper;
+                }
+                
+                while (reader.index < reader.end) {
+                    if (reader.readUint8() !== 0) {
+                        throw new Error("Invalid padding, expected 0");
+                    }
+                }
+               
+            } else if (header.type === 5) {
+               
+                let x = reader.readUint32();
+                let y = reader.readUint32();
+                
+                data.xs = [];
+                let looper = 0;
+                while (looper < x) {
+                    data.xs.push([reader.readUint8(), reader.readUint8(), reader.readUint8(), reader.readUint8()]);
+                    ++looper;
+                }
+                
+                data.ys = [];
+                looper = 0;
+                while (looper < y) {
+                    data.ys.push([reader.readUint8(), reader.readUint8(), reader.readUint8(), reader.readUint8()]);
+                    ++looper;
+                }
+                
+                data.xys = [];
+                looper = 0;
+                while (looper < x * y) {
+                    data.xys.push(reader.readUint8()); ++looper;
+                }
+                 
+                while (reader.index < reader.end) {
+                    if (reader.readUint8() !== 0xff) {
+                        throw new Error("Invalid padding, expected 0xff");
+                    }
+                }
+                
+            }
+            
+            return data;
+            
+        });
+        
+        let rest = origin.subreader(headers[headers.length - 1].offset + headers[headers.length - 1].length);
+        while (rest.index < rest.end) {
+            if (rest.readUint8() !== 0) {
+                throw new Error("Invalid padding, expected 0");
+            }
+        }
+        
+    };
+    
+    module.exports = Package;
+    
+})(this, this.$);

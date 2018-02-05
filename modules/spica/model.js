@@ -1,1 +1,722 @@
-((e,t)=>{const i=require("./pica.js"),a=require("./section.js"),n=require("./texture.js"),r=require("./shader.js"),s=require("./motion.js"),o=require("../three/main.js");e.THREE=o;const c=function e(t){let i;this.magic=t.readUint32();const n=t.readUint32();t.skipPadding(16,0);const r=new a(t,"gfmodel"),s=t.index;let o=new e.HashNameTable(t),c=new e.HashNameTable(t),l=new e.HashNameTable(t),u=new e.HashNameTable(t);if(n!==l.length+u.length+1)throw new Error("Invalid resource unit count "+n);this.boundingBox={min:new e.Vector(t,4),max:new e.Vector(t,4)},this.transform=new e.Matrix(t,4);const d=t.readUint32(),p=t.readUint32();if(0!==t.readUint32())throw new Error("Invalid padding, expected 0");if(0!==t.readUint32())throw new Error("Invalid padding, expected 0");t.skip(p+d,0);const h=t.readUint32();for(t.skip(12,0),this.bones=[],i=0;i<h;)this.bones.push(new e.Bone(t)),++i;t.skipPadding(16,0);const f=t.readUint32(),m=t.readUint32();for(t.skipPadding(16,0),this.lightingLUTs=[],i=0;i<f;)this.lightingLUTs.push(new e.LightingLUT(t,m)),++i;if(s+r.length!==t.index)throw new Error("Incorrect section");for(this.materials=[],i=0;i<l.length;){let a=new e.Material(t);if(-1===o.indexOf(a.shaderPack))throw new Error("Unrecord shader pack found: "+a.shaderPack);this.materials.push(a),++i}for(this.meshes=[],i=0;i<u.length;)this.meshes.push(new e.Mesh(t)),++i;let g=function(e){let t=16777619&g.mask,i=0;for(;i<e.length;)t*=16777619,t^=e.charCodeAt(i),t&=g.mask,++i;return t};g.mask=16777215,this.lightingLUTs.forEach(e=>{let t=c.filter(t=>g(t)===(e.hashID&g.mask))[0];e.name=t})};c.prototype.toThreeObject=function(e,a){a||(a={});const l=[],u=this,d=new o.Object3D;l.push(d),d.name=this.bones[0].name;const p=new Map;d.skeleton=new o.Skeleton(this.bones.map(e=>{let t=p.get(e.parent);t||(t=d);let i=new o.Bone;i.name=e.name,i.scale.set(e.scale[0],e.scale[1],e.scale[2]),i.position.set(e.translation[0],e.translation[1],e.translation[2]),i.quaternion.setFromEuler(new o.Euler(e.rotation[0],e.rotation[1],e.rotation[2],"ZYX")),t.add(i),i.spicaMatrix=new o.Matrix4,i.spicaMatrixWorld=new o.Matrix4;let a=new o.Vector3(1,1,1),n=new o.Vector3(0,0,0);return i.updateMatrix=function(){this.matrix.compose(this.position,this.quaternion,this.scale),this.matrixWorldNeedsUpdate=!0,n.set(this.position.x*this.scale.x,this.position.y*this.scale.y,this.position.z*this.scale.z),this.spicaMatrix.compose(n,this.quaternion,a)},i.updateMatrixWorld=function(e){this.matrixAutoUpdate&&this.updateMatrix(),(this.matrixWorldNeedsUpdate||e)&&(null===this.parent?this.matrixWorld.copy(this.matrix):this.parent.spicaMatrixWorld?(this.matrixWorld.multiplyMatrices(this.parent.spicaMatrixWorld,this.matrix),this.spicaMatrixWorld.multiplyMatrices(this.parent.spicaMatrixWorld,this.spicaMatrix)):(this.matrixWorld.multiplyMatrices(this.parent.matrixWorld,this.matrix),this.spicaMatrixWorld.multiplyMatrices(this.parent.matrixWorld,this.spicaMatrix)),this.matrixWorldNeedsUpdate=!1,e=!0),this.children.forEach(t=>{t.updateMatrixWorld(e)})},i.updateMatrixWorld(!0),p.set(e.name,i),i}));const h=(s,u)=>{const d=s.textureCoordinates.map((r,u)=>{const d=(a.shiny?e.textures.shiny:e.textures.normal).files.filter(e=>t.is(e,n)&&e.name===r.name)[0],p=new Uint8Array(d.width*d.height*4);let h=d.getPixels(),f=0;for(;f<h.length;)p[f]=h[f+1],p[f+1]=h[f+2],p[f+2]=h[f+3],p[f+3]=h[f],f+=4;const m=new o.DataTexture(p,d.width,d.height,o.RGBAFormat);switch(l.push(m),m.flipY=!0,m.magFilter=r.magFilter.code===c.TextureMagnificationFilter.NEAREST?o.NearestFilter:o.LinearFilter,m.minFilter=r.minFilter.code===c.TextureMinificationFilter.NEAREST?o.NearestFilter:o.LinearFilter,m.name=r.name,m.needsUpdate=!0,r.wrap[0].code){case i.TextureWrap.CLAMP_TO_EDGE:case i.TextureWrap.CLAMP_TO_BORDER:m.wrapS=o.ClampToEdgeWrapping;break;case i.TextureWrap.REPEAT:m.wrapS=o.RepeatWrapping;break;case i.TextureWrap.MIRROR:m.wrapS=o.MirroredRepeatWrapping;break;default:throw new Error("Invalid texture wrap mode")}switch(r.wrap[1].code){case i.TextureWrap.CLAMP_TO_EDGE:case i.TextureWrap.CLAMP_TO_BORDER:m.wrapT=o.ClampToEdgeWrapping;break;case i.TextureWrap.REPEAT:m.wrapT=o.RepeatWrapping;break;case i.TextureWrap.MIRROR:m.wrapT=o.MirroredRepeatWrapping;break;default:throw new Error("Invalid texture wrap mode")}return m.offset.set(-r.translation[0],-r.translation[1]),m.repeat.set(r.scale[0],r.scale[1]),m.rotation=r.rotation,m.repeat.set(s.pica.shader.vertex.floats[1+3*u].x,s.pica.shader.vertex.floats[2+3*u].y),m.offset.set(-s.pica.shader.vertex.floats[1+3*u].w/s.pica.shader.vertex.floats[1+3*u].x,-s.pica.shader.vertex.floats[2+3*u].w/s.pica.shader.vertex.floats[2+3*u].y),0!==m.rotation&&t.warn("Texture rotation currently not supported"),m.matrix.setUvTransform(m.offset.x*m.repeat.x,m.offset.y*m.repeat.y,m.repeat.x,m.repeat.y,m.rotation,0,0),m}),p={},h={};s.lightingLUTs.filter(e=>0!==e).forEach(e=>{let t=this.lightingLUTs.filter(t=>t.hashID===e)[0];if(!t)throw new Error("Lighting LUT not found "+e);let a=new Uint8Array(3*t.pica.lightingLUTs.data.length),n=0;for(;n<t.pica.lightingLUTs.data.length;)a[3*n]=Math.round(255*t.pica.lightingLUTs.data[n]),a[3*n+1]=Math.round(255*t.pica.lightingLUTs.data[n]),a[3*n+2]=Math.round(255*t.pica.lightingLUTs.data[n]),++n;let r=new o.DataTexture(a,t.pica.lightingLUTs.data.length,1,o.RGBFormat);switch(l.push(r),t.name&&(r.name=t.name),r.flipY=!0,r.needsUpdate=!0,t.pica.lightingLUTs.type.code){case i.LUTType.DIST_0:p.dist0=!0,h.lutDist0=r;break;case i.LUTType.DIST_1:p.dist1=!0,h.lutDist1=r;break;case i.LUTType.FRESNEL:p.fresnel=!0,h.lutFresnel=r;break;case i.LUTType.REFLECT_R:p.reflectR=!0,h.lutReflectR=r;break;case i.LUTType.REFLECT_G:p.reflectG=!0,h.lutReflectG=r;break;case i.LUTType.REFLECT_B:p.reflectB=!0,h.lutReflectB=r;break;default:throw new Error("Unsupported LUT type")}});let f=e.model.files[2].files.filter(e=>t.is(e,r)&&e.name===s.vertexShader)[0],m=e.model.files[2].files.filter(e=>t.is(e,r)&&e.name===s.fragmentShader)[0],g=f.describe(!0,s,p),x=m.describe(!0,s,p);t("shader#"+m.name).length>0&&(t.celebr("Using inline fragment shader "+m.name),x=t("shader#"+m.name).text()),t("shader#"+f.name).length>0&&(t.celebr("Using inline vertex shader "+f.name),g=t("shader#"+f.name).text());let v=[];for(;v.length<96;){let e=new o.Vector4(0,0,0,0);if(s.pica.shader&&s.pica.shader.vertex&&s.pica.shader.vertex.floats){let t=s.pica.shader.vertex.floats[v.length];t&&e.set(t.x,t.y,t.z,t.w)}if(f.pica.shader&&f.pica.shader.vertex.floats){let t=f.pica.shader.vertex.floats[v.length];t&&e.set(t.x,t.y,t.z,t.w)}v.push(e)}if(v[82].set(s.rimPower,s.rimScale,s.phongPower,s.phongScale),s.shaderParameters){let e=s.shaderParameters;v[85].set(e[0],e[1],e[2],e[3])}let T=[new o.Vector4(s.constantColors[0].r/255,s.constantColors[0].g/255,s.constantColors[0].b/255,s.constantColors[0].a/255),new o.Vector4(s.constantColors[1].r/255,s.constantColors[1].g/255,s.constantColors[1].b/255,s.constantColors[1].a/255),new o.Vector4(s.constantColors[2].r/255,s.constantColors[2].g/255,s.constantColors[2].b/255,s.constantColors[2].a/255),new o.Vector4(s.constantColors[3].r/255,s.constantColors[3].g/255,s.constantColors[3].b/255,s.constantColors[3].a/255),new o.Vector4(s.constantColors[4].r/255,s.constantColors[4].g/255,s.constantColors[4].b/255,s.constantColors[4].a/255),new o.Vector4(s.constantColors[5].r/255,s.constantColors[5].g/255,s.constantColors[5].b/255,s.constantColors[5].a/255)],E=[T[s.constantAssignments[0]],T[s.constantAssignments[1]],T[s.constantAssignments[2]],T[s.constantAssignments[3]],T[s.constantAssignments[4]],T[s.constantAssignments[5]]],b=!1,w=!1,A=!1,y=!1,C=!1;if(s.textureCoordinates[0])switch(s.textureCoordinates[0].mappingType.code){case c.TextureMappingType.UV:b=!0}if(s.textureCoordinates[1])switch(s.textureCoordinates[1].mappingType.code){case c.TextureMappingType.UV:w=!0;break;case c.TextureMappingType.CAMERA_SPHERE:y=!0}if(s.textureCoordinates[2])switch(s.textureCoordinates[2].mappingType.code){case c.TextureMappingType.UV:A=!0;break;case c.TextureMappingType.CAMERA_SPHERE:C=!0}const I=new o.RawShaderMaterial({uniforms:{needColor:{type:"b",value:!0},hasUVMap:{type:"b",value:b},hasUVMap2:{type:"b",value:w},hasUVMap3:{type:"b",value:A},needUVMap2SphereReflection:{type:"b",value:y},needUVMap3SphereReflection:{type:"b",value:C},needLightSpecular:{type:"b",value:!0},needViewSpecular:{type:"b",value:!0},needDiffuse:{type:"b",value:!0},hasTangent:{type:"b",value:!0===u.hasTangent},hasBone:{type:"b",value:!0===u.hasBoneIndex},hasBoneW:{type:"b",value:!0===u.hasBoneW},emission:{type:"v4",value:new o.Vector4(s.emissionColor.r/255,s.emissionColor.g/255,s.emissionColor.b/255,s.emissionColor.a/255)},ambient:{type:"v4",value:new o.Vector4(s.ambientColor.r/255,s.ambientColor.g/255,s.ambientColor.b/255,s.ambientColor.a/255)},diffuse:{type:"v4",value:new o.Vector4(s.diffuseColor.r/255,s.diffuseColor.g/255,s.diffuseColor.b/255,s.diffuseColor.a/255)},speculars:{type:"v4v",value:[new o.Vector4(s.specularColors[0].r/255,s.specularColors[0].g/255,s.specularColors[0].b/255,s.specularColors[0].a/255),new o.Vector4(s.specularColors[1].r/255,s.specularColors[1].g/255,s.specularColors[1].b/255,s.specularColors[1].a/255)]},constants:{type:"v4v",value:E},map:{type:"t",value:d[0]},map2:{type:"t",value:d[1]},map3:{type:"t",value:d[2]},lutDist0:{type:"t",value:h.lutDist0},lutDist1:{type:"t",value:h.lutDist1},lutFresnel:{type:"t",value:h.lutFresnel},lutReflectR:{type:"t",value:h.lutReflectR},lutReflectG:{type:"t",value:h.lutReflectG},lutReflectB:{type:"t",value:h.lutReflectB},environmentAmbient:{type:"v4",value:new o.Vector4(0,0,0,0)},lightPositions:{type:"v3v",value:[new o.Vector3(0,0,0),new o.Vector3(0,0,0),new o.Vector3(0,0,0)]},lightDirections:{type:"v3v",value:[new o.Vector3(0,0,0),new o.Vector3(0,0,0),new o.Vector3(0,0,0)]},lightAmbients:{type:"v4v",value:[new o.Vector4(0,0,0,0),new o.Vector4(0,0,0,0),new o.Vector4(0,0,0,0)]},lightDiffuses:{type:"v4v",value:[new o.Vector4(0,0,0,0),new o.Vector4(0,0,0,0),new o.Vector4(0,0,0,0)]},lightSpeculars:{type:"v4v",value:[new o.Vector4(0,0,0,0),new o.Vector4(0,0,0,0),new o.Vector4(0,0,0,0),new o.Vector4(0,0,0,0),new o.Vector4(0,0,0,0),new o.Vector4(0,0,0,0)]},lightDirectionals:{type:"bv",value:[!1,!1,!1]},lightsCount:{type:"i",value:0},vectors:{type:"v4v",value:v},uvVectors:{type:"v4v",value:[v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7],v[8],v[9]]}},vertexShader:g,fragmentShader:x});switch(l.push(I),I.name=s.name,s.pica.faceCulling.code){case i.FaceCulling.BACK_FACE:I.side=o.FrontSide;break;case i.FaceCulling.FRONT_FACE:I.side=o.BackSide;break;case i.FaceCulling.NEVER:I.side=o.DoubleSide;break;default:throw new Error("Invalid face culling state")}I.spica=!0,I.spicaConstant0=T[0],I.spicaConstant1=T[1],I.spicaConstant2=T[2],I.spicaConstant3=T[3],I.spicaConstant4=T[4],I.spicaConstant5=T[5],I.spicaTexture1=d[0],I.spicaTexture2=d[1],I.spicaTexture3=d[2],I.spicaTextureNames=s.textureCoordinates.map(e=>e.name),I.spicaVertexShaderName=s.vertexShader,I.spicaVertexShaderFileName=f.fileName,I.spicaVertexShaderHasGeometryCodes=f.pica.shader.geometry&&!t.is.nil(f.pica.shader.geometry.entryPoint),I.spicaFragmentShaderName=s.fragmentShader,I.spicaFragmentShaderFileName=m.fileName,I.spicaAlphaTest=s.pica.rendering.alphaTest.enabled,I.spicaStencilTest=s.pica.rendering.stencilTest.enabled,I.transparent=!0;const U=e=>{switch(e){case i.BlendFunctionOperation.ZERO:return o.ZeroFactor;case i.BlendFunctionOperation.ONE:return o.OneFactor;case i.BlendFunctionOperation.SOURCE_COLOR:return o.SrcColorFactor;case i.BlendFunctionOperation.ONE_MINUS_SOURCE_COLOR:return o.OneMinusSrcColorFactor;case i.BlendFunctionOperation.DESTINATION_COLOR:return o.DstColorFactor;case i.BlendFunctionOperation.ONE_MINUS_DESTINATION_COLOR:return o.OneMinusDstColorFactor;case i.BlendFunctionOperation.SOURCE_ALPHA:return o.SrcAlphaFactor;case i.BlendFunctionOperation.ONE_MINUS_SOURCE_ALPHA:return o.OneMinusSrcAlphaFactor;case i.BlendFunctionOperation.DESTINATION_ALPHA:return o.DstAlphaFactor;case i.BlendFunctionOperation.ONE_MINUS_DESTINATION_ALPHA:return o.OneMinusDstAlphaFactor;case i.BlendFunctionOperation.SOURCE_ALPHA_SATURATE:return o.SrcAlphaSaturateFactor;case i.BlendFunctionOperation.CONSTANT_COLOR:case i.BlendFunctionOperation.ONE_MINUS_CONSTANT_COLOR:case i.BlendFunctionOperation.CONSTANT_ALPHA:case i.BlendFunctionOperation.ONE_MINUS_CONSTANT_ALPHA:throw new Error("Invalid constant blending function");default:throw new Error("Invalid blending function")}},R=e=>{switch(e){case i.BlendEquation.ADD:return o.AddEquation;case i.BlendEquation.SUBTRACT:return o.SubtractEquation;case i.BlendEquation.REVERSE_SUBTRACT:return o.ReverseSubtractEquation;case i.BlendEquation.MIN:return o.MinEquation;case i.BlendEquation.MAX:return o.MaxEquation;default:throw new Error("Invalid blending equation")}};switch(I.blendDst=U(s.pica.rendering.blendFunction.colorDestinationFunction.code),I.blendDstAlpha=U(s.pica.rendering.blendFunction.alphaDestinationFunction.code),I.blendEquation=R(s.pica.rendering.blendFunction.colorEquation.code),I.blendEquationAlpha=R(s.pica.rendering.blendFunction.alphaEquation.code),I.blendSrc=U(s.pica.rendering.blendFunction.colorSourceFunction.code),I.blendSrcAlpha=U(s.pica.rendering.blendFunction.alphaSourceFunction.code),I.blending=o.CustomBlending,I.premultipliedAlpha=!0,I.spicaStencil={enabled:s.pica.rendering.stencilTest.enabled,buffer:s.pica.rendering.stencilTest.bufferMask,test:s.pica.rendering.stencilTest.testFunction,reference:s.pica.rendering.stencilTest.reference,mask:s.pica.rendering.stencilTest.mask,failed:s.pica.rendering.stencilOperation.failOperation,zFailed:s.pica.rendering.stencilOperation.zFailOperation,zPassed:s.pica.rendering.stencilOperation.zPassOperation},I.spicaLayer=s.renderLayer,I.spicaPriority=s.renderPriority,I.spicaLUTs=s.lightingLUTs,I.depthTest=s.pica.depth.enabled,s.pica.depth.colorMask.depthFunction.code){case i.TestFunction.ALWAYS:I.depthFunc=o.AlwaysDepth;break;case i.TestFunction.NEVER:I.depthFunc=o.NeverDepth;break;case i.TestFunction.NOT_EQUAL_TO:I.depthFunc=o.NotEqualDepth;break;case i.TestFunction.LESS_THAN:I.depthFunc=o.LessDepth;break;case i.TestFunction.LESS_THAN_OR_EQUAL_TO:I.depthFunc=o.LessEqualDepth;break;case i.TestFunction.GREATER_THAN:I.depthFunc=o.GreaterDepth;break;case i.TestFunction.GREATER_THAN_OR_EQUAL_TO:I.depthFunc=o.GreaterEqualDepth;break;case i.TestFunction.EQUAL_TO:throw new Error("Not supported EQUAL_TO depth tester");default:throw new Error("Invalid depth tester")}return I.depthWrite=s.pica.depth.colorMask.depthWrite,I},f=e=>{let t=new o.ShaderMaterial({uniforms:{outlineOffset:{type:"f",value:1}},vertexShader:["uniform float outlineOffset;","#include <skinning_pars_vertex>","void main() {","    #include <begin_vertex>","    #include <skinbase_vertex>","    #include <skinning_vertex>","    vec2 unit = normalize((projectionMatrix * modelViewMatrix * vec4(normal, 0.0)).xyz).xy;","    vec2 advance = unit * outlineOffset * distance(cameraPosition, transformed) / 600.0;","    gl_Position = (projectionMatrix * modelViewMatrix * vec4(transformed, 1.0)) + vec4(advance.x, advance.y, 0.0, 0.0));","}"].join("\n"),fragmentShader:["void main() {","    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);","}"].join("\n")});return t.side=o.BackSide,t.skinning=!0,t.spicaLayer=e.renderLayer,t.spicaPriority=e.renderPriority+.5,t},m=[];return this.meshes.forEach(a=>{a.submeshes.forEach((n,s)=>{let c=this.materials.filter(e=>e.name===n.material)[0].vertexShader,p=!t.is.nil(e.model.files[2].files.filter(e=>t.is(e,r)&&e.name===c)[0].pica.shader.geometry.entryPoint);const g=new o.BufferGeometry;l.push(g),g.name=a.name+(s+1);const x={hasBoneW:a.boneIndicesPerVertex>=4};if(n.vertices.attributes.forEach(e=>{switch(e.name.code){case i.AttributeName.POSITION:x.hasPosition=!e.fixed||e.value;break;case i.AttributeName.NORMAL:x.hasNormal=!e.fixed||e.value;break;case i.AttributeName.TANGENT:x.hasTangent=!e.fixed||e.value;break;case i.AttributeName.COLOR:x.hasColor=!e.fixed||e.value;break;case i.AttributeName.TEXTURE_COORDINATE_0:x.hasTextureCoordinate0=!e.fixed||e.value;break;case i.AttributeName.TEXTURE_COORDINATE_1:x.hasTextureCoordinate1=!e.fixed||e.value;break;case i.AttributeName.TEXTURE_COORDINATE_2:x.hasTextureCoordinate2=!e.fixed||e.value;break;case i.AttributeName.BONE_INDEX:x.hasBoneIndex=!e.fixed||e.value;break;case i.AttributeName.BONE_WEIGHT:x.hasBoneWeight=!e.fixed||e.value}}),x.hasPosition){let e=new Float32Array(4*n.vertices.count*(p?4:1));n.vertices.data.forEach((t,i)=>{let a=!0===x.hasPosition?t.position:x.hasPosition;e[4*i]=a[0],e[4*i+1]=a[1],e[4*i+2]=a[2],e[4*i+3]=1}),p&&(e.copyWithin(4*n.vertices.count,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*2,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*3,0,4*n.vertices.count)),g.addAttribute("position",new o.Float32BufferAttribute(e,4))}if(x.hasNormal){let e=new Float32Array(4*n.vertices.count*(p?4:1));n.vertices.data.forEach((t,i)=>{let a=!0===x.hasNormal?t.normal:x.hasNormal;e[4*i]=a[0],e[4*i+1]=a[1],e[4*i+2]=a[2]}),p&&(e.copyWithin(4*n.vertices.count,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*2,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*3,0,4*n.vertices.count)),g.addAttribute("normal",new o.Float32BufferAttribute(e,4))}if(x.hasTangent){let e=new Float32Array(4*n.vertices.count*(p?4:1));n.vertices.data.forEach((t,i)=>{let a=!0===x.hasTangent?t.tangent:x.hasTangent;e[4*i]=a[0],e[4*i+1]=a[1],e[4*i+2]=a[2]}),p&&(e.copyWithin(4*n.vertices.count,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*2,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*3,0,4*n.vertices.count)),g.addAttribute("tangent",new o.Float32BufferAttribute(e,4))}if(x.hasColor){let e=new Uint8Array(4*n.vertices.count*(p?4:1));n.vertices.data.forEach((t,i)=>{let a=!0===x.hasColor?t.color:x.hasColor;e[4*i]=a[1],e[4*i+1]=a[2],e[4*i+2]=a[3],e[4*i+3]=a[0]}),p&&(e.copyWithin(4*n.vertices.count,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*2,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*3,0,4*n.vertices.count)),g.addAttribute("color",new o.Uint8BufferAttribute(e,4))}if(x.hasTextureCoordinate0){let e=new Float32Array(4*n.vertices.count*(p?4:1));n.vertices.data.forEach((t,i)=>{let a=!0===x.hasTextureCoordinate0?t.textures[0]:x.hasTextureCoordinate0;e[4*i]=a[0],e[4*i+1]=a[1]}),p&&(e.copyWithin(4*n.vertices.count,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*2,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*3,0,4*n.vertices.count)),g.addAttribute("uv",new o.Float32BufferAttribute(e,4))}if(x.hasTextureCoordinate1){let e=new Float32Array(4*n.vertices.count*(p?4:1));n.vertices.data.forEach((t,i)=>{let a=!0===x.hasTextureCoordinate1?t.textures[1]:x.hasTextureCoordinate1;e[4*i]=a[0],e[4*i+1]=a[1]}),p&&(e.copyWithin(4*n.vertices.count,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*2,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*3,0,4*n.vertices.count)),g.addAttribute("uv2",new o.Float32BufferAttribute(e,4))}if(x.hasTextureCoordinate2){let e=new Float32Array(4*n.vertices.count*(p?4:1));n.vertices.data.forEach((t,i)=>{let a=!0===x.hasTextureCoordinate2?t.textures[2]:x.hasTextureCoordinate2;e[4*i]=a[0],e[4*i+1]=a[1]}),p&&(e.copyWithin(4*n.vertices.count,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*2,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*3,0,4*n.vertices.count)),g.addAttribute("uv3",new o.Float32BufferAttribute(e,4))}if(x.hasBoneIndex){const e=new Float32Array(4*n.vertices.count*(p?4:1)),t=new Float32Array(4*n.vertices.count*(p?4:1));n.vertices.data.forEach((i,a)=>{let r=!0===x.hasBoneIndex?i.boneIndices:x.hasBoneIndex;isFinite(r[0])?(e[4*a]=n.boneIndices[r[0]],t[4*a]=r[0]):(e[4*a]=NaN,t[4*a]=NaN),isFinite(r[1])?(e[4*a+1]=n.boneIndices[r[1]],t[4*a+1]=r[1]):(e[4*a+1]=NaN,t[4*a+1]=NaN),isFinite(r[2])?(e[4*a+2]=n.boneIndices[r[2]],t[4*a+2]=r[2]):(e[4*a+2]=NaN,t[4*a+2]=NaN),isFinite(r[3])?(e[4*a+3]=n.boneIndices[r[3]],t[4*a+3]=r[3]):(e[4*a+3]=NaN,t[4*a+3]=NaN)}),p&&(e.copyWithin(4*n.vertices.count,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*2,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*3,0,4*n.vertices.count),t.copyWithin(4*n.vertices.count,0,4*n.vertices.count),t.copyWithin(4*n.vertices.count*2,0,4*n.vertices.count),t.copyWithin(4*n.vertices.count*3,0,4*n.vertices.count)),g.addAttribute("skinIndex",new o.Float32BufferAttribute(e,4)),g.addAttribute("boneIndex",new o.Float32BufferAttribute(t,4))}if(x.hasBoneWeight){const e=new Float32Array(4*n.vertices.count*(p?4:1)),t=new Float32Array(4*n.vertices.count*(p?4:1));n.vertices.data.forEach((i,a)=>{let n=!0===x.hasBoneWeight?i.boneWeights:x.hasBoneWeight;e[4*a]=n[0]/255,t[4*a]=n[0],e[4*a+1]=n[1]/255,t[4*a+1]=n[1],e[4*a+2]=n[2]/255,t[4*a+2]=n[2],e[4*a+3]=n[3]/255,t[4*a+3]=n[3]}),p&&(e.copyWithin(4*n.vertices.count,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*2,0,4*n.vertices.count),e.copyWithin(4*n.vertices.count*3,0,4*n.vertices.count),t.copyWithin(4*n.vertices.count,0,4*n.vertices.count),t.copyWithin(4*n.vertices.count*2,0,4*n.vertices.count),t.copyWithin(4*n.vertices.count*3,0,4*n.vertices.count)),g.addAttribute("skinWeight",new o.Float32BufferAttribute(e,4)),g.addAttribute("boneWeight",new o.Float32BufferAttribute(t,4))}if(p){const e=new Float32Array(4*n.vertices.count*4);e.fill(0,0,4*n.vertices.count),e.fill(1,4*n.vertices.count,4*n.vertices.count*2),e.fill(2,4*n.vertices.count*2,4*n.vertices.count*3),e.fill(3,4*n.vertices.count*3,4*n.vertices.count*4),g.addAttribute("geometryIndex",new o.Float32BufferAttribute(e,4))}const v=new Uint16Array(n.vertexIndices.count*(p?6:1));n.vertexIndices.data.forEach((e,t)=>{if(p){let i=n.vertices.data.length;v[6*t]=e+0*i,v[6*t+1]=e+i,v[6*t+2]=e+2*i,v[6*t+3]=e+i,v[6*t+4]=e+2*i,v[6*t+5]=e+3*i}else v[t]=e}),g.setIndex(new o.Uint16BufferAttribute(v,1));let T=this.materials.filter(e=>e.name===n.material)[0],E=h(T,x),b=f(T),w=null,A=null;x.hasBoneIndex?(w=new o.SkinnedMesh(g,E),A=new o.SkinnedMesh(g,b)):(w=new o.Mesh(g,E),A=new o.Mesh(g,b)),m.push(w),w.name=a.name+(s+1),E.spicaTexture1&&(w.spicaTexture1Offset=E.spicaTexture1.offset,w.spicaTexture1Rotation=E.spicaTexture1.rotation,w.spicaTexture1Repeat=E.spicaTexture1.repeat),E.spicaTexture2&&(w.spicaTexture2Offset=E.spicaTexture2.offset,w.spicaTexture2Rotation=E.spicaTexture2.rotation,w.spicaTexture2Repeat=E.spicaTexture2.repeat),E.spicaTexture3&&(w.spicaTexture3Offset=E.spicaTexture3.offset,w.spicaTexture3Rotation=E.spicaTexture3.rotation,w.spicaTexture3Repeat=E.spicaTexture3.repeat),w.spicaConstant0=E.spicaConstant0,w.spicaConstant1=E.spicaConstant1,w.spicaConstant2=E.spicaConstant2,w.spicaConstant3=E.spicaConstant3,w.spicaConstant4=E.spicaConstant4,w.spicaConstant5=E.spicaConstant5;let y="Default"===T.vertexShader;w.onBeforeRender=function(e,t,a,r,s,c){if(s.spica){let e=a.projectionMatrix,i=a.matrixWorldInverse,r=w.skeleton.boneMatrices,c=s.uniforms.vectors.value;s.uniforms.map.value&&(s.uniforms.map.value.rotation=w.spicaTexture1Rotation,s.uniforms.map.value.matrix.setUvTransform(s.uniforms.map.value.repeat.x*s.uniforms.map.value.offset.x,s.uniforms.map.value.repeat.y*s.uniforms.map.value.offset.y,s.uniforms.map.value.repeat.x,s.uniforms.map.value.repeat.y,s.uniforms.map.value.rotation,0,0),c[1].set(s.uniforms.map.value.matrix.elements[0],s.uniforms.map.value.matrix.elements[3],0,s.uniforms.map.value.matrix.elements[6]),c[2].set(s.uniforms.map.value.matrix.elements[1],s.uniforms.map.value.matrix.elements[4],0,s.uniforms.map.value.matrix.elements[7]),c[3].set(s.uniforms.map.value.matrix.elements[2],s.uniforms.map.value.matrix.elements[5],s.uniforms.map.value.matrix.elements[8],0)),s.uniforms.map2.value&&(s.uniforms.map2.value.rotation=w.spicaTexture2Rotation,s.uniforms.map2.value.matrix.setUvTransform(s.uniforms.map2.value.repeat.x*s.uniforms.map2.value.offset.x,s.uniforms.map2.value.repeat.y*s.uniforms.map2.value.offset.y,s.uniforms.map2.value.repeat.x,s.uniforms.map2.value.repeat.y,s.uniforms.map2.value.rotation,0,0),c[4].set(s.uniforms.map2.value.matrix.elements[0],s.uniforms.map2.value.matrix.elements[3],0,s.uniforms.map2.value.matrix.elements[6]),c[5].set(s.uniforms.map2.value.matrix.elements[1],s.uniforms.map2.value.matrix.elements[4],0,s.uniforms.map2.value.matrix.elements[7]),c[6].set(s.uniforms.map2.value.matrix.elements[2],s.uniforms.map2.value.matrix.elements[5],s.uniforms.map2.value.matrix.elements[8],0)),s.uniforms.map3.value&&(s.uniforms.map3.value.rotation=w.spicaTexture3Rotation,s.uniforms.map3.value.matrix.setUvTransform(s.uniforms.map3.value.repeat.x*s.uniforms.map3.value.offset.x,s.uniforms.map3.value.repeat.y*s.uniforms.map3.value.offset.y,s.uniforms.map3.value.repeat.x,s.uniforms.map3.value.repeat.y,s.uniforms.map3.value.rotation,0,0),c[7].set(s.uniforms.map3.value.matrix.elements[0],s.uniforms.map3.value.matrix.elements[3],0,s.uniforms.map3.value.matrix.elements[6]),c[8].set(s.uniforms.map3.value.matrix.elements[1],s.uniforms.map3.value.matrix.elements[4],0,s.uniforms.map3.value.matrix.elements[7]));let l=[1,1,1],p=d;for(;p;)l[0]*=p.scale.x,l[1]*=p.scale.y,l[2]*=p.scale.z,p=p.parent;c[81].set(l[0],l[1],l[2],1);let h=0;for(;h<20&&h<n.boneIndices.length;){let e=16*n.boneIndices[h];c[10+3*h].set(r[e],r[e+4],r[e+8],r[e+12]),c[11+3*h].set(r[e+1],r[e+5],r[e+9],r[e+13]),c[12+3*h].set(r[e+2],r[e+6],r[e+10],r[e+14]),++h}let f=t.children.filter(e=>e.isDirectionalLight)[0];if(f){let e=new o.Vector4(0,0,0,1);e.applyMatrix4(f.target.matrixWorld);let t=new o.Vector4(0,0,0,1);t.applyMatrix4(f.matrixWorld);let i=new o.Vector4(t.x-e.x,t.y-e.y,t.z-e.z,0);c[83].set(i.x,i.y,i.z,0)}else c[83].set(0,1,0,0);y?f?c[84].set(f.color.r,f.color.g,f.color.b,f.intensity):c[84].set(1,1,1,0):c[84].set((u.boundingBox.max[0]-u.boundingBox.min[0])*d.scale.x,(u.boundingBox.max[2]-u.boundingBox.min[2])*d.scale.z,u.boundingBox.min[1]*d.scale.y,u.boundingBox.max[1]*d.scale.y),c[86].set(e.elements[0],e.elements[4],e.elements[8],e.elements[12]),c[87].set(e.elements[1],e.elements[5],e.elements[9],e.elements[13]),c[88].set(e.elements[2],e.elements[6],e.elements[10],e.elements[14]),c[89].set(e.elements[3],e.elements[7],e.elements[11],e.elements[15]),c[90].set(i.elements[0],i.elements[4],i.elements[8],i.elements[12]),c[91].set(i.elements[1],i.elements[5],i.elements[9],i.elements[13]),c[92].set(i.elements[2],i.elements[6],i.elements[10],i.elements[14]);let m=t.children.filter(e=>e.isAmbientLight)[0];m&&s.uniforms.environmentAmbient.value.set(m.color.r,m.color.g,m.color.b,m.intensity);let g=t.children.filter(e=>e.isLight&&!e.isAmbientLight).slice(0,3);for(h=0;h<g.length;){if(s.uniforms.lightDirectionals.value[h]=g[h].isDirectionalLight,s.uniforms.lightDirectionals.value[h]){let e=new o.Vector4(0,0,0,1);e.applyMatrix4(g[h].target.matrixWorld);let t=new o.Vector4(0,0,0,1);t.applyMatrix4(g[h].matrixWorld);let i=new o.Vector4(t.x-e.x,t.y-e.y,t.z-e.z,0);i.applyMatrix4(a.matrixWorldInverse),s.uniforms.lightPositions.value[h].set(i.x,i.y,i.z,0),s.uniforms.lightDirections.value[h].set(i.x,i.y,i.z,0)}else s.uniforms.lightPositions.value[h].set(g[h].position.x,g[h].position.y,g[h].position.z),s.uniforms.lightDirections.value[h].set(g[h].position.x,g[h].position.y,g[h].position.z);s.uniforms.lightAmbients.value[h].set(g[h].color.r,g[h].color.g,g[h].color.b,g[h].intensity),s.uniforms.lightDiffuses.value[h].set(1,1,1,g[h].intensity),s.uniforms.lightSpeculars.value[2*h].set(1,1,1,g[h].intensity),s.uniforms.lightSpeculars.value[2*h+1].set(1,1,1,g[h].intensity),++h}s.uniforms.lightsCount.value=g.length}if(s.spicaStencil&&s.spicaStencil.enabled){const t=t=>{switch(t){case i.StencilOperationAction.KEEP:return e.context.KEEP;case i.StencilOperationAction.ZERO:return e.context.ZERO;case i.StencilOperationAction.REPLACE:return e.context.REPLACE;case i.StencilOperationAction.INCREMENT:return e.context.INCR;case i.StencilOperationAction.DECREMENT:return e.context.DECR;case i.StencilOperationAction.INVERT:return e.context.INVERT;case i.StencilOperationAction.INCREMENT_WRAP:return e.context.INCR_WRAP;case i.StencilOperationAction.DECREMENT_WRAP:return e.context.DECR_WRAP;default:throw new Error("Invalid stencil action")}},a=t=>{switch(t){case i.TestFunction.NEVER:return e.context.NEVER;case i.TestFunction.ALWAYS:return e.context.ALWAYS;case i.TestFunction.EQUAL_TO:return e.context.EQUAL;case i.TestFunction.NOT_EQUAL_TO:return e.context.NOTEQUAL;case i.TestFunction.LESS_THAN:return e.context.LESS;case i.TestFunction.LESS_THAN_OR_EQUAL_TO:return e.context.LEQUAL;case i.TestFunction.GREATER_THAN:return e.context.GREATER;case i.TestFunction.GREATER_THAN_OR_EQUAL_TO:return e.context.GEQUAL;default:throw new Error("Invalid stencil test function")}};e.state.buffers.stencil.setTest(!0),e.state.buffers.stencil.setOp(t(s.spicaStencil.failed.code),t(s.spicaStencil.zFailed.code),t(s.spicaStencil.zPassed.code)),e.state.buffers.stencil.setFunc(a(s.spicaStencil.test.code),s.spicaStencil.reference,s.spicaStencil.mask),e.state.buffers.stencil.setMask(s.spicaStencil.buffer)}},w.onAfterRender=function(e,t,i,a,n){n.spicaStencil&&n.spicaStencil.enabled&&e.state.buffers.stencil.setTest(!1)}})}),m.reverse(),m.sort((e,t)=>{let i=e.material.spicaLayer-t.material.spicaLayer;return 0!==i?i:e.material.spicaPriority-t.material.spicaPriority}),m.forEach((e,t)=>{e.renderOrder=t+1}),m.forEach(e=>{d.add(e),e.updateMatrixWorld(!0),e.isSkinnedMesh&&e.bind(d.skeleton)}),d.animations=[],[[e.motions.fighting.files,"Fighting"],[e.motions.pet.files,"Pet"],[e.motions.map.files,"Map"],[e.motions.acting.files,"Acting"]].forEach(([e,i])=>{e.forEach((e,a)=>{if(!t.is(e,s))return;const n=i+"Action"+(a+1),r=[];e.skeletal&&e.skeletal.transforms.forEach(t=>{let i=t.bone,a=this.bones.filter(e=>e.name===i)[0];if(!a)return;[["scale","scale"],["rotation","quaternion"],["translation","position"]].forEach(([n,c])=>{if(0===t[n+"X"].length&&0===t[n+"Y"].length&&0===t[n+"Z"].length)return;const l=[];["x","y","z"].forEach((i,r)=>{const o=n+i.toUpperCase();if(t[o].length>0&&0!==t[o][0].frame)throw new Error("Incorrect initial frame");let u=0,d=0;for(;d<=e.frames;){let p=d<e.frames?2:1,h=0;for(;h<p;){let e=2*d+h;l[e]||(l[e]={}),t[o].length>0?(l[e][i]=s.interpolate(t[o][u],t[o][u+1],d+h/2),u<t[o].length-1&&t[o][u+1].frame===d&&++u):l[e][i]="quaternion"===c?0:a[n][r%3],++h}++d}});let u=[];l.forEach((e,t)=>{u.push(t/s.FPS/2)});let d=[],p=[[],[],[],[]];l.forEach(e=>{if("quaternion"===c){let i=new o.Quaternion;if(t.axisAngle){let t=new o.Vector3(e.x,e.y,e.z),a=2*t.length();t.normalize(),i.setFromAxisAngle(t,a)}else{let t=new o.Euler(e.x,e.y,e.z,"ZYX");i.setFromEuler(t)}d.push(i.x,i.y,i.z,i.w),p[0].push(i.x),p[1].push(i.y),p[2].push(i.z),p[3].push(i.w)}else if("position"===c)d.push(e.x,e.y,e.z),p[0].push(e.x),p[1].push(e.y),p[2].push(e.z);else{if("scale"!==c)throw new Error("Unknown keys");d.push(e.x,e.y,e.z),p[0].push(e.x),p[1].push(e.y),p[2].push(e.z)}});let h=null;if("quaternion"===c){(h=new o.QuaternionKeyframeTrack(`.bones[${i}].${c}`,u,d)).spicaConstant=t.rotationX.isConstant&&t.rotationY.isConstant&&t.rotationZ.isConstant;let e=new o.Quaternion;e.setFromEuler(new o.Euler(a[n][0],a[n][1],a[n][2],"ZYX")),h.spicaOrigin=[e.x,e.y,e.z,e.w],r.push(h)}else"position"===c?(t.translationX.length>0&&((h=new o.NumberKeyframeTrack(`.bones[${i}].${c}[x]`,u,p[0])).spicaConstant=t.translationX.isConstant,h.spicaOrigin=[a[n][0]],r.push(h)),t.translationY.length>0&&((h=new o.NumberKeyframeTrack(`.bones[${i}].${c}[y]`,u,p[1])).spicaConstant=t.translationX.isConstant,h.spicaOrigin=[a[n][1]],r.push(h)),t.translationZ.length>0&&((h=new o.NumberKeyframeTrack(`.bones[${i}].${c}[z]`,u,p[2])).spicaConstant=t.translationX.isConstant,h.spicaOrigin=[a[n][2]],r.push(h))):"scale"===c&&(t.scaleX.length>0&&((h=new o.NumberKeyframeTrack(`.bones[${i}].${c}[x]`,u,p[0])).spicaConstant=t.translationX.isConstant,h.spicaOrigin=[a[n][0]],r.push(h)),t.scaleY.length>0&&((h=new o.NumberKeyframeTrack(`.bones[${i}].${c}[y]`,u,p[1])).spicaConstant=t.translationX.isConstant,h.spicaOrigin=[a[n][1]],r.push(h)),t.scaleZ.length>0&&((h=new o.NumberKeyframeTrack(`.bones[${i}].${c}[z]`,u,p[2])).spicaConstant=t.translationX.isConstant,h.spicaOrigin=[a[n][2]],r.push(h)))})}),e.material&&e.material.transforms.forEach(i=>{let a=this.materials.filter(e=>e.name===i.material)[0];if(!a)return void t.warn("Material not found for animations");let n=[];this.meshes.forEach(e=>{e.submeshes.forEach((r,s)=>{if(r.material===i.material){if(i.textureIndex>=a.textureCoordinates.length)return void t.warn("Texture not found for animations");n.push(e.name+(s+1)+".spicaTexture"+(i.textureIndex+1))}})}),[["rotation","Rotation"],["scaleX","Repeat[x]"],["scaleY","Repeat[y]"],["translationX","Offset[x]",!0],["translationY","Offset[y]",!0]].forEach(([t,c,l])=>{if(i[t].length>0){const u=[];let d=0,p=0;for(;p<=e.frames;)u[p]=s.interpolate(i[t][d],i[t][d+1],p),d<i[t].length-1&&i[t][d+1].frame===p&&++d,++p;let h=[],f=[];u.forEach((e,t)=>{h.push(t/s.FPS),l?f.push(-e):f.push(e)}),n.forEach(e=>{let n=new o.NumberKeyframeTrack(`${e}${c}`,h.slice(0),f.slice(0),o.InterpolateDiscrete);n.spicaConstant=i[t].isConstant,"translationX"===t?n.spicaOrigin=[a.pica.shader.vertex.floats[3*i.textureIndex+1].w]:"translationY"===t?n.spicaOrigin=[a.pica.shader.vertex.floats[3*i.textureIndex+2].w]:"rotation"===t&&(n.spicaOrigin=[0]),r.push(n)})}})}),e.visibility&&e.visibility.transforms.forEach(e=>{let t=this.meshes.filter(t=>t.name===e.mesh)[0];if(!t)return;let i=[],a=[];e.visibility.forEach(e=>{a.push(e.value),i.push(e.frame/s.FPS)}),t.submeshes.forEach((n,s)=>{let c=new o.BooleanKeyframeTrack(`${t.name}${s+1}.visible`,i.slice(0),a.slice(0),o.InterpolateDiscrete);c.spicaConstant=e.visibility.isConstant,c.spicaOrigin=[!0],r.push(c)})}),e.constant&&e.constant.values.forEach(i=>{let a=this.materials.filter(e=>e.name===i.material)[0];if(!a)return void t.warn("Material not found: "+i.material);let n=[];this.meshes.forEach(e=>{e.submeshes.forEach((a,r)=>{if(a.material===i.material){if(!this.materials.filter(e=>e.name===a.material)[0])return void t.warn("Material not found for animations");n.push(e.name+(r+1))}})});const c=[];["r","g","b","a"].forEach(t=>{let n=0,r=0;for(;r<=e.frames;)c[r]||(c[r]={}),i[t].length>0?c[r][t]=s.interpolate(i[t][n],i[t][n+1],r):c[r][t]=a.constantColors[i.constantIndex][t]/255,n<i[t].length-1&&i[t][n+1].frame===r&&++n,++r});let l=c.map((e,t)=>t/s.FPS),u=[];c.forEach(e=>{u.push(e.r,e.g,e.b,e.a)}),n.forEach(e=>{let t=new o.VectorKeyframeTrack(`${e}.spicaConstant${i.constantIndex}`,l.slice(0),u.slice(0),o.InterpolateLinear);t.spicaConstant=!1,t.spicaOrigin=[a.constantColors[i.constantIndex].r/255,a.constantColors[i.constantIndex].g/255,a.constantColors[i.constantIndex].b/255,a.constantColors[i.constantIndex].a/255],r.push(t)})});let c=new o.AnimationClip(n,e.frames/s.FPS,r);c.spicaHash=e.hash,d.animations.push(c)})}),d.spicaAnimationMixers={time:0,bindings:{},channels:{},pathes:{}},d.spicaPlayAction=function(e,i){i||(i={}),i.channel||(i.channel=t.uuid()),t.is.nil(i.fadings)&&(i.fadings=.2),t.is(i.fadings,Number)&&(i.fadings=[i.fadings]),1===i.fadings.length?i.fadings=[i.fadings[0],i.fadings[0],i.fadings[0]]:2===i.fadings.length&&(i.fadings=[i.fadings[0],i.fadings[1],i.fadings[0]]),t.is.nil(i.priority)&&(i.priority=1),t.is.nil(i.weight)&&(i.weight=1),t.is.nil(i.frame)&&(i.frame=0),t.is.nil(i.paused)&&(i.paused=!1),t.is.nil(i.loop)&&(i.loop=1);let a=d.animations.filter(t=>t.name===e)[0];if(!a)return t.async.reject(new Error("Animation "+e+" not found"));i.fadings[0]>a.duration*i.loop*.1&&(i.fadings[0]=a.duration*i.loop*.1),i.fadings[2]>a.duration*i.loop*.1&&(i.fadings[2]=a.duration*i.loop*.1);let n=d.spicaAnimationMixers.time;return t.async(function(){d.spicaAnimationMixers.channels.hasOwnProperty(i.channel)&&d.spicaAnimationMixers.channels[i.channel]&&d.spicaAnimationMixers.channels[i.channel].forEach(e=>{e.fadeOut(i.fadings[1])});let r=[];a.tracks.forEach(o=>{let c={path:o.name,mixable:/^\.bones\[/.test(o.name),constant:!!o.spicaConstant,priority:i.priority,target:d,key:null,origin:o.spicaOrigin,frame:Math.round(i.frame/s.FPS/a.duration*o.times.length),passed:i.frame/s.FPS,paused:i.paused,times:o.times,units:o.values.length/o.times.length,values:o.values,duration:a.duration,starting:n,action:e,loop:i.loop,weight:i.weight,fadings:i.fadings.slice(0)};d.spicaAnimationMixers.pathes[c.path]?(c.target=d.spicaAnimationMixers.pathes[c.path].target,c.key=d.spicaAnimationMixers.pathes[c.path].key):(c.path.split(/[\.\[\]]+/).filter(e=>e).forEach((e,i,a)=>{if(i<a.length-1)if("bones"===e)c.target=c.target.skeleton.bones;else if(t.is(c.target,Array))c.target=c.target.filter(t=>t.name===e)[0];else if(c.target[e])c.target=c.target[e];else{if(!c.target.children)throw new Error("Not found");c.target=c.target.children.filter(t=>t.name===e)[0]}else c.key=e}),d.spicaAnimationMixers.pathes[c.path]={target:c.target,key:c.key}),d.spicaAnimationMixers.bindings[c.path]||(d.spicaAnimationMixers.bindings[c.path]=[]),d.spicaAnimationMixers.bindings[c.path].push(c),r.push(c)}),d.spicaAnimationMixers.channels.hasOwnProperty(i.channel)||(d.spicaAnimationMixers.channels[i.channel]=[]);let o=n-Date.now()/1e3;d.spicaAnimationMixers.channels[i.channel].push({listeners:[this.next],time:i.frame/s.FPS,paused:i.paused,starting:n,duration:a.duration,loop:i.loop,fadings:i.fadings.slice(0),fadeOut:function(e,i){t.is.nil(this.ending)&&(i||(i=Date.now()/1e3+o),this.starting+this.duration*this.loop-i<e&&(e=this.starting+this.duration*this.loop-i),e>this.duration*this.loop*.1&&(e=this.duration*this.loop*.1),e<0&&(e=0),this.fadings[1]=e,this.ending=d.spicaAnimationMixers.time,r.forEach(t=>{t.ending=this.ending,t.fadings.push(e)}))},stop:function(){this.fadeOut(0)},remove:function(){if(!this.removed){if(this.removed=!0,d.spicaAnimationMixers.channels[i.channel]){let e=d.spicaAnimationMixers.channels[i.channel].indexOf(this);-1!==e&&d.spicaAnimationMixers.channels[i.channel].splice(e,1),0===d.spicaAnimationMixers.channels[i.channel].length&&delete d.spicaAnimationMixers.channels[i.channel]}this.listeners.forEach(e=>{try{e(!t.is.nil(this.ending))}catch(e){t.error(e)}}),r.forEach(e=>{if(d.spicaAnimationMixers.bindings[e.path]){let i=d.spicaAnimationMixers.bindings[e.path].indexOf(e);-1!==i&&d.spicaAnimationMixers.bindings[e.path].splice(i,1),0===d.spicaAnimationMixers.bindings[e.path].length&&(e.origin&&t.delay(()=>{switch(e.key){case"visible":e.target[e.key]=!!e.origin[0];break;case"x":case"y":case"z":case"spicaTexture1Rotation":case"spicaTexture2Rotation":case"spicaTexture3Rotation":e.target[e.key]=e.origin[0];break;case"quaternion":e.target[e.key].set(e.origin[0],e.origin[1],e.origin[2],e.origin[3]);break;case"scale":case"position":e.target[e.key].set(e.origin[0],e.origin[1],e.origin[2]);break;default:e.target[e.key].set(e.origin[0],e.origin[1],e.origin[2],e.origin[3])}}),delete d.spicaAnimationMixers.bindings[e.path])}})}}})})},d.spicaTick=function(e){let i=d.spicaAnimationMixers.time+e;Object.keys(d.spicaAnimationMixers.bindings).forEach(e=>{let a=d.spicaAnimationMixers.bindings[e];if(0===a.length)return;let n=[],r={};a.forEach(e=>{if(!e.paused&&!e.ending){let t=i-e.starting;for(t-=Math.floor(t/e.duration)*e.duration,i-e.starting>e.duration*e.loop&&(t=e.duration),e.passed=t;e.frame>1&&e.times[e.frame-1]>t;)--e.frame;for(;e.frame<e.times.length-1&&e.times[e.frame+1]<t;)++e.frame}let a=1;t.is.nil(e.ending)?i<e.starting+e.fadings[0]?e.fadings[0]>0&&(a=(i-e.starting)/e.fadings[0]):e.starting+e.duration*e.loop-e.fadings[2]<i&&e.fadings[2]>0&&(a=(e.starting+e.duration*e.loop-i)/e.fadings[2]):a=i<e.ending+e.fadings[1]?e.starting+e.fadings[0]<e.ending?1-(i-e.ending)/e.fadings[1]:(e.ending-e.starting)/e.fadings[0]-(i-e.ending)/e.fadings[1]:0,a<0?a=0:a>1&&(a=1),e.fading=a,-1===n.indexOf(e.priority)&&(r[e.priority]=[],n.push(e.priority)),r[e.priority].push(e)}),n.sort((e,t)=>t-e);let s=1,o=0,c=0,l=[],u=null;if([!1,!0].forEach(e=>{let t=0;for(;o<1&&t<n.length;)r[n[t]].forEach(t=>{if(t.constant===e)if(t.mixable){let e=0;for(;e<t.units;){l[e]||(l[e]=0);let i=t.values[t.frame*t.units+e];l[e]+=s*t.weight*t.fading*i,++e}o+=t.fading,c+=s*t.weight*t.fading}else(!u||u[0]===t.priority&&u[1]<t.weight*t.fading&&(u[2]&e)===e)&&(l=t.values.slice(t.frame*t.units,(t.frame+1)*t.units),u=[t.priority,t.weight*t.fading,e],o=1,c=1)}),s=1-o,++t}),o<1&&a[0].origin){if(a[0].mixable){let e=0;for(;e<a[0].units;)l[e]||(l[e]=0),l[e]+=(1-o)*a[0].origin[e],++e;c+=1-o}else l=a[0].origin.slice(0),c=1;o=1}a[0].mixable&&0!==c&&(l=l.map(e=>e/c));let p=a[0].target,h=a[0].key;switch(h){case"position":case"scale":p[h].set(l[0],l[1],l[2]);break;case"quaternion":p[h].set(l[0],l[1],l[2],l[3]);break;case"visible":p[h]=!!l[0];break;case"x":case"y":case"z":case"spicaTexture1Rotation":case"spicaTexture2Rotation":case"spicaTexture3Rotation":p[h]=l[0];break;default:p[h].set(l[0],l[1],l[2],l[3])}}),Object.keys(d.spicaAnimationMixers.channels).forEach(e=>{d.spicaAnimationMixers.channels[e].slice(0).forEach(e=>{if(t.is.nil(e.ending)){if(e.paused)return;if(i-e.starting<=e.duration*e.loop)return}else if(i-e.ending<e.fadings[1])return;e.remove()})}),d.spicaAnimationMixers.time=i},d.spicaDispose=function(){l.forEach(e=>{try{e.dispose()}catch(e){}})},d};const l=function(e,t){let i=[],a=0;for(;a<t;)i.push(e.readFloat32()),++a;return i},u=function e(t){this.name=t.readString(t.readUint8()),this.parent=t.readString(t.readUint8());let i=t.readUint8();this.flags=i,this.stable=0!=(i&e.STABLE),this.animatable=0!=(i&e.ANIMATABLE),this.scale=new l(t,3),this.rotation=new l(t,3),this.translation=new l(t,3)};u.ANIMATABLE=1,u.STABLE=2;const d=function(e,t){this.hashID=e.readUint32(),e.skip(12,0),this.pica=new i(e,t)};d.prototype.toImageURL=function(e){var t=document.createElement("canvas");t.width=this.pica.lightingLUTs.data.length,t.height=e||Math.round(t.width/5),t.name=this.name?this.name:"LUT_"+this.hashID+".tga";var i=t.getContext("2d"),a=i.createImageData(t.width,t.height);let n=0;for(;n<t.width;){let e=0;for(;e<t.height;)a.data[4*(e*t.width+n)]=Math.round(255*this.pica.lightingLUTs.data[n]),a.data[4*(e*t.width+n)+1]=Math.round(255*this.pica.lightingLUTs.data[n]),a.data[4*(e*t.width+n)+2]=Math.round(255*this.pica.lightingLUTs.data[n]),a.data[4*(e*t.width+n)+3]=255,++e;++n}return i.putImageData(a,0,0),t.toDataURL()},d.prototype.toImage=function(){const e=new Image;return e.src=this.toImageURL(),e},d.DIST_0=0,d.DIST_1=1,d.FRESNEL=3,d.REFLECT_R=4,d.REFLECT_G=5,d.REFLECT_B=6,d.SPECULAR_0=8,d.SPECULAR_1=9,d.SPECULAR_2=10,d.SPECULAR_3=11,d.SPECULAR_4=12,d.SPECULAR_5=13,d.SPECULAR_6=14,d.SPECULAR_7=15,d.DIST_ATTRIBUTE_0=16,d.DIST_ATTRIBUTE_1=17,d.DIST_ATTRIBUTE_2=18,d.DIST_ATTRIBUTE_3=19,d.DIST_ATTRIBUTE_4=20,d.DIST_ATTRIBUTE_5=21,d.DIST_ATTRIBUTE_6=22,d.DIST_ATTRIBUTE_7=23;const p=function(e,t,a){this.picas={},["vertex","geometry","index"].forEach((n,r)=>{let s=e.readUint32();if(e.readUint32()!==t+r)throw new Error("Invalid data, expected "+t);if(e.readUint32()!==a)throw new Error("Invalid data, expected "+a);if(0!==e.readUint32())throw new Error("Invalid padding, expected 0");this.picas[n]=new i(e,s)})};p.prototype.loadInfo=function(e){this.hash=e.readUint32(),this.material=e.readString(e.readUint32());let t=e.readUint8();this.boneIndices=[];let a=0;for(;a<31;){let i=e.readUint8();if(a<t)this.boneIndices.push(i);else if(0!==i)throw new Error("Bones out of range");++a}let n=e.readInt32(),r=e.readInt32(),s=e.readInt32(),o=e.readInt32();for(this.vertices={attributes:[],count:n,length:s,data:[]},this.vertexIndices={count:r,length:o,data:[]},a=0;a<this.picas.vertex.shader.vertex.attributes.count;){if(this.picas.vertex.attributes.formats[a].fixed){let e=new i.AttributeName(this.picas.vertex.shader.vertex.attributes.permutations[a]);this.vertices.attributes[a]={name:e,fixed:!0,value:this.picas.vertex.attributes.fixeds.data[a],format:this.picas.vertex.attributes.formats[a]}}else{let e=this.picas.vertex.attributes.buffer.mapping[a],t=new i.AttributeName(this.picas.vertex.shader.vertex.attributes.permutations[e]);this.vertices.attributes[a]={name:t,fixed:!1,format:this.picas.vertex.attributes.formats[e]}}++a}},p.prototype.loadData=function(e){let t,a;for(a=e.index,t=0;t<this.vertices.count;){let a={},n=e.index,r=0;for(;r<this.vertices.attributes.length;){let t=this.vertices.attributes[r];if(!t.fixed){let n={},r=null;switch(t.format.type.code){case i.AttributeFormat.INT_8:r="readInt8";break;case i.AttributeFormat.UINT_8:r="readUint8";break;case i.AttributeFormat.INT_16:r="readInt16";break;case i.AttributeFormat.FLOAT_32:r="readFloat32";break;default:throw new Error("Invalid vertex format")}switch(n.x=e[r](),t.format.size>1&&(n.y=e[r]()),t.format.size>2&&(n.z=e[r]()),t.format.size>3&&(n.w=e[r]()),t.name.code){case i.AttributeName.POSITION:a.position=[n.x,n.y,n.z];break;case i.AttributeName.NORMAL:a.normal=[n.x,n.y,n.z];break;case i.AttributeName.TANGENT:a.tangent=[n.x,n.y,n.z];break;case i.AttributeName.COLOR:{let e=n.x,t=n.y,i=n.z,r=n.w;a.color=[r,e,t,i];break}case i.AttributeName.TEXTURE_COORDINATE_0:a.textures||(a.textures=[]),a.textures[0]=[n.x,n.y];break;case i.AttributeName.TEXTURE_COORDINATE_1:a.textures||(a.textures=[]),a.textures[1]=[n.x,n.y];break;case i.AttributeName.TEXTURE_COORDINATE_2:a.textures||(a.textures=[]),a.textures[2]=[n.x,n.y];break;case i.AttributeName.BONE_INDEX:{a.boneIndices||(a.boneIndices=[]);let e=e=>{255!==e&&a.boneIndices.push(e)};e(n.x),t.format.size>1&&e(n.y),t.format.size>2&&e(n.z),t.format.size>3&&e(n.w);break}case i.AttributeName.BONE_WEIGHT:a.boneWeights||(a.boneWeights=[]),a.boneWeights[0]=n.x,t.format.size>1&&(a.boneWeights[1]=n.y),t.format.size>2&&(a.boneWeights[2]=n.z),t.format.size>3&&(a.boneWeights[3]=n.w);break;default:throw new Error("Invalid attribute format "+t.name.code)}}++r}for(;e.index<n+this.picas.vertex.attributes.buffer.unitSize;)if(0!==e.readUint8())throw new Error("Invalid padding, expected 0");this.vertices.data[t]=a,++t}for(;e.index<a+this.vertices.length;)if(0!==e.readUint8())throw new Error("Invalid padding, expected 0");for(a=e.index,t=0;t<this.vertexIndices.count;)this.picas.index.attributes.indices.is16Bit?this.vertexIndices.data[t]=e.readUint16():this.vertexIndices.data[t]=e.readUint8(),++t;for(;e.index<a+this.vertexIndices.length;)if(0!==e.readUint8())throw new Error("Invalid padding, expected 0")};const h=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};h.UV=0,h.CAMERA_CUBE=1,h.CAMERA_SPHERE=2,h.PROJECTION=3,h.SHADOW=4,h.SHADOW_BOX=5;const f=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};f.NEAREST=0,f.LINEAR=1;const m=function(e){this.code=e,this.label=Object.keys(arguments.callee).filter(t=>arguments.callee[t]===e)[0]};m.LINEAR=0,m.LINEAR_MIPMAP_LINEAR=1,m.NEAREST=2,m.LINEAR_MIPMAP_NEAREST=3,m.NEAREST_MIPMAP_NEAREST=4,m.NEAREST_MIPMAP_LINEAR=5,c.HashNameTable=function(e){let t=e.readUint32(),i=[],a=0;for(;a<t;)i.push({hash:e.readUint32(),name:e.readString(64)}),++a;let n=i.map(e=>e.name);return n.hashes=i.map(e=>e.hash),n},c.Bone=u,c.LightingLUT=d,c.Material=function(e){let t;const n=new a(e,"material");let r=e.index;if(this.name={hash:e.readUint32(),value:e.readString(e.readUint8())}.value,this.shaderPack={hash:e.readUint32(),value:e.readString(e.readUint8())}.value,this.vertexShader={hash:e.readUint32(),value:e.readString(e.readUint8())}.value,this.fragmentShader={hash:e.readUint32(),value:e.readString(e.readUint8())}.value,this.lightingLUTs=[e.readUint32(),e.readUint32(),e.readUint32()],0!==e.readUint32())throw new Error("Invalid padding, expected 0");if(this.bumpTexture=e.readInt8(),this.constantAssignments=[e.readUint8(),e.readUint8(),e.readUint8(),e.readUint8(),e.readUint8(),e.readUint8()],0!==e.readUint8())throw new Error("Invalid padding, expected 0");this.constantColors=[new i.Color(e),new i.Color(e),new i.Color(e),new i.Color(e),new i.Color(e),new i.Color(e)],this.specularColors=[new i.Color(e),new i.Color(e)],this.blendColor=new i.Color(e),this.emissionColor=new i.Color(e),this.ambientColor=new i.Color(e),this.diffuseColor=new i.Color(e),this.edgeType=e.readInt32(),this.idEdgeEnabled=e.readInt32(),this.edgeID=e.readInt32(),this.projectionType=e.readInt32(),this.rimPower=e.readFloat32(),this.rimScale=e.readFloat32(),this.phongPower=e.readFloat32(),this.phongScale=e.readFloat32(),this.idEdgeOffsetEnabled=e.readInt32(),this.edgeMapAlphaMask=e.readInt32(),this.bakeTextures=[e.readInt32(),e.readInt32(),e.readInt32()],this.bakeConstants=[e.readInt32(),e.readInt32(),e.readInt32(),e.readInt32(),e.readInt32(),e.readInt32()],this.shaderType=e.readUint32(),this.shaderParameters=[e.readFloat32(),e.readFloat32(),e.readFloat32(),e.readFloat32()];let s=e.readUint32();for(this.textureCoordinates=[],t=0;t<s;)this.textureCoordinates[t]=new c.TextureCoordinate(e),++t;e.skipPadding(16,255);let o=e.readUint32();for(this.renderPriority=e.readInt32(),e.readUint32(),this.renderLayer=e.readInt32(),e.readUint32(),e.readUint32(),e.readUint32(),e.readUint32(),this.pica=new i(e,o);e.index<r+n.length;)if(0!==e.readUint8())throw new Error("Invalid padding, expected 0")},c.Mesh=function(e){let t;const i=new a(e,"mesh");let n=e.index;if(this.name={hash:e.readUint32(),value:e.readString(64)}.value,0!==e.readUint32())throw new Error("Invalid padding, expected 0");this.boundingBox={min:new c.Vector(e,4),max:new c.Vector(e,4)};const r=e.readUint32();if(this.boneIndicesPerVertex=e.readInt32(),-1!==e.readInt32())throw new Error("Invalid padding, expected -1");if(-1!==e.readInt32())throw new Error("Invalid padding, expected -1");if(-1!==e.readInt32())throw new Error("Invalid padding, expected -1");if(-1!==e.readInt32())throw new Error("Invalid padding, expected -1");for(this.submeshes=[],t=0;t<r;)this.submeshes.push(new c.Submesh(e,3*t,3*r)),++t;for(this.submeshes.forEach(t=>t.loadInfo(e)),this.submeshes.forEach(t=>t.loadData(e));e.index-n<i.length;)if(0!==e.readUint8())throw new Error("Invalid padding, expected -1")},c.Submesh=p,c.Matrix=function(e,t){let i=[],a=0;for(;a<t;)new l(e,t).forEach(e=>{i.push(e)}),++a;return i},c.Vector=l,c.TextureCoordinate=function(e){this.hashID=e.readUint32(),this.name=e.readString(e.readUint8()),this.index=e.readUint8(),this.mappingType=new c.TextureMappingType(e.readUint8()),this.scale=new l(e,2),this.rotation=e.readFloat32(),this.translation=new l(e,2),this.wrap=[new i.TextureWrap(e.readUint32()),new i.TextureWrap(e.readUint32())],this.magFilter=new c.TextureMagnificationFilter(e.readUint32()),this.minFilter=new c.TextureMinificationFilter(e.readUint32()),this.minLOD=e.readUint32()},c.TextureMappingType=h,c.TextureMagnificationFilter=f,c.TextureMinificationFilter=m,module.exports=c})(this,this.$);
+((global, $) => {
+    
+    const PICA = require("./pica.js");
+    
+    const Section = require("./section.js");
+    
+    const Texture = require("./texture.js");
+    const Shader = require("./shader.js");
+    const Motion = require("./motion.js");
+    
+    const THREE = require("../three/main.js");
+    
+    global.THREE = THREE;
+    
+    const Model = function Model(reader) {
+        
+        let looper;
+        
+        this.magic = reader.readUint32();
+        
+        const unitCount = reader.readUint32();
+        
+        reader.skipPadding(0x10, 0);
+        
+        const section = new Section(reader, "gfmodel");
+        const offset = reader.index;
+        
+        let shaderPacks = new Model.HashNameTable(reader);
+        let textureNames = new Model.HashNameTable(reader);
+        let materialNames = new Model.HashNameTable(reader);
+        let meshNames = new Model.HashNameTable(reader);
+        
+        if (unitCount !== materialNames.length + meshNames.length + 1) {
+            throw new Error("Invalid resource unit count " + unitCount);
+        }
+        
+        this.boundingBox = {
+            "min": new Model.Vector(reader, 4),
+            "max": new Model.Vector(reader, 4),
+        };
+        this.transform = new Model.Matrix(reader, 4);
+        
+        // TODO: check why empty data
+        const emptyDataLength = reader.readUint32();
+        const emptyDataOffset = reader.readUint32();
+        
+        if (reader.readUint32() !== 0) { throw new Error("Invalid padding, expected 0"); }
+        if (reader.readUint32() !== 0) { throw new Error("Invalid padding, expected 0"); }
+        
+        reader.skip(emptyDataOffset + emptyDataLength, 0);
+        
+        const boneCount = reader.readUint32();
+        reader.skip(0xc, 0);
+        
+        this.bones = [];
+        looper = 0;
+        while (looper < boneCount) {
+            this.bones.push(new Model.Bone(reader));
+            ++looper;
+        }
+        
+        reader.skipPadding(0x10, 0);
+        
+        const lightingLUTCount = reader.readUint32();
+        const lightingLUTLength = reader.readUint32();
+        
+        reader.skipPadding(0x10, 0);
+        
+        this.lightingLUTs = [];
+        looper = 0;
+        while (looper < lightingLUTCount) {
+            this.lightingLUTs.push(new Model.LightingLUT(reader, lightingLUTLength));
+            ++looper;
+        }
+        if (offset + section.length !== reader.index) {
+            throw new Error("Incorrect section");
+        }
+        
+        this.materials = [];
+        looper = 0;
+        while (looper < materialNames.length) {
+            let material = new Model.Material(reader);
+            if (shaderPacks.indexOf(material.shaderPack) === -1) {
+                throw new Error("Unrecord shader pack found: " + material.shaderPack);
+            }
+            this.materials.push(material);
+            ++looper;
+        }
+        
+        this.meshes = [];
+        looper = 0;
+        while (looper < meshNames.length) {
+            this.meshes.push(new Model.Mesh(reader));
+            ++looper;
+        }
+        
+        // removed the first two byte of hashes for JS 32 bit compatibility
+        let hash = function (text) {
+            
+            const prime = 16777619;
+            
+            let value = prime & hash.mask;
+            
+            let looper = 0;
+            while (looper < text.length) {
+                value = value * prime;
+                value = value ^ text.charCodeAt(looper);
+                value = value & hash.mask;
+                ++looper;
+            }
+            
+            return value;
+            
+        };
+        hash.mask = 0xffffff;
+        
+        this.lightingLUTs.forEach((lightingLUT) => {
+            let name = textureNames.filter((texture) => {
+                return hash(texture) === (lightingLUT.hashID & hash.mask);
+            })[0];
+            lightingLUT.name = name;
+        });
+        
+    };    
+   
+    const HashNameTable = function HashTable(reader) {
+        
+        let count = reader.readUint32();
+        let values = [];
+        let looper = 0;
+        while (looper < count) {
+            
+            values.push({
+                "hash": reader.readUint32(),
+                "name": reader.readString(0x40)
+            });
+            
+            ++looper;
+        }
+        
+        let result = values.map(value => value.name);
+        
+        result.hashes = values.map(value => value.hash);
+        
+        return result;
+        
+    };
+    
+    const Vector = function Vector(reader, dimension) {
+        
+        let values = [];
+        
+        let looper = 0;
+        while (looper < dimension) {
+            values.push(reader.readFloat32());
+            ++looper;
+        }
+        
+        return values;
+        
+    };
+    
+    const Matrix = function Matrix(reader, dimension) {
+        
+        let values = [];
+        
+        let looper = 0;
+        while (looper < dimension) {
+            new Vector(reader, dimension).forEach((value) => {
+                values.push(value);
+            });
+            ++looper;
+        }
+        
+        return values;
+    };
+    
+    const Bone = function Bone(reader) {
+        
+        this.name = reader.readString(reader.readUint8());
+        
+        this.parent = reader.readString(reader.readUint8());
+        
+        let flags = reader.readUint8();
+        
+        this.flags = flags;
+        
+        this.stable = (flags & Bone.STABLE) !== 0;
+        this.animatable = (flags & Bone.ANIMATABLE) !== 0;
+        
+        this.scale = new Vector(reader, 3);
+        this.rotation = new Vector(reader, 3);
+        this.translation = new Vector(reader, 3);
+        
+    };
+    
+    Bone.ANIMATABLE = 1 << 0;
+    Bone.STABLE = 1 << 1;
+    
+    const LightingLUT = function LightingLUT(reader, length) {
+        
+        this.hashID = reader.readUint32();
+        
+        reader.skip(0xc, 0); 
+       
+        this.pica = new PICA(reader, length);
+       
+    };
+    
+    LightingLUT.prototype.toImageURL = function (height) {
+         
+        var canvas = document.createElement("canvas");
+        
+        canvas.width = this.pica.lightingLUTs.data.length;
+        canvas.height = height ? height : Math.round(canvas.width / 5);
+        canvas.name = this.name ? this.name : "LUT_" + this.hashID + ".tga";
+    
+        var context = canvas.getContext("2d");
+        
+        var imageData = context.createImageData(canvas.width, canvas.height);
+        
+        let x = 0;
+        while (x < canvas.width) {
+            let y = 0;
+            while (y < canvas.height) {
+                imageData.data[4 * (y * canvas.width + x)] = Math.round(this.pica.lightingLUTs.data[x] * 255);
+                imageData.data[4 * (y * canvas.width + x) + 1] = Math.round(this.pica.lightingLUTs.data[x] * 255);
+                imageData.data[4 * (y * canvas.width + x) + 2] = Math.round(this.pica.lightingLUTs.data[x] * 255);
+                imageData.data[4 * (y * canvas.width + x) + 3] = 255;
+                ++y;
+            }
+            ++x;
+        }
+        
+        context.putImageData(imageData, 0, 0);
+        
+        return canvas.toDataURL();
+    };
+    
+    LightingLUT.prototype.toImage = function () {
+        
+        const dom = new Image();
+        
+        dom.src = this.toImageURL();
+        
+        return dom;
+        
+    };
+    
+    LightingLUT.DIST_0 = 0;
+    LightingLUT.DIST_1 = 1;
+    LightingLUT.FRESNEL = 3;
+    LightingLUT.REFLECT_R = 4;
+    LightingLUT.REFLECT_G = 5;
+    LightingLUT.REFLECT_B = 6;
+    LightingLUT.SPECULAR_0 = 8;
+    LightingLUT.SPECULAR_1 = 9;
+    LightingLUT.SPECULAR_2 = 10;
+    LightingLUT.SPECULAR_3 = 11;
+    LightingLUT.SPECULAR_4 = 12;
+    LightingLUT.SPECULAR_5 = 13;
+    LightingLUT.SPECULAR_6 = 14;
+    LightingLUT.SPECULAR_7 = 15;
+    LightingLUT.DIST_ATTRIBUTE_0 = 16;
+    LightingLUT.DIST_ATTRIBUTE_1 = 17;
+    LightingLUT.DIST_ATTRIBUTE_2 = 18;
+    LightingLUT.DIST_ATTRIBUTE_3 = 19;
+    LightingLUT.DIST_ATTRIBUTE_4 = 20;
+    LightingLUT.DIST_ATTRIBUTE_5 = 21;
+    LightingLUT.DIST_ATTRIBUTE_6 = 22;
+    LightingLUT.DIST_ATTRIBUTE_7 = 23;
+    
+    const Material = function Material(reader) {
+        
+        let looper;
+        
+        const section = new Section(reader, "material");
+        
+        let offset = reader.index;
+        
+        this.name = ({
+            "hash": reader.readUint32(),
+            "value": reader.readString(reader.readUint8())
+        }).value;
+        this.shaderPack = ({
+            "hash": reader.readUint32(),
+            "value": reader.readString(reader.readUint8())
+        }).value;
+        this.vertexShader = ({
+            "hash": reader.readUint32(),
+            "value": reader.readString(reader.readUint8())
+        }).value;
+        this.fragmentShader = ({
+            "hash": reader.readUint32(),
+            "value": reader.readString(reader.readUint8())
+        }).value;
+        
+        this.lightingLUTs = [reader.readUint32(), reader.readUint32(), reader.readUint32()];
+        if (reader.readUint32() !== 0) {
+            throw new Error("Invalid padding, expected 0");
+        }
+        
+        this.bumpTexture = reader.readInt8();
+        
+        this.constantAssignments = [ 
+            reader.readUint8(), reader.readUint8(), reader.readUint8(),
+            reader.readUint8(), reader.readUint8(), reader.readUint8()];
+        if (reader.readUint8() !== 0) {
+            throw new Error("Invalid padding, expected 0");
+        }
+        
+        this.constantColors = [
+            new PICA.Color(reader), new PICA.Color(reader), new PICA.Color(reader),
+            new PICA.Color(reader), new PICA.Color(reader), new PICA.Color(reader)];
+        this.specularColors = [ new PICA.Color(reader), new PICA.Color(reader)];
+        this.blendColor = new PICA.Color(reader);
+        this.emissionColor = new PICA.Color(reader);
+        this.ambientColor = new PICA.Color(reader);
+        this.diffuseColor = new PICA.Color(reader);
+        
+        this.edgeType = reader.readInt32();
+        this.idEdgeEnabled = reader.readInt32();
+        this.edgeID = reader.readInt32();
+        
+        this.projectionType = reader.readInt32();
+        
+        this.rimPower = reader.readFloat32();
+        this.rimScale = reader.readFloat32();
+        this.phongPower = reader.readFloat32();
+        this.phongScale = reader.readFloat32();
+        
+        this.idEdgeOffsetEnabled = reader.readInt32(); 
+        this.edgeMapAlphaMask = reader.readInt32();
+
+        this.bakeTextures = [reader.readInt32(), reader.readInt32(), reader.readInt32()];
+        this.bakeConstants = [
+            reader.readInt32(), reader.readInt32(), reader.readInt32(),
+            reader.readInt32(), reader.readInt32(), reader.readInt32()];
+        
+        this.shaderType = reader.readUint32();
+        // if ((this.shaderType !== 1) && (this.shaderType !== 256)) {
+        //     $.warn("Unsupported shader type " + this.shaderType);
+        // }
+
+        this.shaderParameters = [
+            reader.readFloat32(), reader.readFloat32(),
+            reader.readFloat32(), reader.readFloat32() ];
+
+        let unitCount = reader.readUint32();
+        this.textureCoordinates = [];
+        looper = 0;
+        while (looper < unitCount) {
+            this.textureCoordinates[looper] = new Model.TextureCoordinate(reader);
+            ++looper;
+        }
+        
+        reader.skipPadding(0x10, 255);
+        
+        let commandsLength = reader.readUint32();
+
+        this.renderPriority = reader.readInt32();
+        reader.readUint32(); //Seems to be a 24 bits value.
+        this.renderLayer = reader.readInt32();
+        reader.readUint32(); //LUT 0 (Reflection R?) hash again?
+        reader.readUint32(); //LUT 1 (Reflection G?) hash again?
+        reader.readUint32(); //LUT 2 (Reflection B?) hash again?
+        reader.readUint32(); //Another hash?
+        
+        this.pica = new PICA(reader, commandsLength);
+            
+        while (reader.index < offset + section.length) {
+            if (reader.readUint8() !== 0) {
+                throw new Error("Invalid padding, expected 0");
+            }
+        }
+        
+    };
+    
+    const Mesh = function Mesh(reader) {
+        
+        let looper;
+        
+        const section = new Section(reader, "mesh");
+        let offset = reader.index;
+        
+        this.name = ({
+            "hash": reader.readUint32(),
+            "value": reader.readString(0x40)
+        }).value;
+        
+        if (reader.readUint32() !== 0) {
+            throw new Error("Invalid padding, expected 0");
+        }
+        
+        this.boundingBox = {
+            "min": new Model.Vector(reader, 4),
+            "max": new Model.Vector(reader, 4),
+        };
+        
+        const submeshCount = reader.readUint32();
+        
+        this.boneIndicesPerVertex = reader.readInt32();
+        
+        if (reader.readInt32() !== -1) { throw new Error("Invalid padding, expected -1"); }
+        if (reader.readInt32() !== -1) { throw new Error("Invalid padding, expected -1"); }
+        if (reader.readInt32() !== -1) { throw new Error("Invalid padding, expected -1"); }
+        if (reader.readInt32() !== -1) { throw new Error("Invalid padding, expected -1"); }
+       
+        this.submeshes = [];
+        // commands, info and data is splited
+        
+        looper = 0;
+        while (looper < submeshCount) {
+            this.submeshes.push(new Model.Submesh(reader, looper * 3, submeshCount * 3));
+            ++looper;
+        }
+        
+        this.submeshes.forEach((submesh) => submesh.loadInfo(reader));
+        
+        this.submeshes.forEach((submesh) => submesh.loadData(reader));
+        
+        while (reader.index - offset < section.length) {
+            if (reader.readUint8() !== 0) {
+                throw new Error("Invalid padding, expected -1");
+            }
+        }
+        
+    };
+    
+    const Submesh = function Submesh(reader, offset, submeshes) {
+         
+        this.picas = {};
+        
+        ["vertex", "geometry", "index"].forEach((key, index) => {
+            
+            let length = reader.readUint32();
+            
+            if (reader.readUint32() !== offset + index) { throw new Error("Invalid data, expected " + offset); }
+            if (reader.readUint32() !== submeshes) { throw new Error("Invalid data, expected " + submeshes); }
+            if (reader.readUint32() !== 0) { throw new Error("Invalid padding, expected 0"); }
+     
+            this.picas[key] = new PICA(reader, length);
+            
+        });
+       
+    };
+    
+    Submesh.prototype.loadInfo = function (reader) {
+        
+        this.hash = reader.readUint32();
+        this.material = reader.readString(reader.readUint32());
+        
+        let boneIndicesCount = reader.readUint8();
+        
+        this.boneIndices = [];
+        let looper = 0;
+        while (looper < 0x1f) {
+            let boneIndex = reader.readUint8();
+            if (looper < boneIndicesCount) {
+                this.boneIndices.push(boneIndex);
+            } else {
+                if (boneIndex !== 0) {
+                    throw new Error("Bones out of range");
+                }
+            }
+            ++looper;
+        }
+        
+        let verticesCount = reader.readInt32();
+        let indicesCount = reader.readInt32();
+        let verticesLength = reader.readInt32();
+        let indicesLength = reader.readInt32();
+        this.vertices = {
+            "attributes": [],
+            "count": verticesCount,
+            "length": verticesLength,
+            "data": []
+        };
+        this.vertexIndices = {
+            "count": indicesCount,
+            "length": indicesLength,
+            "data": []
+        };
+        
+        looper = 0;
+        while (looper < this.picas.vertex.shader.vertex.attributes.count) {
+           
+            if (this.picas.vertex.attributes.formats[looper].fixed) {
+                 
+                let name = new PICA.AttributeName(this.picas.vertex.shader.vertex.attributes.permutations[looper]);
+                
+                this.vertices.attributes[looper] = {
+                    "name": name,
+                    "fixed": true,
+                    "value": this.picas.vertex.attributes.fixeds.data[looper],
+                    "format": this.picas.vertex.attributes.formats[looper]
+                };
+            } else {
+                
+                let permutation = this.picas.vertex.attributes.buffer.mapping[looper];
+                
+                let name = new PICA.AttributeName(this.picas.vertex.shader.vertex.attributes.permutations[permutation]);
+                
+                this.vertices.attributes[looper] = {
+                    "name": name,
+                    "fixed": false,
+                    "format": this.picas.vertex.attributes.formats[permutation]
+                };
+                
+            }
+            
+            ++looper;
+        }
+
+    };
+    
+    Submesh.prototype.loadData = function (reader) {
+        
+        let looper;
+        let index;
+        
+        index = reader.index;
+        looper = 0;
+        while (looper < this.vertices.count) {
+            
+            let vertex = {};
+            
+            let offset = reader.index;
+            
+            let looper2 = 0;
+            while (looper2 < this.vertices.attributes.length) {
+                
+                let attribute = this.vertices.attributes[looper2];
+                if (!attribute.fixed) {
+                    
+                    let vector = {};
+                    
+                    let read = null;
+                    switch (attribute.format.type.code) {
+                        case PICA.AttributeFormat.INT_8: { read = "readInt8"; break; }
+                        case PICA.AttributeFormat.UINT_8: { read = "readUint8"; break; }
+                        case PICA.AttributeFormat.INT_16: { read = "readInt16"; break; }
+                        case PICA.AttributeFormat.FLOAT_32: { read = "readFloat32"; break; }
+                        default: { throw new Error("Invalid vertex format"); }
+                    }
+                    vector.x = reader[read]();
+                    if (attribute.format.size > 1) {
+                        vector.y = reader[read]();
+                    }
+                    if (attribute.format.size > 2) {
+                        vector.z = reader[read]();
+                    }
+                    if (attribute.format.size > 3) {
+                        vector.w = reader[read]();
+                    }
+                
+                    switch (attribute.name.code) {
+                        case PICA.AttributeName.POSITION: {
+                            vertex.position = [vector.x, vector.y, vector.z]; break;
+                        }
+                        case PICA.AttributeName.NORMAL: {
+                            vertex.normal = [vector.x, vector.y, vector.z]; break;
+                        }
+                        case PICA.AttributeName.TANGENT: {
+                            vertex.tangent = [vector.x, vector.y, vector.z]; break;
+                        }
+                        case PICA.AttributeName.COLOR: {
+                            let r = vector.x, g = vector.y, b = vector.z, a = vector.w;
+                            vertex.color = [a, r, g, b];
+                            break;
+                        }
+                        case PICA.AttributeName.TEXTURE_COORDINATE_0: {
+                            if (!vertex.textures) { vertex.textures = []; }
+                            vertex.textures[0] = [vector.x, vector.y]; break;
+                        }
+                        case PICA.AttributeName.TEXTURE_COORDINATE_1: {
+                            if (!vertex.textures) { vertex.textures = []; }
+                            vertex.textures[1] = [vector.x, vector.y]; break;
+                        }
+                        case PICA.AttributeName.TEXTURE_COORDINATE_2: {
+                            if (!vertex.textures) { vertex.textures = []; }
+                            vertex.textures[2] = [vector.x, vector.y]; break;
+                        }
+                        case PICA.AttributeName.BONE_INDEX: {
+                            if (!vertex.boneIndices) { vertex.boneIndices = []; }
+                            let add = (value) => {
+                                if (value !== 0xff) {
+                                    vertex.boneIndices.push(value);
+                                }
+                            };
+                            add(vector.x);
+                            if (attribute.format.size > 1) { add(vector.y); }
+                            if (attribute.format.size > 2) { add(vector.z); }
+                            if (attribute.format.size > 3) { add(vector.w); }
+                            break;
+                        }
+                        case PICA.AttributeName.BONE_WEIGHT: {
+                            if (!vertex.boneWeights) { vertex.boneWeights = []; }
+                            vertex.boneWeights[0] = vector.x;
+                            if (attribute.format.size > 1) { vertex.boneWeights[1] = vector.y; }
+                            if (attribute.format.size > 2) { vertex.boneWeights[2] = vector.z; }
+                            if (attribute.format.size > 3) { vertex.boneWeights[3] = vector.w; }
+                            break;
+                        }
+                        default: {
+                            throw new Error("Invalid attribute format " + attribute.name.code);
+                        }
+                    }
+                    
+                }
+                
+                ++looper2;
+            }
+            
+            while (reader.index < offset + this.picas.vertex.attributes.buffer.unitSize) {
+                if (reader.readUint8() !== 0) {
+                    throw new Error("Invalid padding, expected 0");
+                }
+            }
+                
+            this.vertices.data[looper] = vertex;
+            
+            ++looper;
+        }
+        while (reader.index < index + this.vertices.length) {
+            if (reader.readUint8() !== 0) {
+                throw new Error("Invalid padding, expected 0");
+            }
+        }
+       
+        index = reader.index;
+        looper = 0;
+        while (looper < this.vertexIndices.count) {
+            if (this.picas.index.attributes.indices.is16Bit) {
+                this.vertexIndices.data[looper] = reader.readUint16();
+            } else {
+                this.vertexIndices.data[looper] = reader.readUint8();
+            }
+            ++looper;
+        }
+        while (reader.index < index + this.vertexIndices.length) {
+            if (reader.readUint8() !== 0) {
+                throw new Error("Invalid padding, expected 0");
+            }
+        }
+        
+    };
+    
+    const TextureCoordinate = function TextureCoordinate(reader) {
+        
+        this.hashID = reader.readUint32();
+        
+        this.name = reader.readString(reader.readUint8());
+
+        this.index = reader.readUint8();
+
+        this.mappingType = new Model.TextureMappingType(reader.readUint8());
+
+        this.scale = new Vector(reader, 2);
+        this.rotation = reader.readFloat32();
+        this.translation = new Vector(reader, 2);
+
+        this.wrap = [new PICA.TextureWrap(reader.readUint32()), new PICA.TextureWrap(reader.readUint32())];
+
+        this.magFilter = new Model.TextureMagnificationFilter(reader.readUint32());
+        this.minFilter = new Model.TextureMinificationFilter(reader.readUint32());
+
+        this.minLOD = reader.readUint32();
+        
+    };
+    
+    const TextureMappingType = function TextureMappingType(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    TextureMappingType.UV = 0;
+    TextureMappingType.CAMERA_CUBE = 1;
+    TextureMappingType.CAMERA_SPHERE = 2;
+    TextureMappingType.PROJECTION = 3;
+    TextureMappingType.SHADOW = 4;
+    TextureMappingType.SHADOW_BOX = 5;
+    
+    const TextureMagnificationFilter = function TextureMagnificationFilter(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    TextureMagnificationFilter.NEAREST = 0;
+    TextureMagnificationFilter.LINEAR = 1;
+    
+    const TextureMinificationFilter = function TextureMinificationFilter(code) {
+        this.code = code;
+        this.label = Object.keys(arguments.callee).filter((key) => arguments.callee[key] === code)[0];
+    };
+    
+    TextureMinificationFilter.LINEAR = 0;
+    TextureMinificationFilter.LINEAR_MIPMAP_LINEAR = 1;
+    TextureMinificationFilter.NEAREST = 2;
+    TextureMinificationFilter.LINEAR_MIPMAP_NEAREST = 3;
+    TextureMinificationFilter.NEAREST_MIPMAP_NEAREST = 4;
+    TextureMinificationFilter.NEAREST_MIPMAP_LINEAR = 5;
+    
+    Model.HashNameTable = HashNameTable;
+    
+    Model.Bone = Bone;
+    Model.LightingLUT = LightingLUT;
+    Model.Material = Material;
+    Model.Mesh = Mesh;
+    Model.Submesh = Submesh;
+    
+    Model.Matrix = Matrix;
+    Model.Vector = Vector;
+    
+    Model.TextureCoordinate = TextureCoordinate;
+    Model.TextureMappingType = TextureMappingType;
+    Model.TextureMagnificationFilter = TextureMagnificationFilter;
+    Model.TextureMinificationFilter = TextureMinificationFilter;
+    
+    module.exports = Model;
+    
+})(this, this.$);
