@@ -1,0 +1,1 @@
+$(function(){var e=require("../node.mew_util/memory.js");$.memory={},$.memory.cachePool=function(o){return new e.CachePool(o)}});

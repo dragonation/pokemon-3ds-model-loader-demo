@@ -1,0 +1,1 @@
+((a,p)=>{p.app={data:{id:p.meta("app","appId"),name:p.meta("app","appName")}},p.app.launch=function(){return p.async.resolve()}})(0,this.$);

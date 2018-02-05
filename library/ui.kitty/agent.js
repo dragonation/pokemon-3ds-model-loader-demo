@@ -1,0 +1,1 @@
+var MewchanAgent=function(n){var e=this;["id","name","state","info","logger","workingPath","documentPath","libraryPath","findElder","introduceElder","registerInterpreter"].forEach(function(t){n[t]instanceof Function?e[t]=n[t].bind(n):e[t]=n[t]}.bind(this))};module.exports=MewchanAgent;

@@ -1,0 +1,1 @@
+this.$,module.exports=function(i,t){if(this.magic=i.readString(8),this.magic!==t)throw new Error("Invalid magic "+this.magic+", expected: "+t);if(this.length=i.readUint32(),-1!==i.readInt32())throw new Error("Invalid section padding, expected -1")};

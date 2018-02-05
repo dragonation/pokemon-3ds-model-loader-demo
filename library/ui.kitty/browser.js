@@ -1,0 +1,1 @@
+var BrowserRequester=function(e){};BrowserRequester.prototype.request=$.request,module.exports=BrowserRequester;

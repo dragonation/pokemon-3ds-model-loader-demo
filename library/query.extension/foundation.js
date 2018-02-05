@@ -1,0 +1,1 @@
+$(function(){$.as.array=function(r){return $.is.nil(r)?[]:$.is(r,String)?[r]:$.is(r,Array)?r:[]},$.hit=function(r,n){r=$.as.array(r),n=$.as.array(n);let i=0;for(;i<r.length;){if(-1!==n.indexOf(r[i]))return!0;++i}return!1}});

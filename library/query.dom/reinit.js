@@ -1,0 +1,1 @@
+$(function(){$.dom.reinit=function(n){n=$(n),Object.keys($.dom.reinit.handlers).forEach(function(i){$.dom.reinit.handlers[i](n)})},$.dom.reinit.handlers={},$.delay(function(){$.dom.reinit($(document.body))})});

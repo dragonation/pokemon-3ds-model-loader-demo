@@ -1,0 +1,1 @@
+$.clipboard={};let copyData=null;$(document).on("copy",(a,t)=>{copyData&&(a.clipboardData.clearData(),Object.keys(copyData).forEach(t=>{a.clipboardData.setData(t,copyData[t])}),a.preventDefault(),copyData=null)}),$.clipboard.copy=function(a){$.is(a,String)&&(a={"text/plain":a}),copyData=a,document.execCommand("copy")};

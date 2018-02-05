@@ -1,0 +1,1 @@
+this.$,module.exports=function(e){let t=!1;for(;e.index+32<e.end;){let d=e.readString(32);if(d=d.trim()){let t=[e.readFloat32(),e.readFloat32(),e.readFloat32()],i=e.readUint32();i&&(this[d]={position:t,flags:i})}else t=!0}for(;e.index<e.end;)if(0!==e.readUint8())throw new Error("Invalid padding, expected 0")};

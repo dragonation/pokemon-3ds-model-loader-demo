@@ -1,0 +1,1 @@
+this.$,module.exports=function(t){for(this.length=t.end-t.index,this.magic=t.readUint32(),this.data=[];t.index<t.end;)this.data.push(t.readUint8())};

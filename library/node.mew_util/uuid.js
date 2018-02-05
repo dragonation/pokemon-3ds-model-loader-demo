@@ -1,0 +1,1 @@
+var createUUID=function(){var x=(new Date).getTime(),e=x*x>>8&65535;return e=(e*e).toString(16),e=e+e+e+e,"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(x){var t=(parseInt(e[e.length-1],16)+16*Math.random())%15|0;return--e.length,("x"===x?t:3&t|8).toString(16)})};module.exports={createUUID:createUUID};
